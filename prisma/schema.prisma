@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,111 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model BadgeHistory {
+  badgeHistoryID Int     @id(map: "badgeHistoryID") @default(autoincrement())
+  studentID      Int
+  amount         Int
+  badgeID        Int
+  badge          Badge   @relation(fields: [badgeID], references: [badgeID], onDelete: NoAction, onUpdate: NoAction, map: "badgeID_FK")
+  student        Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID-fK")
+}
+
+model Rewards {
+  rewardID      Int             @id @default(autoincrement())
+  rewardName    String          @db.VarChar
+  ptsRequired   Int
+  url           String          @db.VarChar
+  rewardHistory RewardHistory[]
+}
+
+model Student {
+  studentID      Int              @id @default(autoincrement())
+  name           String           @db.VarChar
+  Uid            String           @db.VarChar
+  streaks        Int
+  totalPts       Int
+  mazeLvl        Int
+  redeemedPts    Int
+  type           Int
+  lastLogin      BigInt?
+  badgeHistory   BadgeHistory[]
+  quizHistory    QuizHistory[]
+  rewardHistory  RewardHistory[]
+  studentHistory StudentHistory[]
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
+
+model Badge {
+  badgeID      Int            @id(map: "badge_pkey") @default(autoincrement())
+  name         String         @db.VarChar
+  requirements String         @db.VarChar
+  pic_url      String         @db.VarChar
+  badgeClassID Int
+  badgeClass   BadgeClass     @relation(fields: [badgeClassID], references: [badgeClassID], onDelete: NoAction, onUpdate: NoAction, map: "badgeClassID_FK")
+  badgeHistory BadgeHistory[]
+}
+
+model BadgeClass {
+  badgeClassID     Int     @id(map: "badgeClass_pkey") @default(autoincrement())
+  className        String  @db.VarChar
+  classDescription String  @db.VarChar
+  badge            Badge[]
+}
+
+model Event {
+  eventID        Int              @id(map: "eventID_pkey") @default(autoincrement())
+  eventName      String           @db.VarChar
+  studentHistory StudentHistory[]
+}
+
+model MazeContent {
+  mazeLvl Int @id(map: "mazeContent_pkey") @default(autoincrement())
+  points  Int
+}
+
+model Quiz {
+  quizID      Int           @id(map: "quiz_pkey")
+  totalMarks  Int
+  totalPoints Int
+  quizHistory QuizHistory[]
+}
+
+model QuizHistory {
+  quizHistoryID Int     @id(map: "quizHistory_pkey") @default(autoincrement())
+  quizID        Int
+  studentID     Int
+  pointsEarned  Int
+  marksEarned   Int
+  quiz          Quiz    @relation(fields: [quizID], references: [quizID], onDelete: NoAction, onUpdate: NoAction, map: "fk_quizID")
+  student       Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_fk")
+}
+
+model RewardHistory {
+  rewardHistoryID Int     @id(map: "rewardHistory_pkey") @default(autoincrement())
+  studentID       Int
+  rewardID        Int
+  rewards         Rewards @relation(fields: [rewardID], references: [rewardID], onDelete: NoAction, onUpdate: NoAction, map: "rewardID")
+  student         Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
+}
+
+model StudentHistory {
+  historyID     Int     @id(map: "studentHistory_pkey") @default(autoincrement())
+  studentID     Int
+  pointsAwarded Int
+  eventID       Int
+  event         Event   @relation(fields: [eventID], references: [eventID], onDelete: NoAction, onUpdate: NoAction, map: "eventID")
+  student       Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
+}
+
+model Teacher {
+  teacherID String @id(map: "teacher_pkey") @db.VarChar
 }
