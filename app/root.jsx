@@ -6,6 +6,8 @@ import {
   Scripts,
   ScrollRestoration
 } from "remix";
+import { Provider } from 'react-redux';
+import store from './store';
 
 export function meta() {
   return { title: "quizment" };
@@ -21,10 +23,12 @@ export default function App() {
         <Links />
       </head>
       <body>
+      <Provider store={store}>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
+        </Provider>
       </body>
     </html>
   );
