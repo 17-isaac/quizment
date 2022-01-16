@@ -1,6 +1,28 @@
+import { useLoaderData } from "remix";
+import { db } from "~/utils/db.server";
+
+export async function loader() {
+    const data = {
+      studentDetailsData: await db.student.findUnique({
+        where: {
+          studentID: 16,
+        },
+        select: {
+          name: true,
+          Uid: true,
+          streaks: true
+        }
+      })
+    };
+    // db.$disconnect();
+    return data;
+};
+
 export default function Index() {
+  const data = useLoaderData();
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+       <p>Name: {data.studentDetailsData.name}</p>
       <h1>Welcome to Remix</h1>
       <ul>
         <li>
