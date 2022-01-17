@@ -18,8 +18,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const analytics = getAnalytics(firebaseApp);
 const auth = getAuth();
 
 createUserWithEmailAndPassword(auth, email, password)
@@ -33,3 +33,5 @@ createUserWithEmailAndPassword(auth, email, password)
     const errorMessage = error.message;
     // ..
   });
+
+  export default { firebaseApp, auth }
