@@ -1,4 +1,4 @@
-import { useLoaderData } from "remix";
+import { useLoaderData, Link } from "remix";
 import { db } from "~/utils/db.server";
 
 export async function loader() {
@@ -24,6 +24,8 @@ export default function Index() {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
        <p>Name: {data.studentDetailsData.name}</p>
       <h1>Welcome to Remix</h1>
+      <h2><Link to="studentDashboard">Student Dashboard</Link></h2>
+      <h2><Link to="auth">Log In</Link></h2>
       <ul>
         <li>
           <a
