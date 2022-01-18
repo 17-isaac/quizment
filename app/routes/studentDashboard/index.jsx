@@ -79,9 +79,9 @@ export default function StudentDashboardContent() {
         } else if (command === "studentDash") {
           window.open("http://localhost:3000/StudentDashboard", "_self");
         }
-        //  else if (command === "newsResource") {
-        //   window.open("http://localhost:3000/newsResource", "_self");
-        // }
+         else if (command === "newsResource") {
+          window.open("http://localhost:3000/newsResource", "_self");
+        }
       },
     });
   }, []);

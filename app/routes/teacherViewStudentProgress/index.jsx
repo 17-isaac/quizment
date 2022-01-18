@@ -37,8 +37,27 @@ export async function loader() {
       orderBy: { name: "asc" },
     }),
 
+  
+ bacdgeR: await db.badgeClass.findMany({
+ 
+   select:{
+     badge:{
+       select:{
+       name:true,
+       requirements:true,
+       pic_url:true,
+       }
+     },
+     className:true,
+   }
+ }),
+
+
     userCount: await db.student.count(),
+
+    
   };
+  console.log("==============================================")
   // db.$disconnect();
   return data;
 }
@@ -59,6 +78,7 @@ export default function teacherViewStudentProgressContent() {
             "_self"
           );
         } else if (command === "topStudents") {
+         
           window.open(
             "http://localhost:3000/teacherViewStudentProgress/sortHighPts",
             "_self"
@@ -99,7 +119,7 @@ export default function teacherViewStudentProgressContent() {
     }
   }, []);
 
-  const { studentPerformanceDetails, userCount } = useLoaderData();
+  const { studentPerformanceDetails, userCount,bacdgeR } = useLoaderData();
 
   const numOfUser = userCount;
 
@@ -114,6 +134,17 @@ export default function teacherViewStudentProgressContent() {
   const overall = 0;
   const y = 9;
   const x = 9;
+  console.log("=+======+========= 1 ========+=================+")
+  console.log(bacdgeR)
+ 
+  console.log("============================================")
+ 
+  // console.log("Badge info: "+bacdgeR[4].badge[0].name)
+  console.log("Badge name: "+bacdgeR[3].badge[0].name)
+  console.log("Badge requirement: "+bacdgeR[3].badge[0].requirements)
+  console.log("Badge pic url: "+bacdgeR[3].badge[0].pic_url)
+  console.log("class name: "+bacdgeR[3].className)
+  console.log("============================================")
   return (
     <div>
       <Row style={{ marginLeft: 1300 }}>
@@ -159,12 +190,17 @@ export default function teacherViewStudentProgressContent() {
         <Row lg="4">
           {/* <h1>Total user:{userCount}</h1> */}
 
+
+
+          {/* <h1>{badge.name}</h1> */}
+
           {studentPerformanceDetails
-            .map((data) => (
-              <Card key={data.Uid} className=" m-5">
+            .map((data,i) => (
+              <Card key={i} className=" m-5">
                 <Card.Body>
                   <Row>
                     <Col>
+                    <Card.Title>{i}</Card.Title>
                       <Card.Title>{data.name.split("@")[0]}</Card.Title>
 
                       <Card.Text>Number of streaks:</Card.Text>
@@ -292,9 +328,7 @@ export default function teacherViewStudentProgressContent() {
           >
             Load More
           </Button>
-        ) : (
-          <h3>The End</h3>
-        )}
+        ) : null}
       </Row>
     </div>
   );
