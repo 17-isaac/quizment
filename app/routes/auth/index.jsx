@@ -1,11 +1,9 @@
-import { useNavigate } from "remix";
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword
-} from "firebase/auth";
-import { auth } from '~/utils/firebase';
+import { useNavigate, useLoaderData } from "remix";
+import { useEffect } from 'react';
+import { db } from "~/utils/db.server";
+
+import { auth, authStatus } from '~/utils/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,6 +17,34 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+export async function loader() {
+  const data = {
+    userType: await db.student.findUnique({
+      where: {
+        studentID: 16,
+      },
+      select: {
+        type: true
+      }
+    }),
+    studentUid: await db.student.findUnique({
+      where: {
+        studentID: 16,
+      },
+      select: {
+        name: true,
+        Uid: true,
+        streaks: true
+      }
+    })
+  };
+  console.log(data.type);
+  // db.$disconnect();
+  return data;
+};
+
+
 
 function Copyright(props) {
   return (
@@ -34,18 +60,23 @@ function Copyright(props) {
 }
 
 export default function AuthContent() {
+  const data = useLoaderData();
   const theme = createTheme();
   let navigate = useNavigate();
+  useEffect(() => {
+    console.log(data.userType.type);
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: formData.get('email'),
+      password: formData.get('password'),
     });
     navigate("/studentDashboard");
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
