@@ -1,11 +1,7 @@
+
 import { initializeApp } from "firebase/app";
-import { useNavigate, useNavigationType } from "remix";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-const dotenv = require("dotenv");
-dotenv.config();
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,8 +21,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-// analytics
-const analytics = getAnalytics(firebaseApp);
 
 //authentication
 const auth = getAuth();
@@ -35,12 +29,16 @@ const auth = getAuth();
 const fdb = getFirestore();
 
 async function authStatus(userType) {
+  // let navigate = useNavigate();
+  // const location = useLocation();
   await onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
       if (userType === 1) {
-        useNavigate('/studentDashboard');
+        window.location.assign('http://localhost:3000/studentDashboard');
       } else if (userType === 2) {
-        useNavigate('/');
+        window.location.assign('http://localhost:3000/teacherDashboard');
+      } else {
+        window.location.assign('http://localhost:3000/auth');
       }
     }
   }).catch((error) => {
@@ -48,4 +46,5 @@ async function authStatus(userType) {
     console.log(errorCode);
   });
 }
+
 export { auth, fdb, authStatus };

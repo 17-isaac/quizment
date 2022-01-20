@@ -1,9 +1,8 @@
-import { useNavigate, useLoaderData } from "remix";
+import { useNavigate, useLocation, useLoaderData } from "remix";
 import { useEffect } from 'react';
 import { db } from "~/utils/db.server";
-
 import { auth, authStatus } from '~/utils/firebase';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -39,7 +38,7 @@ export async function loader() {
       }
     })
   };
-  console.log(data.type);
+  console.log(data.userType.type);
   // db.$disconnect();
   return data;
 };
@@ -63,8 +62,20 @@ export default function AuthContent() {
   const data = useLoaderData();
   const theme = createTheme();
   let navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
-    console.log(data.userType.type);
+    // onAuthStateChanged(auth, (currentUser) => {
+    //   if (currentUser) {
+    //     if (res.data.type === 1) {
+    //       navigate('/studentDashboard');
+    //     } else if (res.data.type === 2) {
+    //       navigate('/teacherDashboard');
+    //     } else {
+
+    //     }
+    //   }
+    // })
+    authStatus(data.userType.type);
   });
   const handleSubmit = (event) => {
     event.preventDefault();
