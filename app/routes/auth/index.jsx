@@ -62,7 +62,6 @@ export default function AuthContent() {
   const data = useLoaderData();
   const theme = createTheme();
   let navigate = useNavigate();
-  const location = useLocation();
   useEffect(() => {
     authStatus(data.userType.type);
   });

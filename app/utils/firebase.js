@@ -1,4 +1,3 @@
-
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -29,8 +28,6 @@ const auth = getAuth();
 const fdb = getFirestore();
 
 async function authStatus(userType) {
-  // let navigate = useNavigate();
-  // const location = useLocation();
   onAuthStateChanged(auth, (currentUser) => {
     try {
       if (currentUser) {
