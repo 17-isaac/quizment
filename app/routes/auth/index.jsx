@@ -1,8 +1,6 @@
-import { useNavigate, useLocation, useLoaderData } from "remix";
-import { useEffect } from 'react';
-import { db } from "~/utils/db.server";
-import { auth, authStatus } from '~/utils/firebase';
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "remix";
+import { auth } from '~/utils/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,23 +14,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-export async function loader() {
-  const data = {
-    userType: await db.student.findUnique({
-      where: {
-        studentID: 16,
-      },
-      select: {
-        type: true
-      }
-    }),
-  };
-  console.log(data.userType.type);
-  // db.$disconnect();
-  return data;
-};
-
 
 
 function Copyright(props) {
@@ -49,21 +30,29 @@ function Copyright(props) {
 }
 
 export default function AuthContent() {
-  const data = useLoaderData();
   const theme = createTheme();
   let navigate = useNavigate();
-  useEffect(() => {
-    authStatus(data.userType.type);
-  });
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    });
-    navigate("/studentDashboard");
+    try {
+      const userInputDetails = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+      };
+      const user = await signInWithEmailAndPassword(
+        auth,
+        userInputDetails.email,
+        userInputDetails.password
+      );
+      navigate("/studentDashboard");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(JSON.stringify(errorCode));
+      console.log(JSON.stringify(errorMessage));
+    }
   };
 
   return (

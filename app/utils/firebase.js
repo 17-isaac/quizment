@@ -20,21 +20,27 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-
 //authentication
 const auth = getAuth();
 
 //initialize FireStore
 const fdb = getFirestore();
 
+
 async function authStatus(userType) {
   onAuthStateChanged(auth, (currentUser) => {
     try {
       if (currentUser) {
         if (userType == 1) {
-          window.location.assign('http://localhost:3000/studentDashboard');
+          if (window.location.pathname.toLowerCase().includes('student') ) {
+          } else {
+            window.location.assign('http://localhost:3000/studentDashboard');
+          }
         } else if (userType == 2) {
-          window.location.assign('http://localhost:3000/studentDashboard');
+          if (window.location.pathname.toLowerCase().includes('teacher') ) {
+          } else {
+            window.location.assign('http://localhost:3000/teacherDashboard');
+          }
         }
       } else {
         if (window.location.pathname === '/auth' || window.location.pathname === '/'){

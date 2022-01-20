@@ -1,4 +1,4 @@
-import { redirect, useLoaderData } from "remix";
+import { redirect } from "remix";
 import { db } from "~/utils/db.server";
 import { auth } from '~/utils/firebase';
 import { signOut } from "firebase/auth";
@@ -9,7 +9,7 @@ export async function loader() {
   const data = {
     studentDetailsData: await db.student.findUnique({
       where: {
-        studentID: 21,
+        studentID: 22,
       },
       select: {
         name: true,
@@ -26,8 +26,7 @@ const logout = async () => {
   redirect('/');
 };
 
-export default function StudentDashboardContent() {
-  const data = useLoaderData();
+export default function TeacherDashboardContent() {
   return (
     <div>
       <Button
@@ -37,9 +36,6 @@ export default function StudentDashboardContent() {
         sx={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', mt: 3, mb: 2 }}
       >Sign Out
       </Button>
-      <p>Name: {data.studentDetailsData.name}</p>
-      <p>Uid: {data.studentDetailsData.Uid}</p>
-      <p>Streaks: {data.studentDetailsData.streaks}</p>
     </div>
   );
 }
