@@ -27,16 +27,6 @@ export async function loader() {
         type: true
       }
     }),
-    studentUid: await db.student.findUnique({
-      where: {
-        studentID: 16,
-      },
-      select: {
-        name: true,
-        Uid: true,
-        streaks: true
-      }
-    })
   };
   console.log(data.userType.type);
   // db.$disconnect();
