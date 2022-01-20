@@ -31,20 +31,29 @@ const fdb = getFirestore();
 async function authStatus(userType) {
   // let navigate = useNavigate();
   // const location = useLocation();
-  await onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      if (userType === 1) {
-        window.location.assign('http://localhost:3000/studentDashboard');
-      } else if (userType === 2) {
-        window.location.assign('http://localhost:3000/teacherDashboard');
+  onAuthStateChanged(auth, (currentUser) => {
+    try {
+      if (currentUser) {
+        if (userType == 1) {
+          window.location.assign('http://localhost:3000/studentDashboard');
+        } else if (userType == 2) {
+          window.location.assign('http://localhost:3000/studentDashboard');
+        }
       } else {
-        window.location.assign('http://localhost:3000/auth');
+        if (window.location.pathname === '/auth'){
+          console.log("Not Signed In.")
+        } else {
+          console.log("Access Denied");
+          window.location.assign('http://localhost:3000/auth');
+        }        
       }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(JSON.stringify(errorCode));
+      console.log(JSON.stringify(errorMessage));
     }
-  }).catch((error) => {
-    const errorCode = error.code;
-    console.log(errorCode);
-  });
+  })
 }
 
 export { auth, fdb, authStatus };

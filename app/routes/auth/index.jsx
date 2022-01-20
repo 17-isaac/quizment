@@ -64,17 +64,6 @@ export default function AuthContent() {
   let navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    // onAuthStateChanged(auth, (currentUser) => {
-    //   if (currentUser) {
-    //     if (res.data.type === 1) {
-    //       navigate('/studentDashboard');
-    //     } else if (res.data.type === 2) {
-    //       navigate('/teacherDashboard');
-    //     } else {
-
-    //     }
-    //   }
-    // })
     authStatus(data.userType.type);
   });
   const handleSubmit = (event) => {
