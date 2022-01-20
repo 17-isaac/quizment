@@ -37,7 +37,7 @@ async function authStatus(userType) {
           window.location.assign('http://localhost:3000/studentDashboard');
         }
       } else {
-        if (window.location.pathname === '/auth'){
+        if (window.location.pathname === '/auth' || window.location.pathname === '/'){
           console.log("Not Signed In.")
         } else {
           console.log("Access Denied");
