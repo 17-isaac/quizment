@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import performanceCal from "~/components/algorithm/performanceCal";
 
+
 export function links() {
   return [
     {
@@ -144,9 +145,12 @@ export default function teacherViewStudentProgressContent() {
   console.log("Badge requirement: "+bacdgeR[3].badge[0].requirements)
   console.log("Badge pic url: "+bacdgeR[3].badge[0].pic_url)
   console.log("class name: "+bacdgeR[3].className)
-  console.log("============================================")
+ 
   return (
     <div>
+      <div>
+      
+      </div>
       <Row style={{ marginLeft: 1300 }}>
         <DropdownButton
           id="dropdown-item-button"
@@ -189,6 +193,7 @@ export default function teacherViewStudentProgressContent() {
       <Row>
         <Row lg="4">
           {/* <h1>Total user:{userCount}</h1> */}
+
 
 
 
