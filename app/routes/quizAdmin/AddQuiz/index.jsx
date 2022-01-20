@@ -1,23 +1,18 @@
-import { useLoaderData } from "remix";
+import { useLoaderData, useNavigate } from "remix";
 //import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore';
 import { collection, addDoc } from "firebase/firestore"; 
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap'
 import { fdb } from "../../../utils/firestore";
-
+import { Link } from "remix";
 import { Fragment, useState } from "react";
+import { async } from "@firebase/util";
 
 
 export default  function AddQuiz() {
     //eventhandler for form 
-    const [quizName, setQuizName] = useState('');
-    const [subject,setSubject] = useState('');
-    const [totalPoints, setTotalPoints] = useState('');
-    const [totalMarks, setMarks] = useState('');
-    const [level, setLevel] = useState('');
-    const [dueDate, setDueDate] = useState('');
-    const [duration, setDuration]= useState ('');
-
+    
+let navigate = useNavigate();
     const [state, setState] = useState({
         quizName: "",
         subject: "",
@@ -27,6 +22,8 @@ export default  function AddQuiz() {
         dueDate:"",
         duration:""
       })
+      const [doc, setDoc]= useState ("");
+
     function handleChange (e){
         e.preventDefault();
         //setQuizName(e.target.value);
@@ -37,7 +34,7 @@ export default  function AddQuiz() {
         });
     }
 // Add a new document with a generated id.
-function AddNewQuiz(){
+ function AddNewQuiz(){
     const docRef =  addDoc(collection(fdb, "Quiz"), {
         quizName : state.quizName ,
         subject : state.subject,
@@ -47,20 +44,25 @@ function AddNewQuiz(){
         dueDate : state.dueDate,
         duration:state.duration,
         publish:"0"
-  });
-  console.log("Document written with ID: ", docRef.id);
+  }).then(function(docRef) {
+     // var documentID = docRef.id;
+     // setDoc(documentID);
+     navigate('/quizAdmin/EditQuiz',{state:{doc:docRef.id}});
+    
+    console.log("Document written with ID: "+ docRef.id);
+    
+})
+.catch(function(error) {
+    console.error("Error adding document: ", error);
+})
+  
+  
 }
 
 const handleSubmit = (e) => {
     e.preventDefault();
     AddNewQuiz();
-    // console.log(state.quizName)
-    // console.log(state.subject)
-    // console.log(state.totalPoints)
-    // console.log(state.level)
-    // console.log(state.totalMarks)
-    // console.log(state.dueDate)
-    // console.log(state.duration)
+    
 }
 
 
