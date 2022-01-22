@@ -1,37 +1,34 @@
 
 import { Outlet } from "remix";
 import React ,{ useEffect,useState } from 'react';
-import {Navbar} from "~/components/seacrchClone/Navbar"
+import {Navbar} from "~/components/seacrchClone/Navbar";
 
-import {Footer} from "~/components/seacrchClone/Footer"
+import {Footer} from "~/components/seacrchClone/Footer";
 
-import {Routes} from "~/components/seacrchClone/Routes"
+import {Routes} from "~/components/seacrchClone/Routes";
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 
-export default function search() {
+export default function videos() {
 
     const [darkTheme,setDarkTheme]=useState(false)
 
   return (
     <div>
-      <h1>search</h1>
+      <h1>videos</h1>
       <div id="alan-btn"></div>
-   
-      <main>
-        <Outlet/>
-      </main>
-      {/* <div>
+ 
+      <div>
       <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
+      
         <Routes/>
         <Footer/>
 
         </ResultContextProvider>
 
 
-      </div> */}
+      </div>
     </div>
   );
 }

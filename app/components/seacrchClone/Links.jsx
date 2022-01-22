@@ -15,8 +15,9 @@ export const Links = () =>{
         <div >
            <h6>Links</h6>
 
-           {links.map(({url,text})=>(
+           {links.map(({url,text},i)=>(
                <NavLink
+               key={i}
                to={url}
                >{text}</NavLink>
            ))}

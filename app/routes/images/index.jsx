@@ -19,16 +19,14 @@ export default function images() {
       <h1>Images</h1>
       <div id="alan-btn"></div>
    
-      <main>
-        <Outlet/>
-      </main>
+
       <div>
-      {/* <ResultContextProvider>
+      <ResultContextProvider>
         <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
         <Routes/>
         <Footer/>
 
-        </ResultContextProvider> */}
+        </ResultContextProvider>
 
 
       </div>

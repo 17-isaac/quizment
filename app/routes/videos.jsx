@@ -23,12 +23,12 @@ export default function videos() {
         <Outlet/>
       </main>
       <div>
-      <ResultContextProvider>
+      {/* <ResultContextProvider>
         <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
         <Routes/>
         <Footer/>
 
-        </ResultContextProvider>
+        </ResultContextProvider> */}
 
 
       </div>
