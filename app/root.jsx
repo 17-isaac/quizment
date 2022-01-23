@@ -40,30 +40,33 @@ export function meta() {
 //     return null;
 //   }
 // };
+async function getUserType(userUID) {
+  const userType = await db.user.findUnique({
+    where: {
+      uid: userUID,
+    },
+    select: {
+      type: true
+    }
+  });
+  return userType;
+}
 
 export default function App() {
   // const data = useLoaderData();
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       try {
-        async function getUserType() {
-          const userType = await db.user.findUnique({
-            where: {
-              uid: currentUser.uid,
-            },
-            select: {
-              type: true
-            }
-          });
-          if (userType !== null) {
-            console.log("User Type successfully declared.");
-            authStatus(userType);
-          } else {
-            console.log("User type is not defined")
-            authStatus(0);
-          }
+        const uid = currentUser.uid;
+        const userType = getUserType(uid);
+        console.log(userType);
+        if (userType !== null) {
+          console.log("User Type successfully declared.");
+          authStatus(userType);
+        } else {
+          console.log("User type is not defined")
+          authStatus(0);
         }
-        getUserType();
       } catch (error) {
         console.log(error);
       }
