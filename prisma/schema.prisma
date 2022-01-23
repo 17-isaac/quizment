@@ -117,7 +117,7 @@ model Teacher {
 model User {
   userid Int     @id @default(autoincrement())
   email  String  @db.VarChar
-  name   String @db.VarChar
+  name   String? @db.VarChar
   uid    String  @db.VarChar
   type   Int
 }

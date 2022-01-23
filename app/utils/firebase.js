@@ -27,39 +27,39 @@ const auth = getAuth();
 //initialize FireStore
 const fdb = getFirestore();
 
-// // getting id of user 
-// async function getUserId() {
-//   let uid;
-//   return await new Promise((resolve, reject) => {
-//     const getCurrentUserID = onAuthStateChanged(auth, (currentUser) => {
-//       try {
-//         if (currentUser) {
-//           uid = currentUser.uid;
-//           console.log("YES");
-//           resolve(uid);
-//         } else {
-//           uid = 0;
-//           console.log("User type not defined");
-//           resolve(uid);
-//         }
-//       } catch (error) {
-//         const errorCode = error.code;
-//         const errorMessage = error.message;
-//         console.log(JSON.stringify(errorCode));
-//         console.log(JSON.stringify(errorMessage));
-//       }
-//     getCurrentUserID();
-//     });
-//   });
-//   // let uid;
-//   // if (user) {
-//   //   uid = user.uid;
-//   //   console.log(uid + "Hello");
-//   // } else {
-//   //   uid = 0;
-//   // }
-//   // return uid;
-// }
+// getting id of user 
+async function getUserId() {
+  let uid;
+  return await new Promise((resolve, reject) => {
+    const getCurrentUserID = onAuthStateChanged(auth, (currentUser) => {
+      try {
+        if (currentUser) {
+          uid = currentUser.uid;
+          console.log("YES");
+          resolve(uid);
+        } else {
+          uid = 0;
+          console.log("User type not defined");
+          resolve(uid);
+        }
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(JSON.stringify(errorCode));
+        console.log(JSON.stringify(errorMessage));
+      }
+    getCurrentUserID();
+    });
+  });
+  // let uid;
+  // if (user) {
+  //   uid = user.uid;
+  //   console.log(uid + "Hello");
+  // } else {
+  //   uid = 0;
+  // }
+  // return uid;
+}
 
 // authentication status
 async function authStatus(userType) {
@@ -94,4 +94,4 @@ async function authStatus(userType) {
   });
 }
 
-export { auth, fdb, authStatus };
+export { auth, fdb, authStatus, getUserId };
