@@ -20,67 +20,54 @@ export function meta() {
   return { title: "quizment" };
 }
 
-// function studentIDSelector() {
-//   const currentState = useSelector(getData).payload.myStore.value;
-//   return currentState;
-// }
-
-// getting id of user 
-async function getUserId() {
-  let uid;
-  return new Promise((resolve, reject) => {
-    const getCurrentUserID = onAuthStateChanged(auth, (currentUser) => {
-      try {
-        if (currentUser) {
-          uid = currentUser.uid;
-          console.log("YES");
-          resolve(uid);
-        } else {
-          uid = 0;
-          console.log("User type not defined");
-          resolve(uid);
-        }
-      } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(JSON.stringify(errorCode));
-        console.log(JSON.stringify(errorMessage));
-      }
-      getCurrentUserID();
-    });
-  });
-}
-
-export async function loader() {
-  const studentIDValue = await getUserId();
-  console.log("Yes" + studentIDValue);
-  if (studentIDValue) {
-    const data = {
-      userType: await db.user.findUnique({
-        where: {
-          uid: studentIDValue,
-        },
-        select: {
-          type: true
-        }
-      }),
-    };
-    console.log(data.userType.type);
-    return data;
-  } else {
-    return null;
-  }
-};
+// export async function loader() {
+//   const studentIDValue = await getUserId();
+//   console.log("Yes" + studentIDValue);
+//   if (studentIDValue) {
+//     const data = {
+//       userType: await db.user.findUnique({
+//         where: {
+//           uid: studentIDValue,
+//         },
+//         select: {
+//           type: true
+//         }
+//       }),
+//     };
+//     console.log(data.userType.type);
+//     return data;
+//   } else {
+//     return null;
+//   }
+// };
 
 export default function App() {
-  const data = useLoaderData();
+  // const data = useLoaderData();
   useEffect(() => {
-    if (data !== null) {
-      authStatus(data.userType.type);
-    } else {
-      console.log("yes")
-      authStatus(0);
-    }
+    onAuthStateChanged(auth, (currentUser) => {
+      try {
+        async function getUserType() {
+          const userType = await db.user.findUnique({
+            where: {
+              uid: currentUser.uid,
+            },
+            select: {
+              type: true
+            }
+          });
+          if (userType !== null) {
+            console.log("User Type successfully declared.");
+            authStatus(userType);
+          } else {
+            console.log("User type is not defined")
+            authStatus(0);
+          }
+        }
+        getUserType();
+      } catch (error) {
+        console.log(error);
+      }
+    });
   });
   return (
     <html lang="en">
