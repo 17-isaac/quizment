@@ -29,21 +29,27 @@ const fdb = getFirestore();
 
 // getting id of user 
 async function getUserId() {
-  onAuthStateChanged(auth, (currentUser) => {
-    try {
-      if (currentUser) {
-        const uid = currentUser.uid;
-        return uid;
-      } else {
-        const uid = 0
-        return uid;
+  let uid;
+  return await new Promise((resolve, reject) => {
+    const getCurrentUserID = onAuthStateChanged(auth, (currentUser) => {
+      try {
+        if (currentUser) {
+          uid = currentUser.uid;
+          console.log("YES");
+          resolve(uid);
+        } else {
+          uid = 0;
+          console.log("User type not defined");
+          resolve(uid);
+        }
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(JSON.stringify(errorCode));
+        console.log(JSON.stringify(errorMessage));
       }
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(JSON.stringify(errorCode));
-      console.log(JSON.stringify(errorMessage));
-    }
+    getCurrentUserID();
+    });
   });
   // let uid;
   // if (user) {

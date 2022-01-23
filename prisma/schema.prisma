@@ -113,3 +113,11 @@ model StudentHistory {
 model Teacher {
   teacherID String @id(map: "teacher_pkey") @db.VarChar
 }
+
+model User {
+  userid Int     @id @default(autoincrement())
+  email  String  @db.VarChar
+  name   String @db.VarChar
+  uid    String  @db.VarChar
+  type   Int
+}
