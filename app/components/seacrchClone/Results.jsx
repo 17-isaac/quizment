@@ -1,102 +1,108 @@
-import React,{useEffect} from 'react'
-import {useLocation} from 'react-router-dom'
-import ReactPlayer from 'react-player'
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import ReactPlayer from "react-player";
 
-import { Loading } from './Loading'
+import { Loading } from "./Loading";
 
-import { useResultContext } from '~/contexts/ResultContextProvider'
+import { useResultContext } from "~/contexts/ResultContextProvider";
 
-export const Results =() =>{
+import {
+  Button,
+  Card,
+  ProgressBar,
+  Row,
+  Col,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 
-    const {results, isLoading,getResults,searchTerm}=useResultContext();
-
-
-    const location=useLocation()
-
-    useEffect(()=>{
-
-
-        if(searchTerm){
-            if(location.pathname ==='/videos'){
-                getResults(`/search/q=${searchTerm} vidoes`)
-
-            }else{
-                getResults(`${location.pathname}/q=${searchTerm}&num=40`)
-            }
-        }
-
-      
-    },[searchTerm,location.pathname])
-
-
-    if(isLoading) return <Loading/>
-
-    console.log(location.pathname)
-
-    switch (location.pathname) {
-        case '/search':
-            
-           return (
-            <div>
-            {results?.map(({link,title},index)=>(
-                <div key={index}>
-                    <a href={link} target="_blank" rel="noreferrer">
-                        <p>
-                            {link.length> 30 ? link.substring(0,30): link}
-                        </p>
-                        <p>
-                            {title}
-                        </p>
-                    </a>
-
-                 </div>
-            ))}
-        </div>
-           );
-
-        case '/images':
-            
-            return (
-                <div>
-                    {results?.map(({image,link:{href,title}},index)=>(
-                        <a href={href} key={index} targe="_blank" rel="noreferrer">
-                            <img src={image?.src} alt={title} loading='lazy'/>
-                            <p>
-                                {title}
-                            </p>
-
-                        </a>
-                    ))}
-                </div>
-            )
-
-        case '/videos':
-            
-                return (
-                    <div>
-                        {results.map((video,index)=>(
-                            <div key={index}>
-
-                            
-              {video?.additional_links?.[0]?.href
-             && <ReactPlayer url={video.additional_links[0].href} controls width="355px" height="200px"/>
-
-  }
-                               
-                                </div>
-                        ))}
-                    </div>
-                )
-    
-        default:
-            return 'ERROR';
-    }
-
-
-
-    return(
-        <h1>
-            Resutls search
-        </h1>
-    )
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
+    },
+  ];
 }
+
+export const Results = () => {
+  const { results, isLoading, getResults, searchTerm } = useResultContext();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (searchTerm) {
+      if (location.pathname === "/videos") {
+        getResults(`/search/q=${searchTerm} vidoes`);
+      } else {
+        getResults(`${location.pathname}/q=${searchTerm}&num=40`);
+      }
+    }
+  }, [searchTerm, location.pathname]);
+
+  if (isLoading) return <Loading />;
+
+  console.log(location.pathname);
+
+  switch (location.pathname) {
+    case "/search":
+      return (
+        <Row lg="2">
+          {results?.map(({ link, title }, index) => (
+            <div key={index}>
+              <a href={link} target="_blank" rel="noreferrer">
+                <p>{link.length > 30 ? link.substring(0, 30) : link}</p>
+                <p>{title}</p>
+              </a>
+            </div>
+          ))}
+        </Row>
+      );
+
+    case "/images":
+      return (
+        <Row lg="4" >
+          {results?.map(({ image, link: { href, title } }, index) => (
+            <Card
+              style={{ width: "18rem" }}
+              className="m-5"
+              href={href}
+              key={index}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Card.Img
+                variant="top"
+                style={{ height: "18rem" }}
+                src={image?.src}
+              />
+              <Card.Link> {title}</Card.Link>
+            </Card>
+          ))}
+        </Row>
+      );
+
+    case "/videos":
+      return (
+        <Row lg="3" >
+          {results?.map((video, index) => (
+            <div key={index} className="mt-2">
+              {video?.additional_links?.[0]?.href && (
+                <ReactPlayer
+                  url={video.additional_links[0].href}
+                  controls
+                  width="355px"
+                  height="200px"
+                />
+              )}
+            </div>
+          ))}
+        </Row>
+      );
+
+    default:
+      return "ERROR";
+  }
+
+  return <h1>Resutls search</h1>;
+};

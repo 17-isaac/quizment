@@ -1,19 +1,21 @@
+import React, { useEffect, useState } from "react";
+import { Navbar } from "~/components/seacrchClone/Navbar";
 
+import { Footer } from "~/components/seacrchClone/Footer";
 
-import React ,{ useEffect,useState } from 'react';
-import {Navbar} from "~/components/seacrchClone/Navbar"
-
-import {Footer} from "~/components/seacrchClone/Footer"
-
-import {Routes} from "~/components/seacrchClone/Routes"
+import { Routes } from "~/components/seacrchClone/Routes";
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
-
-
-
-
-
+import {
+  Button,
+  Card,
+  ProgressBar,
+  Row,
+  Col,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 
 export function links() {
   return [
@@ -24,27 +26,19 @@ export function links() {
   ];
 }
 
-
-
 export default function search() {
-
-    const [darkTheme,setDarkTheme]=useState(false)
+  const [darkTheme, setDarkTheme] = useState(false);
 
   return (
     <div>
-      
       <div id="alan-btn"></div>
-   
-      
-      <div>
-      <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
 
+      <div className="col-8">
+        <ResultContextProvider lg="4">
+          <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+          <Routes />
+          <Footer />
         </ResultContextProvider>
-
-
       </div>
     </div>
   );

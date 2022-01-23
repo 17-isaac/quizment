@@ -16,7 +16,7 @@ export default function images() {
 
   return (
     <div>
-      <h1>Images</h1>
+    
       <div id="alan-btn"></div>
    
       <main>

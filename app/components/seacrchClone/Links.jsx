@@ -12,7 +12,7 @@ import {
   FloatingLabel,
   Form,
   Breadcrumb,
-  ListGroup
+  ListGroup,
 } from "react-bootstrap";
 
 export function links() {
@@ -24,31 +24,22 @@ export function links() {
   ];
 }
 
-const links = [
-  { url: "/search", text: "All" },
-  { url: "/images", text: "Images" },
-  { url: "/videos", text: "Videos" },
-];
-
 export const Links = () => {
   return (
     <div>
       <h6>Links</h6>
 
-      <ListGroup horizontal>
-  <ListGroup.Item>This</ListGroup.Item>
-  <ListGroup.Item>ListGroup</ListGroup.Item>
-  <ListGroup.Item>renders</ListGroup.Item>
-  <ListGroup.Item>horizontally!</ListGroup.Item>
-</ListGroup>
-
-      {links.map(({ url, text }, i) => (
-        <NavLink key={i} to={url}>
-          {text}
-         
-        </NavLink>
-       
-      ))}
+      <Breadcrumb>
+        <Breadcrumb.Item href="http://localhost:3000/search">
+          All
+        </Breadcrumb.Item>
+        <Breadcrumb.Item href="http://localhost:3000/images">
+          Images
+        </Breadcrumb.Item>
+        <Breadcrumb.Item href="http://localhost:3000/videos">
+          Videos
+        </Breadcrumb.Item>
+      </Breadcrumb>
     </div>
   );
 };

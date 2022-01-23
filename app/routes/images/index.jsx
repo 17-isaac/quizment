@@ -8,8 +8,6 @@ import {Footer} from "~/components/seacrchClone/Footer"
 import {Routes} from "~/components/seacrchClone/Routes"
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
-
-
 export function links() {
   return [
     {
@@ -26,19 +24,16 @@ export default function images() {
 
   return (
     <div>
-      <h1>Images</h1>
+     
       <div id="alan-btn"></div>
    
 
-      <div>
-      <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
-
+      <div className="align-items-center ml-3">
+        <ResultContextProvider lg="4">
+          <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+          <Routes />
+          <Footer />
         </ResultContextProvider>
-
-
       </div>
     </div>
   );

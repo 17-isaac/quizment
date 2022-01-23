@@ -27,7 +27,7 @@ export default function videos() {
 
   return (
     <div>
-      <h1>videos</h1>
+    
       <div id="alan-btn"></div>
  
       <div>
