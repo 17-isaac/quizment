@@ -8,7 +8,7 @@ import {Links} from './Links'
 export const Search = () =>{
 
 
-    const [text,setText]=useState('trump')
+    const [text,setText]=useState('')
     const {setSearchTerm} = useResultContext()
     const [debouncedValue]=useDebounce(text,200)
 

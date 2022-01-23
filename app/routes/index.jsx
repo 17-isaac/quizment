@@ -43,12 +43,12 @@ const [darkTheme,setDarkTheme]=useState(false)
       </ul>
       <div>
 
-        <ResultContextProvider>
+        {/* <ResultContextProvider>
         <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
         <Routes/>
         <Footer/>
 
-        </ResultContextProvider>
+        </ResultContextProvider> */}
 
        
      

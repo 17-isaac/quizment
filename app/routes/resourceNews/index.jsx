@@ -16,6 +16,7 @@ import NewsCards from  "~/components/NewsCards/NewsCards"
 
 
 
+
 const infoCards=[
 
   {color:'#1565c0',title:'News by category',text:'Try saying give me the latest : Business, Entertainment, Technology'},
@@ -74,10 +75,27 @@ export default function newsResourceContent() {
     });
 
 
+
+
+
+
   }, []);
 
+    
+  const userFeedback= ()=> {
 
  
+ 
+    alanBtn.callProjectApi("sendFeedback", {
+        "data": "User's feedback"
+    }, function(error, result) {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log(result);
+    });
+};
 
 
 
@@ -85,6 +103,8 @@ export default function newsResourceContent() {
     <div>
 
         <h1> resource new in index</h1>
+
+        <button type="button" onClick={userFeedback}>Submit</button>
 
         <NewsCards articles={newsArticles}
         activeArticle={activeArticle}
@@ -95,3 +115,6 @@ export default function newsResourceContent() {
     </div>
   );
 }
+
+
+
