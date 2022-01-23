@@ -26,11 +26,12 @@ export function meta() {
 
 export async function loader() {
   const studentIDValue = await getUserId();
+  console.log(studentIDValue);
   if (studentIDValue != 0) {
     const data = {
       userType: await db.student.findUnique({
         where: {
-          studentID: studentIDValue,
+          Uid: studentIDValue,
         },
         select: {
           type: true

@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -28,15 +29,30 @@ const fdb = getFirestore();
 
 // getting id of user 
 async function getUserId() {
-  const user = auth.currentUser;
-  let uid;
-  if (user) {
-    uid = user.uid;
-    console.log(uid + "Hello");
-  } else {
-    uid = 0;
-  }
-  return uid;
+  onAuthStateChanged(auth, (currentUser) => {
+    try {
+      if (currentUser) {
+        const uid = currentUser.uid;
+        return uid;
+      } else {
+        const uid = 0
+        return uid;
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(JSON.stringify(errorCode));
+      console.log(JSON.stringify(errorMessage));
+    }
+  });
+  // let uid;
+  // if (user) {
+  //   uid = user.uid;
+  //   console.log(uid + "Hello");
+  // } else {
+  //   uid = 0;
+  // }
+  // return uid;
 }
 
 // authentication status
@@ -45,23 +61,23 @@ async function authStatus(userType) {
     try {
       if (currentUser) {
         if (userType == 1) {
-          if (window.location.pathname.toLowerCase().includes('student') ) {
+          if (window.location.pathname.toLowerCase().includes('student')) {
           } else {
             window.location.assign('http://localhost:3000/studentDashboard');
           }
         } else if (userType == 2) {
-          if (window.location.pathname.toLowerCase().includes('teacher') ) {
+          if (window.location.pathname.toLowerCase().includes('teacher')) {
           } else {
             window.location.assign('http://localhost:3000/teacherDashboard');
           }
         }
       } else {
-        if (window.location.pathname === '/auth' || window.location.pathname === '/'){
+        if (window.location.pathname === '/auth' || window.location.pathname === '/') {
           console.log("Not Signed In.")
         } else {
           console.log("Access Denied");
           window.location.assign('http://localhost:3000/auth');
-        }        
+        }
       }
     } catch (error) {
       const errorCode = error.code;
@@ -69,7 +85,7 @@ async function authStatus(userType) {
       console.log(JSON.stringify(errorCode));
       console.log(JSON.stringify(errorMessage));
     }
-  })
+  });
 }
 
 export { auth, fdb, authStatus, getUserId };
