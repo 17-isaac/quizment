@@ -10,18 +10,23 @@ import {Routes} from "~/components/seacrchClone/Routes"
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 
+
+
 export default function search() {
 
     const [darkTheme,setDarkTheme]=useState(false)
 
   return (
     <div>
-      <h1>search</h1>
+      <h1>quizment</h1>
       <div id="alan-btn"></div>
+    
    
       <main>
         <Outlet/>
       </main>
+
+     
       {/* <div>
       <ResultContextProvider>
         <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
