@@ -8,34 +8,48 @@ import {
   useLoaderData
 } from "remix";
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import { db } from "~/utils/db.server";
-import { authStatus } from '~/utils/firebase';
+import { authStatus, getUserId } from '~/utils/firebase';
 import { Provider } from 'react-redux';
 import store from './store';
+import { getData } from "~/features/counterSlice";
 
 export function meta() {
   return { title: "quizment" };
 }
 
+// function studentIDSelector() {
+//   const currentState = useSelector(getData).payload.myStore.value;
+//   return currentState;
+// }
+
 export async function loader() {
-  const data = {
-    userType: await db.student.findUnique({
-      where: {
-        studentID: 22,
-      },
-      select: {
-        type: true
-      }
-    }),
-  };
-  console.log(data.userType.type);
-  return data;
+  const studentIDValue = await getUserId();
+  if (studentIDValue != 0) {
+    const data = {
+      userType: await db.student.findUnique({
+        where: {
+          studentID: studentIDValue,
+        },
+        select: {
+          type: true
+        }
+      }),
+    };
+    console.log(data.userType.type);
+    return data;
+  } else {
+    return null;
+  }
 };
 
 export default function App() {
   const data = useLoaderData();
   useEffect(() => {
-    authStatus(data.userType.type);
+    if (data) {
+      authStatus(data.userType.type);
+    }
   });
   return (
     <html lang="en">

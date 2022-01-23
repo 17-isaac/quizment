@@ -26,7 +26,20 @@ const auth = getAuth();
 //initialize FireStore
 const fdb = getFirestore();
 
+// getting id of user 
+async function getUserId() {
+  const user = auth.currentUser;
+  let uid;
+  if (user) {
+    uid = user.uid;
+    console.log(uid + "Hello");
+  } else {
+    uid = 0;
+  }
+  return uid;
+}
 
+// authentication status
 async function authStatus(userType) {
   onAuthStateChanged(auth, (currentUser) => {
     try {
@@ -59,4 +72,4 @@ async function authStatus(userType) {
   })
 }
 
-export { auth, fdb, authStatus };
+export { auth, fdb, authStatus, getUserId };
