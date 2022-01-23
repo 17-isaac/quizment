@@ -74,8 +74,8 @@ if(!newsArticles.length){
 
    <Row>
      {
-       infoCards.map((infoCard)=>(
-         <Col className="col-2 m-3" style={{backgroundColor:infoCard.color,borderRadius:"2px"}}>
+       infoCards.map((infoCard,i)=>(
+         <Col key={i} className="col-2 m-3" style={{backgroundColor:infoCard.color,borderRadius:"2px"}}>
 
            <h3>{infoCard.title}</h3>
 
