@@ -46,6 +46,13 @@ export const Search = () => {
 
       {/* <Form.Label>Email address</Form.Label> */}
 
+      {/* <Stack direction="horizontal" gap={3}>
+  <Form.Control className="me-auto" placeholder="Add your item here..." />
+  <Button variant="secondary">Submit</Button>
+  <div className="vr" />
+  <Button variant="outline-danger">Reset</Button>
+</Stack> */}
+
       <Row>
         <Col>
           <Form.Control
@@ -57,7 +64,7 @@ export const Search = () => {
         </Col>
 
         <Col>
-          {!text && (
+          {text && (
             <button type="button" onClick={() => setText("")}>
               x
             </button>

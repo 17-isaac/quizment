@@ -30,7 +30,7 @@ export const Links = () => {
       <h6>Links</h6>
 
       <Breadcrumb>
-        <Breadcrumb.Item href="http://localhost:3000/search">
+        <Breadcrumb.Item variant="secondary" href="http://localhost:3000/search">
           All
         </Breadcrumb.Item>
         <Breadcrumb.Item href="http://localhost:3000/images">
