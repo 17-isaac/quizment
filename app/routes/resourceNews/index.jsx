@@ -15,6 +15,12 @@ import {
 import NewsCards from  "~/components/NewsCards/NewsCards"
 
 
+import newResource from '~/styles/news.css'
+
+
+
+
+
 
 
 const infoCards=[
