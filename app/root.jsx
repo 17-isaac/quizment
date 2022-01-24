@@ -19,6 +19,8 @@ export function meta() {
   return { title: "quizment" };
 }
 
+//   const studentID = useSelector(getData).payload.myStore.value;
+
 
 
 export async function loader({request}) {
