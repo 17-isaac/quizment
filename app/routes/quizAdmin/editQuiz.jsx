@@ -1,18 +1,45 @@
-import { useLoaderData, useNavigate } from "remix";
-//import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore';
-import { collection, addDoc } from "firebase/firestore"; 
+import { Link, useLoaderData, useCatch, redirect, useParams } from "remix";
+import { getFirestore, doc, getDoc, getDocs, Firestore } from 'firebase/firestore';
+
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap'
-import { fdb } from "../../../utils/firestore";
-import { Link } from "remix";
+import { fdb } from "../../utils/firestore";
+
 import { Fragment, useState } from "react";
 import { async } from "@firebase/util";
 
-
-export default  function AddQuiz() {
+export async function loader() {
+ 
+    console.log(JSON.stringify(data[0].quizDocID) + "THIS IS PARAAM");
+    const docRef = doc(fdb, "Quiz", "quiz");
+    const docSnap = await getDoc(docRef);
+    console.log("Document data:", docSnap.data());
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  return docSnap;
+ console.log(data+"this one")
+  
+  };
+  
+export default  function editQuiz() {
     //eventhandler for form 
-    
-let navigate = useNavigate();
+    // const data=useLoaderData()
+    // console.log(data);
+    //     const docRef = doc(fdb, "Quiz", data[0].quizDocID);
+    // const docSnap = await getDoc(docRef);
+    // console.log("Document data:", docSnap.data());
+    // if (docSnap.exists()) {
+    //   console.log("Document data:", docSnap.data());
+    // } else {
+    //   // doc.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
+
+//let navigate = useNavigate();
     const [state, setState] = useState({
         quizName: "",
         subject: "",
@@ -34,42 +61,38 @@ let navigate = useNavigate();
         });
     }
 // Add a new document with a generated id.
- function AddNewQuiz(){
-    const docRef =  addDoc(collection(fdb, "Quiz"), {
-        quizName : state.quizName ,
-        subject : state.subject,
-        totalPoints: state.totalPoints,
-        totalMarks: state.totalMarks,
-        level: state.level,
-        dueDate : state.dueDate,
-        duration:state.duration,
-        publish:"0"
-  }).then(function(docRef) {
-     // var documentID = docRef.id;
-     // setDoc(documentID);
-     navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
+//  function AddNewQuiz(){
+//     const docRef =  addDoc(collection(fdb, "Quiz"), {
+//         quizName : state.quizName ,
+//         subject : state.subject,
+//         totalPoints: state.totalPoints,
+//         totalMarks: state.totalMarks,
+//         level: state.level,
+//         dueDate : state.dueDate,
+//         duration:state.duration,
+//         publish:"0"
+//   }).then(function(docRef) {
+//      // var documentID = docRef.id;
+//      // setDoc(documentID);
+//     // navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
     
-    console.log("Document written with ID: "+ docRef.id);
+//     console.log("Document written with ID: "+ docRef.id);
     
-})
-.catch(function(error) {
-    console.error("Error adding document: ", error);
-})
+// })
+// .catch(function(error) {
+//     console.error("Error adding document: ", error);
+// })
   
   
-}
+
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    AddNewQuiz();
+    // AddNewQuiz();
     
 }
-
-
-    const [date, setDate] = useState(new Date());
-   // console.log("DATE", date);
-
-    const data = useLoaderData();
+const [date, setDate] = useState(new Date());
+  
     return (<>
         <div>
             <h1></h1>
@@ -133,8 +156,8 @@ const handleSubmit = (e) => {
                     <Form.Control
                         type="date"
                         name="dueDate"
-                        placeholder="Select Date"
-                        
+                        placeholder="select due date"
+                       
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -169,7 +192,7 @@ const handleSubmit = (e) => {
 
 
                 <Button variant="primary" type="submit">
-                    Submit
+                    Submittt
                 </Button>
             </Form>
 

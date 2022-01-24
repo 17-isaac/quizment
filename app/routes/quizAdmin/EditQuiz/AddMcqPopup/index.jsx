@@ -20,6 +20,10 @@ export default function AddMcqPopup() {
     const [state, setState] = useState({
         question: "",
         choices: [],
+        choice1: "",
+        choice2: "",
+        choice3: "",
+        choice4: "",
         answer: "",
         quizDocID: ""
     })
@@ -33,15 +37,16 @@ export default function AddMcqPopup() {
             ...state,
             [e.target.name]: value
         });
-        console.log(value + "this is the value")
+        // console.log(value + "this is the value")
     }
     // Add a new document with a generated id.
     function AddNewQues() {
         const docRef = addDoc(collection(fdb, "Questions"), {
             question: state.question,
-            choices: state.choices,
+            choices: [state.choice1, state.choice2, state.choice3, state.choice4],
             answer: state.answer,
-            quizDocID: quizDocID
+            quizDocID: quizDocID,
+            type: 1
 
         }).then(function (docRef) {
             // var documentID = docRef.id;
@@ -93,76 +98,76 @@ export default function AddMcqPopup() {
                     <Form.Control
                         type="text"
                         placeholder="enter answer choice"
-                        name="choice"
+                        name="choice1"
                         onChange={handleChange} />
-                        
-                <div key={`inline-radio`}>
-                    <Form.Check
-                        inline
-                        label=""
-                        name="answer"
-                        type='radio'
-                        id={`inline-radio-1`}
-                        value="1"
-                        checked={state.answer === "1"}
-                        onChange={handleChange}
-                    /></div>
+
+                    <div key={`inline-radio`}>
+                        <Form.Check
+                            inline
+                            label=""
+                            name="answer"
+                            type='radio'
+                            id={`inline-radio-1`}
+                            value="1"
+                            checked={state.answer === "1"}
+                            onChange={handleChange}
+                        /></div>
                 </Form.Group>
 
                 <Form.Group as={Row} >
-                
+
                     <Form.Control
                         type="text"
                         placeholder="Enter MCQ choice"
-                        name="choice"
+                        name="choice2"
                         onChange={handleChange} />
-                        <div key={`inline-radio`}>
-                    <Form.Check
-                        inline
-                        name="answer"
-                        type='radio'
-                        id={`inline-radio-2`}
-                        value="2"
-                        checked={state.answer === "2"}
-                        onChange={handleChange}
-                    /></div>
+                    <div key={`inline-radio`}>
+                        <Form.Check
+                            inline
+                            name="answer"
+                            type='radio'
+                            id={`inline-radio-2`}
+                            value="2"
+                            checked={state.answer === "2"}
+                            onChange={handleChange}
+                        /></div>
                 </Form.Group>
 
-
-                <Form.Group as={Row} >
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter MCQ choice"
-                        name="choice"
-                        onChange={handleChange} />
-                        <div key={`inline-radio`}>
-                    <Form.Check
-                        inline
-                        name="answer"
-                        type='radio'
-                        id={`inline-radio-3`}
-                        value="3"
-                        checked={state.answer === "3"}
-                        onChange={handleChange}
-                    /></div>
-                </Form.Group>
 
                 <Form.Group as={Row} >
                     <Form.Control
                         type="text"
                         placeholder="Enter MCQ choice"
-                        name="choice"
+                        name="choice3"
                         onChange={handleChange} />
-<div key={`inline-radio`}>
-                    <Form.Check
-                        inline
-                        name="answer"
-                        type='radio'
-                        id={`inline-radio-4`}
-                        value="4"
-                        checked={state.answer === "4"}
-                        onChange={handleChange}
-                    /></div>
+                    <div key={`inline-radio`}>
+                        <Form.Check
+                            inline
+                            name="answer"
+                            type='radio'
+                            id={`inline-radio-3`}
+                            value="3"
+                            checked={state.answer === "3"}
+                            onChange={handleChange}
+                        /></div>
+                </Form.Group>
+
+                <Form.Group as={Row} >
+                    <Form.Control
+                        type="text"
+                        placeholder="Enter MCQ choice"
+                        name="choice4"
+                        onChange={handleChange} />
+                    <div key={`inline-radio`}>
+                        <Form.Check
+                            inline
+                            name="answer"
+                            type='radio'
+                            id={`inline-radio-4`}
+                            value="4"
+                            checked={state.answer === "4"}
+                            onChange={handleChange}
+                        /></div>
 
                 </Form.Group>
 

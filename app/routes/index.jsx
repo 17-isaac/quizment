@@ -5,6 +5,7 @@ export default function Index() {
       <h1>Welcome to Remixxxx</h1>
       <Link to="quizAdmin">teacher quiz</Link>
       <Link to ="mapOfMaze"> MAze</Link>
+      <Link to ="studentQuiz"> Student QUiz</Link>
       <ul>
         <li>
           <a
