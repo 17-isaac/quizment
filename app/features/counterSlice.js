@@ -3,10 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 export const slice = createSlice({
     name: 'myStore',
     initialState: {
-        value: 0,
+        value: "",
     },
     reducers: {
-        getData: (state, action) => {
+        userID: (state, action) => {
             state.value += action.payload;
         },
     },

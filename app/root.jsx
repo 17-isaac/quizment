@@ -4,16 +4,17 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration, 
+  ScrollRestoration,
   useLoaderData
 } from "remix";
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { db } from "~/utils/db.server";
-import { authStatus, getUserId } from '~/utils/firebase';
+import { auth, authStatus, getUserId } from '~/utils/firebase';
 import { Provider } from 'react-redux';
 import store from './store';
 import { getData } from "~/features/counterSlice";
+import { onAuthStateChanged } from "firebase/auth";
 
 export function meta() {
   return { title: "quizment" };
@@ -23,8 +24,8 @@ export function meta() {
 
 
 
-export async function loader({request}) {
-  const studentIDValue = await getUserId(request);
+export async function loader() {
+  const studentIDValue = await getUserId();
   console.log("Yes" + studentIDValue);
   if (studentIDValue) {
     const data = {
@@ -46,12 +47,30 @@ export async function loader({request}) {
 
 export default function App() {
   const data = useLoaderData();
-  useEffect(() => {
-    if (data) {
-      authStatus(data.userType.type);
-    } else {
-      authStatus(0);
+  // const dispatch = useDispatch();
+  async function fetchUserIDAndAuthStatus() {
+    try {
+      onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          console.log(currentUser.uid)
+          // dispatch()
+          // // sets new state for uid of current user
+          // dispatch(userID(currentUser.uid));
+          // const stateuid = store.getState();
+          // console.log(stateuid.myStore.value);
+        }
+      });
+      if (data) {
+        authStatus(data.userType.type);
+      } else {
+        authStatus(0);
+      }
+    } catch (error) {
+      console.log(error);
     }
+  }
+  useEffect(() => {
+    fetchUserIDAndAuthStatus();
   });
   return (
     <html lang="en">
@@ -62,11 +81,11 @@ export default function App() {
         <Links />
       </head>
       <body>
-      <Provider store={store}>
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
+        <Provider store={store}>
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          {process.env.NODE_ENV === "development" && <LiveReload />}
         </Provider>
       </body>
     </html>
