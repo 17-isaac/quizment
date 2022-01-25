@@ -46,7 +46,7 @@ export default function newsResourceContent() {
 
   const [newsArticles, setNewsArticles] = useState([]);
 
-  const [activeArticle,setActiveArticle]=useState(0)
+  const [activeArticle,setActiveArticle]=useState(1)
 
 
 

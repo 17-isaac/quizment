@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { useResultContext } from "~/contexts/ResultContextProvider";
+import global from "~/styles/global.css"
 
 import {
   Button,
@@ -20,6 +21,10 @@ export function links() {
     {
       rel: "stylesheet",
       href: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
+    },
+    {
+      rel: "stylesheet",
+      href: global,
     },
   ];
 }

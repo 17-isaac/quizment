@@ -48,61 +48,61 @@ export default function teacherViewStudentProgressContent() {
   const { studentPerformanceDetails, userCount } = useLoaderData();
   
   
-  // useEffect(() => {
-  //   const alanBtn = require("@alan-ai/alan-sdk-web");
-  //   alanBtn({
-  //     key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-  //     onCommand: ({ command, articles, number }) => {
-  //       if (command === "newHeadlines") {
-  //         console.log(articles);
-  //         setNewsArticles(articles);
-  //         setActiveArticle(-1);
-  //       } else if (command === "studentProg") {
-  //         window.open(
-  //           "http://localhost:3000/teacherViewStudentProgress",
-  //           "_self"
-  //         );
-  //       } 
-  //       else if (command === "topStudents") {
-  //         window.open(
-  //           "http://localhost:3000/teacherViewStudentProgress/sortHighPts",
-  //           "_self"
-  //         );
-  //       }
-  //       else if (command === "bottomStudents") {
-  //         window.open(
-  //           "http://localhost:3000/teacherViewStudentProgress/sortLowPts",
-  //           "_self"
-  //         );
-  //       }
-  //       else if (command === "mzStudents") {
-  //         window.open(
-  //           "http://localhost:3000/teacherViewStudentProgress/mz",
-  //           "_self"
-  //         );
-  //       }
-  //       else if (command === "streakStudents") {
-  //         window.open(
-  //           "http://localhost:3000/teacherViewStudentProgress/streaks",
-  //           "_self"
-  //         );
-  //       }
-  //       else if (command === "studentDash") {
-  //         window.open("http://localhost:3000/StudentDashboard", "_self");
-  //       } else if (command === "newsResource") {
-  //         window.open("http://localhost:3000/newsResource", "_self");
-  //       }
-  //     },
-  //   });
-  // }, []);
+  useEffect(() => {
+    const alanBtn = require("@alan-ai/alan-sdk-web");
+    alanBtn({
+      key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
+      onCommand: ({ command, articles, number }) => {
+        if (command === "newHeadlines") {
+          console.log(articles);
+          setNewsArticles(articles);
+          setActiveArticle(-1);
+        } else if (command === "studentProg") {
+          window.open(
+            "http://localhost:3000/teacherViewStudentProgress",
+            "_self"
+          );
+        } 
+        else if (command === "topStudents") {
+          window.open(
+            "http://localhost:3000/teacherViewStudentProgress/sortHighPts",
+            "_self"
+          );
+        }
+        else if (command === "bottomStudents") {
+          window.open(
+            "http://localhost:3000/teacherViewStudentProgress/sortLowPts",
+            "_self"
+          );
+        }
+        else if (command === "mzStudents") {
+          window.open(
+            "http://localhost:3000/teacherViewStudentProgress/mz",
+            "_self"
+          );
+        }
+        else if (command === "streakStudents") {
+          window.open(
+            "http://localhost:3000/teacherViewStudentProgress/streaks",
+            "_self"
+          );
+        }
+        else if (command === "studentDash") {
+          window.open("http://localhost:3000/StudentDashboard", "_self");
+        } else if (command === "newsResource") {
+          window.open("http://localhost:3000/resourceNews", "_self");
+        }
+      },
+    });
+  }, []);
 
 
 
   const numOfUser = 10;
 
-  const [visible, setVisible] = useState(5);
+  const [visible, setVisible] = useState(3);
   const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 5);
+    setVisible((prevValue) => prevValue + 3);
   };
   const TStreaks = 5;
   const TMazeLvl = 8;
