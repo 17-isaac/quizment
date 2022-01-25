@@ -62,17 +62,19 @@ export default function teacherViewStudentProgressContent() {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({
       key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command, articles, number }) => {
+      onCommand: ({ command }) => {
         if (command === "newHeadlines") {
           console.log(articles);
           setNewsArticles(articles);
           setActiveArticle(-1);
-        } else if (command === "studentProg") {
+        } else 
+        if (command === "studentProg") {
           window.open(
             "http://localhost:3000/teacherViewStudentProgress",
             "_self"
           );
-        } else if (command === "topStudents") {
+        }
+         else if (command === "topStudents") {
           window.open(
             "http://localhost:3000/teacherViewStudentProgress/sortHighPts",
             "_self"
@@ -96,7 +98,9 @@ export default function teacherViewStudentProgressContent() {
           window.open("http://localhost:3000/StudentDashboard", "_self");
         } else if (command === "newsResource") {
           window.open("http://localhost:3000/resourceNews", "_self");
-        } else if (command === "") {
+        } 
+        else if (command === "testCommand") {
+          alert("test command ")
         }
       },
     });

@@ -1,4 +1,4 @@
-import React,{useState,useEffect,createRef} from "react";
+import {useState,useEffect,createRef} from "react";
 import {
   Card,
   CardActions,
@@ -64,8 +64,8 @@ const NewsCard = ({
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.CardActions}>
-        <Button sixe="small" color="primary">
-          Learn More
+        <Button sixe="small" color="secondary">
+         Read
         </Button>
         <Typography variant="h5" color="textSecondary">
           {i + 1}
