@@ -10,7 +10,6 @@ import {
 import { useState, useEffect } from 'react';
 import { db } from "~/utils/db.server";
 import { auth, authStatus, getUserId } from '~/utils/firebase';
-import { Provider, useSelector, useDispatch } from 'react-redux';
 import store from './store';
 import { getData } from "~/features/counterSlice";
 import { onAuthStateChanged } from "firebase/auth";
@@ -22,30 +21,30 @@ export function meta() {
 //   const studentID = useSelector(getData).payload.myStore.value;
 // let userIDValue;
 
-// export async function loader() {
-//   console.log("Yes" + userIDValue);
-//   if (userIDValue) {
-//     const data = {
-//       userType: await db.user.findUnique({
-//         where: {
-//           uid: userIDValue,
-//         },
-//         select: {
-//           type: true
-//         }
-//       }),
-//     };
-//     console.log(data.userType.type);
-//     return data;
-//   } else {
-//     return null;
-//   }
-// };
+export async function loader() {
+  const userIDValue = auth.currentUser;
+  console.log("Yes" + userIDValue);
+  if (userIDValue) {
+    const data = {
+      userType: await db.user.findUnique({
+        where: {
+          uid: userIDValue,
+        },
+        select: {
+          type: true
+        }
+      }),
+    };
+    console.log(data.userType.type);
+    return data;
+  } else {
+    return null;
+  }
+};
 
 
 export default function App() {
   // const data = useLoaderData();
-  const dispatch = useDispatch();
   const [userid, setUserId] = useState("");
   const [userType, setUserType] = useState(0);
   useEffect(() => {
