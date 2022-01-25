@@ -35,7 +35,6 @@ model Student {
   type           Int
   lastLogin      BigInt?
   badgeHistory   BadgeHistory[]
-  quizHistory    QuizHistory[]
   rewardHistory  RewardHistory[]
   studentHistory StudentHistory[]
 }
@@ -76,21 +75,12 @@ model MazeContent {
   points  Int
 }
 
-model Quiz {
-  quizID      Int           @id(map: "quiz_pkey")
-  totalMarks  Int
-  totalPoints Int
-  quizHistory QuizHistory[]
-}
-
 model QuizHistory {
-  quizHistoryID Int     @id(map: "quizHistory_pkey") @default(autoincrement())
-  quizID        Int
-  studentID     Int
-  pointsEarned  Int
-  marksEarned   Int
-  quiz          Quiz    @relation(fields: [quizID], references: [quizID], onDelete: NoAction, onUpdate: NoAction, map: "fk_quizID")
-  student       Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_fk")
+  quizhistoryid Int    @id @default(autoincrement())
+  quizid        String @db.VarChar
+  studentid     String @db.VarChar
+  pointsearned  Int
+  marksearned   Int
 }
 
 model RewardHistory {

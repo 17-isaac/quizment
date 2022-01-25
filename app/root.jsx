@@ -7,11 +7,10 @@ import {
   ScrollRestoration,
   useLoaderData
 } from "remix";
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react';
 import { db } from "~/utils/db.server";
 import { auth, authStatus, getUserId } from '~/utils/firebase';
-import { Provider } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import store from './store';
 import { getData } from "~/features/counterSlice";
 import { onAuthStateChanged } from "firebase/auth";
@@ -21,57 +20,55 @@ export function meta() {
 }
 
 //   const studentID = useSelector(getData).payload.myStore.value;
+// let userIDValue;
 
+// export async function loader() {
+//   console.log("Yes" + userIDValue);
+//   if (userIDValue) {
+//     const data = {
+//       userType: await db.user.findUnique({
+//         where: {
+//           uid: userIDValue,
+//         },
+//         select: {
+//           type: true
+//         }
+//       }),
+//     };
+//     console.log(data.userType.type);
+//     return data;
+//   } else {
+//     return null;
+//   }
+// };
 
-
-export async function loader() {
-  const studentIDValue = await getUserId();
-  console.log("Yes" + studentIDValue);
-  if (studentIDValue) {
-    const data = {
-      userType: await db.user.findUnique({
-        where: {
-          uid: studentIDValue,
-        },
-        select: {
-          type: true
-        }
-      }),
-    };
-    console.log(data.userType.type);
-    return data;
-  } else {
-    return null;
-  }
-};
 
 export default function App() {
-  const data = useLoaderData();
-  // const dispatch = useDispatch();
-  async function fetchUserIDAndAuthStatus() {
-    try {
-      onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          console.log(currentUser.uid)
-          // dispatch()
-          // // sets new state for uid of current user
-          // dispatch(userID(currentUser.uid));
-          // const stateuid = store.getState();
-          // console.log(stateuid.myStore.value);
-        }
-      });
-      if (data) {
-        authStatus(data.userType.type);
-      } else {
-        authStatus(0);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const data = useLoaderData();
+  const dispatch = useDispatch();
+  const [userid, setUserId] = useState("");
+  const [userType, setUserType] = useState(0);
   useEffect(() => {
-    fetchUserIDAndAuthStatus();
+    onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        console.log(currentUser.uid);
+        setUserId(currentUser.uid);
+        dispatch(getData(userid));
+        console.log(userid);
+        // setUserType(data.type);
+        authStatus(userType);
+      } else {
+        authStatus(userType);
+      }
+    });
+    // if (data) {
+    //   authStatus(data.userType.type);
+    // } else {
+    //   authStatus(0);
+    // }
   });
+
+  // console.log(userid);
   return (
     <html lang="en">
       <head>
