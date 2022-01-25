@@ -53,7 +53,7 @@ export default function App() {
       if (currentUser) {
         console.log(currentUser.uid);
         setUserId(currentUser.uid);
-        dispatch(getData(userid));
+        // dispatch(getData(userid));
         console.log(userid);
         // setUserType(data.type);
         authStatus(userType);
@@ -78,12 +78,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Provider store={store}>
           <Outlet />
           <ScrollRestoration />
           <Scripts />
           {process.env.NODE_ENV === "development" && <LiveReload />}
-        </Provider>
       </body>
     </html>
   );
