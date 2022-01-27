@@ -18,7 +18,7 @@ export default function search() {
 
   return (
     <div>
-      <h1>quizment</h1>
+   
       <div id="alan-btn"></div>
     
    

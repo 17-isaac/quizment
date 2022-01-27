@@ -27,9 +27,9 @@ export function links() {
 export const Links = () => {
   return (
     <div>
-      <h6>Links</h6>
 
-      <Breadcrumb>
+
+      <Breadcrumb  className="ms-5 mt-3">
         <Breadcrumb.Item variant="secondary" href="http://localhost:3000/search">
           All
         </Breadcrumb.Item>
