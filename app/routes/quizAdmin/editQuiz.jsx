@@ -6,7 +6,6 @@ import { Form } from 'react-bootstrap'
 import { fdb } from "../../utils/firestore";
 
 import { Fragment, useState } from "react";
-import { async } from "@firebase/util";
 
 export async function loader() {
  

@@ -1,7 +1,8 @@
-import { Link, useLoaderData, useCatch, redirect, useParams ,LoaderFunction} from "remix";
+import { Link, useLoaderData, useCatch, redirect, useParams ,LoaderFunction, useNavigate} from "remix";
 import { collection, query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import Modal from 'react-modal';
 import { fdb } from "../../utils/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Form } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
@@ -13,6 +14,7 @@ import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz'
 export let loader: LoaderFunction = async ({ params, request }) => {
   //let userId = await getUserId(request);
+ 
   //console.log(JSON.stringify(params.quizDocId) + "THIS IS PARAAM");
   const q = query(collection(fdb, "Questions"), where("quizDocID", "==", params.quizDocId));
   const querySnapshot = await getDocs(q);
@@ -37,7 +39,9 @@ export let loader: LoaderFunction = async ({ params, request }) => {
 
 
 export default function JokeRoute() {
-
+  let navigate = useNavigate();
+  const [url, setUrl] = useState("");
+  const [urlName, setUrlName]= useState("")
   const [selectedQues, setSelected] = useState([])
   const [questionDocID, setQuestionDocID] = useState("")
   const [stateMcq, setStateMcq] = useState({
@@ -49,13 +53,11 @@ export default function JokeRoute() {
     answer: []
   })
   const [stateOpenEnd, setStateOpenEnd] = useState({
-  
-    question: "",
+      question: "",
         answer1:"",
         answer2:"",
         answer3:"",
         answer4:"",
-      
 })
 
   const [modal1IsOpen, setModal1IsOpen] = useState(false);
@@ -161,37 +163,88 @@ export default function JokeRoute() {
     });
 
   }
-  const handleSubmitOpenEnded = async (e) => {
+  function handleFileUpload(e){
+    e.preventDefault();
+    const newUrl = e.target.files[0]
+ console.log(newUrl.name)
+ setUrlName(newUrl.name)
+    setUrl(newUrl)
+   
+}
+function handleSubmitOpenEnded(e)  {
+    if(url==""){
     e.preventDefault();
     const value = e.target.value;
     console.log(questionDocID)
-    await updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
+     updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
       question: stateOpenEnd.question,
       answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
     });
     window.alert('updated!')
     window.location.reload()
-  }
+  }else{
+    console.log(JSON.stringify(url) +"this is the current state for url")
+    const storage = getStorage();
+    const storageRef = ref(storage, 'img/' + urlName);
+    const file = url;
+    console.log(file + "this is the file" + "this is the file type " + file.type)
+    // Create file metadata including the content type
+    /** @type {any} */
+    const metadata = {
+        contentType: 'string'
+    };
+    uploadBytes(storageRef, url, metadata);
 
+    getDownloadURL(storageRef).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+
+        updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
+          question: stateOpenEnd.question,
+          answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
+        }).then(function (docRef) {
+       
+          navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
+
+          console.log("Document written with ID: " + docRef.id);
+
+      })
+          .catch(function (error) {
+              console.error("Error adding document: ", error);
+          })
+
+    
+  // })
+
+
+
+  }
+}
 
 
 
   // let data = useLoaderData<LoaderData>();
   const data = useLoaderData()[0];
+  console.log(data[0].img_url)
   const data2 = useLoaderData()[1];
   const displaySelected = []
   return (<>
     <div>
       <h1></h1>
 
-      <Row xs={1} md={2} lg={3} className="g-4">
+      <Row  className="g-4">
         <h1> MCQ</h1>
-        {data && data.map(mcq =>
+        {data && data.map(mcq => 
 
 
           <Col>
-            <Card border="warning">
+            <Card border="warning" style={{ width: '45rem' }}>
               <Card.Title>{mcq.question}</Card.Title>
+               {(mcq.img_url=="")? (
+               <Card.Text></Card.Text>
+              ):( 
+                <Card.Text><img src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
+              )}
+          
               <Card.Title>MCQ choices</Card.Title>
               <Card.Text>{mcq.choices[0]}</Card.Text>
               <Card.Text>{mcq.choices[1]}</Card.Text>
@@ -199,8 +252,7 @@ export default function JokeRoute() {
               <Card.Text>{mcq.choices[3]}</Card.Text>
 
               <Card.Text>Answer : {mcq.answer}</Card.Text>
-              {/* <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-                      <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text> */}
+             
               <Button type="button" variant="warning" onClick={() => setModal2IsOpenToTrue(mcq)}>Edit question</Button>
             </Card>
 
@@ -208,14 +260,21 @@ export default function JokeRoute() {
 
         )}
       </Row>
-      <Row xs={1} md={2} lg={3} className="g-4">
+      <Row 
+      // xs={1} md={2} lg={3} 
+      className="g-4">
         <h1> Open endeded</h1>
         {data2 && data2.map(openEnded =>
 
 
           <Col>
-            <Card border="warning">
+            <Card border="info" style={{ width: '45rem' }}>
               <Card.Title>{openEnded.question}</Card.Title>
+              {(openEnded.img_url=="")? (
+               <Card.Text></Card.Text>
+              ):( 
+                <Card.Text><img src={openEnded.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
+              )}
               <Card.Title>Answers</Card.Title>
               <Card.Text> {openEnded.answers[0]}</Card.Text>
               <Card.Text> {openEnded.answers[1]}</Card.Text>
@@ -225,6 +284,7 @@ export default function JokeRoute() {
 
               {/* <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
                       <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text> */}
+                      
               <Button type="button" variant="primary"  onClick={() => setModal5IsOpenToTrue(openEnded)}>Edit question</Button>
             </Card>
           </Col>
@@ -296,6 +356,18 @@ export default function JokeRoute() {
             value={stateMcq.answer}
             name="choice4"
             onChange={handleChangeMCQ} />
+               <Form.Group controlId="imageUpload">
+                    <Form.Label>Upload image here</Form.Label>
+                    <Form.Control
+                        type="file"
+                         className="form-control-file"
+                        placeholder="Enter New Question"
+                        name="img_url"
+                        onChange={handleFileUpload} />
+                    <Form.Text className="text-muted">
+
+                    </Form.Text>
+                </Form.Group>
           <Button variant="primary" type="submit" value={questionDocID}>
             Submit
           </Button>
@@ -381,6 +453,19 @@ export default function JokeRoute() {
                         onChange={handleChangeOpenEnded} />
 
 
+                </Form.Group>
+
+                <Form.Group controlId="imageUpload">
+                    <Form.Label>Upload image here</Form.Label>
+                    <Form.Control
+                        type="file"
+                         className="form-control-file"
+                        placeholder="Enter New Question"
+                        name="img_url"
+                        onChange={handleFileUpload} />
+                    <Form.Text className="text-muted">
+
+                    </Form.Text>
                 </Form.Group>
 
 

@@ -6,6 +6,7 @@ export default function Index() {
       <Link to="quizAdmin">teacher quiz</Link>
       <Link to ="mapOfMaze"> MAze</Link>
       <Link to ="studentQuiz"> Student QUiz</Link>
+      <Link to ="startQuiz"> START</Link>
       <ul>
         <li>
           <a

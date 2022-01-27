@@ -27,7 +27,6 @@ export async function loader() {
   console.log(JSON.stringify(result) + "QUIZ students completed");
 
 
-
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
 
@@ -71,7 +70,6 @@ export default function studentQuiz() {
       docId:value
     }
     navigate(`../../startQuiz`, { state: { doc: value } });
-    
   }
 
   const data = useLoaderData();
@@ -93,8 +91,6 @@ export default function studentQuiz() {
               <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
 
               <Button type="button" variant="primary" onClick={() => setModalIsOpenToTrue(quiz)}>start Quiz</Button>
-
-
             </Card>
           </Col>
 

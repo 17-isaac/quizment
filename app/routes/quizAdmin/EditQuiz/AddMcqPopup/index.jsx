@@ -1,6 +1,7 @@
 import { useLoaderData, useNavigate, useLocation } from "remix";
 //import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Button from 'react-bootstrap/Button';
 
 import { Col, Row, Form } from "react-bootstrap";
@@ -24,10 +25,11 @@ export default function AddMcqPopup() {
         choice2: "",
         choice3: "",
         choice4: "",
+        
         answer: "",
         quizDocID: ""
     })
-    const [doc, setDoc] = useState("");
+    const [url, setUrl] = useState("");
 
     function handleChange(e) {
         e.preventDefault();
@@ -39,19 +41,27 @@ export default function AddMcqPopup() {
         });
         // console.log(value + "this is the value")
     }
+function handleFileUpload(e){
+    e.preventDefault();
+    const newUrl = e.target.files[0]
+ console.log(newUrl)
+    setUrl(newUrl)
+   
+}
+
     // Add a new document with a generated id.
     function AddNewQues() {
-        const docRef = addDoc(collection(fdb, "Questions"), {
+        if(url==""){
+  const docRef = addDoc(collection(fdb, "Questions"), {
             question: state.question,
             choices: [state.choice1, state.choice2, state.choice3, state.choice4],
             answer: state.answer,
-            quizDocID: quizDocID,
-            type: 1
+            quizDocID: quizDocID
 
         }).then(function (docRef) {
             // var documentID = docRef.id;
             // setDoc(documentID);
-            navigate('/quizAdmin/EditQuiz', { state: { doc: quizDocID } });
+            navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
 
             console.log("Document written with ID: " + docRef.id);
 
@@ -59,6 +69,46 @@ export default function AddMcqPopup() {
             .catch(function (error) {
                 console.error("Error adding document: ", error);
             })
+        }else{
+            console.log(JSON.stringify(url) +"this is the current state for url")
+            const storage = getStorage();
+            const storageRef = ref(storage, 'img/' + url.name);
+            const file = url;
+            console.log(file + "this is the file" + "this is the file type " + file.type)
+            // Create file metadata including the content type
+            /** @type {any} */
+            const metadata = {
+                contentType: file.type,
+            };
+            uploadBytes(storageRef, file, metadata);
+
+            getDownloadURL(storageRef).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+
+               
+                const docRef = addDoc(collection(fdb, "Questions"), {
+                    question: state.question,
+                    choices: [state.choice1, state.choice2, state.choice3, state.choice4],
+                    answer: state.answer,
+                    quizDocID: quizDocID,
+                    img_url: downloadURL
+        
+                }).then(function (docRef) {
+                 
+                    navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
+        
+                    console.log("Document written with ID: " + docRef.id);
+        
+                })
+                    .catch(function (error) {
+                        console.error("Error adding document: ", error);
+                    })
+
+              
+            })
+
+        }
+      
 
 
     }
@@ -108,8 +158,8 @@ export default function AddMcqPopup() {
                             name="answer"
                             type='radio'
                             id={`inline-radio-1`}
-                            value="1"
-                            checked={state.answer === "1"}
+                            value="0"
+                            checked={state.answer === "0"}
                             onChange={handleChange}
                         /></div>
                 </Form.Group>
@@ -127,8 +177,8 @@ export default function AddMcqPopup() {
                             name="answer"
                             type='radio'
                             id={`inline-radio-2`}
-                            value="2"
-                            checked={state.answer === "2"}
+                            value="1"
+                            checked={state.answer === "1"}
                             onChange={handleChange}
                         /></div>
                 </Form.Group>
@@ -146,8 +196,8 @@ export default function AddMcqPopup() {
                             name="answer"
                             type='radio'
                             id={`inline-radio-3`}
-                            value="3"
-                            checked={state.answer === "3"}
+                            value="2"
+                            checked={state.answer === "2"}
                             onChange={handleChange}
                         /></div>
                 </Form.Group>
@@ -164,13 +214,25 @@ export default function AddMcqPopup() {
                             name="answer"
                             type='radio'
                             id={`inline-radio-4`}
-                            value="4"
-                            checked={state.answer === "4"}
+                            value="3"
+                            checked={state.answer === "3"}
                             onChange={handleChange}
                         /></div>
 
                 </Form.Group>
 
+                <Form.Group controlId="imageUpload">
+                    <Form.Label>Upload image here</Form.Label>
+                    <Form.Control
+                        type="file"
+                         class="form-control-file"
+                        placeholder="Enter New Question"
+                        name="img_url"
+                        onChange={handleFileUpload} />
+                    <Form.Text className="text-muted">
+
+                    </Form.Text>
+                </Form.Group>
 
 
                 <Button variant="primary" type="submit">

@@ -62,12 +62,10 @@ let navigate = useNavigate();
 const handleSubmit = (e) => {
     e.preventDefault();
     AddNewQuiz();
-    
 }
 
 
     const [date, setDate] = useState(new Date());
-   // console.log("DATE", date);
 
     const data = useLoaderData();
     return (<>
