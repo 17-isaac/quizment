@@ -19,7 +19,7 @@ export default function search() {
   return (
     <div>
    
-      <div id="alan-btn"></div>
+     
     
    
       <main>
@@ -27,16 +27,7 @@ export default function search() {
       </main>
 
      
-      {/* <div>
-      <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
-
-        </ResultContextProvider>
-
-
-      </div> */}
+    
     </div>
   );
 }

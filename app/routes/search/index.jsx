@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navbar } from "~/components/seacrchClone/Navbar";
 
-import { Footer } from "~/components/seacrchClone/Footer";
+
 
 import { Routes } from "~/components/seacrchClone/Routes";
 
@@ -36,13 +36,13 @@ export default function search() {
 
   return (
     <div>
-      <div id="alan-btn"></div>
+  
 
-      <div className="col-8">
+      <div className="col-8 s1">
         <ResultContextProvider lg="4">
           <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
           <Routes />
-          <Footer />
+          
         </ResultContextProvider>
       </div>
     </div>

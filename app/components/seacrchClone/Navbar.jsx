@@ -8,16 +8,9 @@ import { Search } from './Search';
 export const Navbar = ({darkTheme,setDarkTheme}) =>{
     return(
         <div >
-           {/* <h6>Navbar</h6>
-           <Link to="/">
-               GoogleS
-           </Link>
-           <Button onClick={()=> setDarkTheme(!darkTheme)}>
-              {darkTheme ? 'Light':'Dark'}
-           </Button>
-           */}
+        
 
-           <h1>Quizment</h1>
+          
           <Search/>
           
         </div>

@@ -60,22 +60,24 @@ export const Search = () => {
 </Stack> */}
 
       <Row>
-        <Col>
-        <h2 >Quizment Search</h2>
+        <Col >
+        <h2  className="ms-5">QSearch</h2>
           <Form.Control
             value={text}
-            className="ms-5"
+            className="ms-5 sb"
             type="text"
+            
+
             placeholder="search smt"
             onChange={(e) => setText(e.target.value)}
           />
         </Col>
 
-        <Col>
+        <Col className="cancelBtn mt-5">
           {text && (
-            <button type="button" onClick={() => setText("")}>
+            <Button variant="secondary" type="button" onClick={() => setText("")}>
               x
-            </button>
+            </Button>
           )}
         </Col>
       </Row>
