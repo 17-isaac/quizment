@@ -4,34 +4,30 @@ import React ,{ useEffect,useState } from 'react';
 import {Navbar} from "~/components/seacrchClone/Navbar"
 
 
-
 import {Routes} from "~/components/seacrchClone/Routes"
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 
-export default function images() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+
+export default function teacherDashboard() {
+
+ 
 
   return (
     <div>
+        <h1>Teacher Dashboard</h1>
+   
+     
     
-      <div id="alan-btn"></div>
    
       <main>
         <Outlet/>
       </main>
-      <div>
-      {/* <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
 
-        </ResultContextProvider> */}
-
-
-      </div>
+     
+    
     </div>
   );
 }

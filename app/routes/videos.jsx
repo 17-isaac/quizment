@@ -3,7 +3,7 @@ import { Outlet } from "remix";
 import React ,{ useEffect,useState } from 'react';
 import {Navbar} from "~/components/seacrchClone/Navbar"
 
-import {Footer} from "~/components/seacrchClone/Footer"
+
 
 import {Routes} from "~/components/seacrchClone/Routes"
 
@@ -50,23 +50,6 @@ export default function videos() {
       </main></Col>
   </Row>
 </Container>
-    // <div>
    
-    //   <div id="alan-btn"></div>
-   
-    //   <main>
-    //     <Outlet/>
-    //   </main>
-    //   <div>
-      /* <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
-
-        </ResultContextProvider> */
-
-
-    //   </div>
-    // </div>
   );
 }

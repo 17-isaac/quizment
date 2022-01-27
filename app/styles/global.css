@@ -14,3 +14,48 @@
   height: 60px;
   width:1300px
 }
+
+.cover{
+  
+  color: transparent;
+}
+
+.cover:hover{
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+ -ms-zoom-animation: unset;
+}
+
+.cover-title{
+  margin-left: 10px;
+}
+
+.mt-5{
+  margin-top: 100px !important; 
+  margin-left: 80px !important;
+ 
+}
+
+.cardHeight{
+  height: 280px;
+}
+
+.boxa{
+  background: linear-gradient(#eea44f, #e65e90);
+  height: 280px;
+  color: white;
+  font-size: 150px !important;
+  justify-content: center ;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.boxaTitle{
+  font-size: 30px !important;
+  margin-top: 45px;
+}
+
+
+.boxas{
+  margin-left: 500px;
+}
