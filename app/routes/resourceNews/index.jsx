@@ -1,6 +1,6 @@
 import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
-import { useEffect, useState, createRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -48,7 +48,7 @@ export default function newsResourceContent() {
 
   const [newsArticles, setNewsArticles] = useState([]);
 
-  const [activeArticle, setActiveArticle] = useState(1);
+  const [activeArticle, setActiveArticle] = useState(-1);
 
   useEffect(() => {
     const alanBtn = require("@alan-ai/alan-sdk-web");
@@ -59,8 +59,8 @@ export default function newsResourceContent() {
           setNewsArticles(articles);
           setActiveArticle(-1);
         } else if (command === "open") {
-          console.log(number);
-          window.open(articles[number].url, "_blank");
+         
+          window.open(articles[number - 1].url, "_blank");
         } else if (command === "studentProg") {
           window.open(
             "http://localhost:3000/teacherViewStudentProgress",

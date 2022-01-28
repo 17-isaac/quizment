@@ -62,7 +62,7 @@ export default function StudentDashboardContent() {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({
       key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command, articles, number }) => {
+      onCommand: ({ command, articles,  }) => {
         if (command === "newHeadlines") {
           console.log(articles);
           setNewsArticles(articles);
