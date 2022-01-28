@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useCatch, redirect, useParams ,LoaderFunction, useNavigate} from "remix";
+import { Link, useLoaderData, useCatch, redirect, useParams ,LoaderFunction, useNavigate, useLocation} from "remix";
 import { collection, query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import Modal from 'react-modal';
 import { fdb } from "../../utils/firestore";
@@ -16,6 +16,7 @@ export let loader: LoaderFunction = async ({ params, request }) => {
   //let userId = await getUserId(request);
  
   //console.log(JSON.stringify(params.quizDocId) + "THIS IS PARAAM");
+  
   const q = query(collection(fdb, "Questions"), where("quizDocID", "==", params.quizDocId));
   const querySnapshot = await getDocs(q);
   const modifiedEvents = querySnapshot.docs.map((doc) => {
@@ -39,6 +40,10 @@ export let loader: LoaderFunction = async ({ params, request }) => {
 
 
 export default function JokeRoute() {
+  const location = useLocation();
+    //console.log(JSON.stringify(location.state.doc) + "ITS over here")
+
+   // const quizDocID :any = location.state.doc;
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [urlName, setUrlName]= useState("")
@@ -76,6 +81,7 @@ export default function JokeRoute() {
   function setModal2IsOpenToTrue(e) {
 
     setModal2IsOpen(true);
+    console.log
     setQuestionDocID(
       e.id
     )
@@ -167,7 +173,7 @@ export default function JokeRoute() {
     e.preventDefault();
     const newUrl = e.target.files[0]
  console.log(newUrl.name)
- setUrlName(newUrl.name)
+
     setUrl(newUrl)
    
 }
@@ -183,39 +189,43 @@ function handleSubmitOpenEnded(e)  {
     window.alert('updated!')
     window.location.reload()
   }else{
+    console.log("else statement")
     console.log(JSON.stringify(url) +"this is the current state for url")
     const storage = getStorage();
-    const storageRef = ref(storage, 'img/' + urlName);
-    const file = url;
+    let file: any = url;
+    console.log(file.name)
+    const storageRef = ref(storage, 'img/' + file.name);
+   
+    //this console can be seen
     console.log(file + "this is the file" + "this is the file type " + file.type)
     // Create file metadata including the content type
-    /** @type {any} */
+    
     const metadata = {
-        contentType: 'string'
+        contentType: file.type
     };
-    uploadBytes(storageRef, url, metadata);
+    uploadBytes(storageRef, file, metadata);
+    window.alert('updated!')
+    
 
+   
+// is not able to get into this function
     getDownloadURL(storageRef).then((downloadURL) => {
         console.log('File available at', downloadURL);
 
         updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
           question: stateOpenEnd.question,
-          answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
-        }).then(function (docRef) {
-       
-          navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
-
-          console.log("Document written with ID: " + docRef.id);
-
-      })
-          .catch(function (error) {
-              console.error("Error adding document: ", error);
-          })
+          answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4],
+          img_url: downloadURL
+        }).then(function(){
+          console.log("DONE")
+          window.location.reload();
+        })
+    
+       // window.location.reload();
+        
 
     
-  // })
-
-
+  })
 
   }
 }
@@ -224,7 +234,7 @@ function handleSubmitOpenEnded(e)  {
 
   // let data = useLoaderData<LoaderData>();
   const data = useLoaderData()[0];
-  console.log(data[0].img_url)
+ // console.log(data[0].img_url)
   const data2 = useLoaderData()[1];
   const displaySelected = []
   return (<>

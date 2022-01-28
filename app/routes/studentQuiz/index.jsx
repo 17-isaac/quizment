@@ -49,20 +49,24 @@ export async function loader() {
 };
 
 export default function studentQuiz() {
-
+  let navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState("")
-  function setModalIsOpenToTrue(e) {
-    setSelectedQuiz(
-      e.id
-    )
-    setModalIsOpen(true);
+  // function setModalIsOpenToTrue(e) {
+  //   setSelectedQuiz(
+  //     e.id
+  //   )
+  //   setModalIsOpen(true);
 
+  // }
+  function startQuiz(e){
+   // navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
   }
   const setModalIsOpenToFalse = () => {
     setModalIsOpen(false)
   }
-  let navigate = useNavigate();
+
+
   function bringToEdit(e) {
     const value = e.target.value;
     console.log("BUTTON LCICKED!!!" + value);
@@ -90,7 +94,7 @@ export default function studentQuiz() {
               <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
               <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
 
-              <Button type="button" variant="primary" onClick={() => setModalIsOpenToTrue(quiz)}>start Quiz</Button>
+              <Button type="button" variant="primary" onClick={() => startQuiz(quiz)}>start Quiz</Button>
             </Card>
           </Col>
 
