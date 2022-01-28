@@ -13,8 +13,12 @@ import Question from "../components/Question"
 
 
 function QuizScreen({ retry }) {
-
-    const QuestionList = useLoaderData();    console.log(JSON.stringify(QuestionList) + "useLoader()")
+ //
+ const data =useLoaderData(); 
+   const QuestionList =  data[0]
+   const QuizDetails = data[1]
+     
+    console.log(JSON.stringify(QuestionList) + "useLoader()")
     console.log(QuestionList.length + "QUESTION LIST")
     // let QuestionList = modifiedEvents;
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -23,12 +27,15 @@ function QuizScreen({ retry }) {
 
     function calculateResult() {
         let correct = 0;
+        const totalMarks = QuizDetails.totalMarks;
+        const markPerQues = totalMarks/QuestionList.length;
+
        
              QuestionList.forEach((question, index) => {
                  if(question.choices){
                      console.log(question.answer + " QUIES ANS" + markedAnswers[index])
             if (question.answer == markedAnswers[index]) {
-                correct++;
+                correct+=markPerQues;
             }
                  }else if(question.answers){
                      const openEndedAns = markedAnswers[index]
@@ -39,31 +46,23 @@ function QuizScreen({ retry }) {
                         console.log(ans);
                   if (usersInput.includes("this")) {
                         const numOfOpenEndAns = question.answers.length;
-                        const markPerAns = 1/numOfOpenEndAns
+                        const markPerAns = markPerQues/numOfOpenEndAns
                         correct+=markPerAns
                          console.log("user got athat  right" )
                              }
-
-                        
                         }
                         )
-                        
-                       
-                   
                     console.log(usersInput)
-
                  }
-
-
-                
-            
+        }).then(function(){
+            //place update statement here for student table
         });
       
             console.log( 'check openEnded answers here')
         
        
         return {
-            total: QuestionList.length,
+            total: QuizDetails.totalMarks,
             correct: correct,
             percentage: Math.trunc((correct / QuestionList.length) * 100)
         }

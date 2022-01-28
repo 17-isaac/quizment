@@ -95,7 +95,7 @@ function handleFileUpload(e){
         
                 }).then(function (docRef) {
                  
-                    navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
+                    navigate(`/quizAdmin/${quizDocID}`, { state: { doc: quizDocID } });
         
                     console.log("Document written with ID: " + docRef.id);
         

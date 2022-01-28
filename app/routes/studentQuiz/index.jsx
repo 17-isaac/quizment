@@ -40,12 +40,34 @@ export async function loader() {
       return eventData;
     }
   });
+  const modifiedEvents2 = querySnapshot.docs.map((doc) => {
+
+    if (result.includes(doc.id)) {
+
+      console.log("DISPLAYING")
+      const eventData = doc.data()
+      eventData.id = doc.id
+      return eventData;
+    } else {
+      console.log("TRUE DONT SHOW THIS")
+    }
+  });
+
+
+
+
   var filtered = modifiedEvents.filter(function (el) {
     return el != null;
   });
   console.log("mordified  " + filtered)
 
-  return filtered;
+  var filtered2 = modifiedEvents2.filter(function (el) {
+    return el != null;
+  });
+  console.log("mordified  " + filtered2)
+
+  const allQuiz = [filtered, filtered2]
+  return allQuiz;
 };
 
 export default function studentQuiz() {
@@ -59,32 +81,34 @@ export default function studentQuiz() {
   //   setModalIsOpen(true);
 
   // }
-  function startQuiz(e){
-   // navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
+  function startQuiz(e) {
+    // navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
   }
   const setModalIsOpenToFalse = () => {
     setModalIsOpen(false)
   }
 
 
-  function bringToEdit(e) {
+  function bringToStartQuiz(e) {
     const value = e.target.value;
     console.log("BUTTON LCICKED!!!" + value);
     let quiz = {
-      docId:value
+      docId: value
     }
-    navigate(`../../startQuiz`, { state: { doc: value } });
+    navigate(`../../studentQuiz/${value}`, { state: { quiz } });
   }
 
   const data = useLoaderData();
+  const quizNotDone = data[0];
+  const quizDone = data[1]
   console.log(data)
 
   return (<>
     <div>
-      <h1></h1>
+      <h1>Quiz Not Completed</h1>
 
       <Row xs={1} md={2} lg={3} className="g-4">
-        {data && data.map(quiz =>
+        {quizNotDone && quizNotDone.map(quiz =>
 
           <Col>
             <Card border="warning">
@@ -94,7 +118,28 @@ export default function studentQuiz() {
               <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
               <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
 
-              <Button type="button" variant="primary" onClick={() => startQuiz(quiz)}>start Quiz</Button>
+              <Button type="button" variant="primary" value={quiz.id} onClick={bringToStartQuiz}>start Quiz</Button>
+            </Card>
+          </Col>
+
+
+
+        )}
+      </Row>
+      <h1>Quiz Completed</h1>
+
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {quizDone && quizDone.map(quiz =>
+
+          <Col>
+            <Card border="warning">
+              <Card.Title>{quiz.quizName}</Card.Title>
+              <Card.Text>Points : {quiz.totalPoints}</Card.Text>
+              <Card.Text>Subject : {quiz.subject}</Card.Text>
+              <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
+              <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+
+              <Button type="button" variant="primary" value={quiz.id} onClick={bringToStartQuiz}>start Quiz</Button>
             </Card>
           </Col>
 
@@ -108,7 +153,7 @@ export default function studentQuiz() {
         ariaHideApp={false}>
         <button onClick={setModalIsOpenToFalse}>x</button>
         <QuizPopup />
-      <Button type="button" variant="primary" value={selectedQuiz} onClick={bringToEdit}>start Quiz</Button>
+        <Button type="button" variant="primary" value={selectedQuiz} onClick={bringToStartQuiz}>start Quiz</Button>
       </Modal>
 
 
