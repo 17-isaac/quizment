@@ -34,19 +34,11 @@ export async function loader() {
         name: true,
         Uid: true,
         streaks: true,
+        lastLogin:true,
+      
       },
     }),
-    studentPerformanceDetails: await db.student.findMany({
-      select: {
-        name: true,
-        Uid: true,
-        streaks: true,
-        mazeLvl: true,
-        totalPts: true,
-        redeemedPts: true,
-      },
-    }),
-  
+ 
   };
  
 
@@ -60,6 +52,10 @@ export async function loader() {
 
 export default function StudentDashboardContent() {
   const data = useLoaderData();
+// const lastLogin=BigInt(data.studentDetailsData.lastLogin).toString()
+
+
+
 
 
   useEffect(() => {
@@ -85,6 +81,18 @@ export default function StudentDashboardContent() {
       },
     });
   }, []);
+
+
+  useEffect(()=>{
+    const currentLogin=new Date().getTime();
+ 
+  console.log("current Login "+currentLogin)
+
+  
+
+
+
+  })
 
   return (
     <div>
