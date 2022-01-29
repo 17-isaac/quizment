@@ -33,6 +33,8 @@ export async function loader() {
       },
       select: {
         name: true,
+        totalPts:true,
+        redeemedPts:true,
 
         streaks: true,
         lastLogin: true,
@@ -41,14 +43,14 @@ export async function loader() {
   };
 
 
-  await db.Student.update({
-    where: {
-      name: "isaa.71717@gmail.com",
-    },
-    data: {
-      lastLogin: new Date().getTime(),
-    },
-  });
+  // await db.Student.update({
+  //   where: {
+  //     name: "isaa.71717@gmail.com",
+  //   },
+  //   data: {
+  //     lastLogin: new Date().getTime(),
+  //   },
+  // });
 
 
   // await db.Student.upsert({
@@ -68,6 +70,8 @@ export async function loader() {
 
   let lastLog = data.studentDetailsData.lastLogin.toString();
   let name = data.studentDetailsData.name;
+  let totalPts=data.studentDetailsData.totalPts
+  let redeemedPts=data.studentDetailsData.redeemedPts
   let streaks = data.studentDetailsData.streaks;
   let diffTime = currentLogin - lastLog;
   console.log("-----------------------------");
@@ -86,14 +90,14 @@ export async function loader() {
     // })
   } else if (diffTime > 86400000) {
     console.log("streak 0");
-    await db.student.update({
-      where: {
-        name: data.studentDetailsData.name,
-      },
-      data: {
-        streaks: 0,
-      },
-    });
+    // await db.student.update({
+    //   where: {
+    //     name: data.studentDetailsData.name,
+    //   },
+    //   data: {
+    //     streaks: 0,
+    //   },
+    // });
   } else {
     console.log("Remain the sameeeee");
 
@@ -104,6 +108,8 @@ export async function loader() {
     lastLogin: lastLog,
     sName: name,
     sStreaks: streaks,
+    totalPoints:totalPts,
+    rPts:redeemedPts
   };
 
   // JSON.stringify(this,
@@ -167,9 +173,12 @@ export default function StudentDashboardContent() {
     <div>
       <p>Name: {data.sName}</p>
 
+      <p>Total points: {data.totalPoints}</p>
+      <p>Redeemable points:{data.rPts}</p>
+
       <p>Streaks: {data.sStreaks}</p>
 
-      <p>{data.lastLogin}</p>
+    
     </div>
   );
 }
