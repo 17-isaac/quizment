@@ -21,6 +21,7 @@ model Rewards {
   rewardName    String          @db.VarChar
   ptsRequired   Int
   url           String          @db.VarChar
+  isAvailable   Int             @default(1)
   rewardHistory RewardHistory[]
 }
 
@@ -30,12 +31,9 @@ model Student {
   Uid            String           @db.VarChar
   streaks        Int
   totalPts       Int
-  mazeLvl        Int
   redeemedPts    Int
-  type           Int
   lastLogin      BigInt?
   badgeHistory   BadgeHistory[]
-  quizHistory    QuizHistory[]
   rewardHistory  RewardHistory[]
   studentHistory StudentHistory[]
 }
@@ -71,34 +69,22 @@ model Event {
   studentHistory StudentHistory[]
 }
 
-model MazeContent {
-  mazeLvl Int @id(map: "mazeContent_pkey") @default(autoincrement())
-  points  Int
-}
-
-model Quiz {
-  quizID      Int           @id(map: "quiz_pkey")
-  totalMarks  Int
-  totalPoints Int
-  quizHistory QuizHistory[]
-}
-
 model QuizHistory {
-  quizHistoryID Int     @id(map: "quizHistory_pkey") @default(autoincrement())
-  quizID        Int
-  studentID     Int
-  pointsEarned  Int
-  marksEarned   Int
-  quiz          Quiz    @relation(fields: [quizID], references: [quizID], onDelete: NoAction, onUpdate: NoAction, map: "fk_quizID")
-  student       Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_fk")
+  quizhistoryid Int    @id @default(autoincrement())
+  quizid        String @db.VarChar
+  studentid     String @db.VarChar
+  pointsearned  Int
+  marksearned   Int
 }
 
 model RewardHistory {
-  rewardHistoryID Int     @id(map: "rewardHistory_pkey") @default(autoincrement())
+  rewardHistoryID Int      @id(map: "rewardHistory_pkey") @default(autoincrement())
   studentID       Int
   rewardID        Int
-  rewards         Rewards @relation(fields: [rewardID], references: [rewardID], onDelete: NoAction, onUpdate: NoAction, map: "rewardID")
-  student         Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
+  dateCreated     DateTime @default(now()) @db.Timestamptz(6)
+  isCollected     Int
+  rewards         Rewards  @relation(fields: [rewardID], references: [rewardID], onDelete: NoAction, onUpdate: NoAction, map: "rewardID")
+  student         Student  @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
 }
 
 model StudentHistory {
@@ -112,4 +98,12 @@ model StudentHistory {
 
 model Teacher {
   teacherID String @id(map: "teacher_pkey") @db.VarChar
+}
+
+model User {
+  userid Int     @id @default(autoincrement())
+  email  String  @db.VarChar
+  name   String? @db.VarChar
+  uid    String  @db.VarChar
+  type   Int
 }

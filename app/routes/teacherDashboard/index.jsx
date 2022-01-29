@@ -51,7 +51,7 @@ export async function loader() {
           name: true,
           Uid: true,
           streaks: true,
-          mazeLvl: true,
+       
           totalPts: true,
           redeemedPts: true,
         },

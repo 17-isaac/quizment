@@ -25,44 +25,105 @@ export function links() {
 }
 
 export async function loader() {
-  const data = {
+ 
+  let data = {
     studentDetailsData: await db.student.findUnique({
       where: {
         studentID: 16,
       },
       select: {
         name: true,
-        Uid: true,
+
         streaks: true,
-        lastLogin:true,
-      
+        lastLogin: true,
       },
     }),
- 
   };
- 
 
-  return data;
+
+  await db.Student.update({
+    where: {
+      name: "isaa.71717@gmail.com",
+    },
+    data: {
+      lastLogin: new Date().getTime(),
+    },
+  });
+
+
+  // await db.Student.upsert({
+  //   where: {
+  //     name: 'isaa.71717@gmail.com',
+  //   },
+  //   update: {
+  //     streaks: 1,
+  //   },
+  //   create: {
+  //     name: 'isaa.71717@gmail.com',
+  //     streaks: 2,
+  //   },
+  // })
+
+  const currentLogin = new Date().getTime();
+
+  let lastLog = data.studentDetailsData.lastLogin.toString();
+  let name = data.studentDetailsData.name;
+  let streaks = data.studentDetailsData.streaks;
+  let diffTime = currentLogin - lastLog;
+  console.log("-----------------------------");
+  console.log(diffTime);
+  console.log("-----------------------------");
+
+  if (diffTime >= 28800000 && diffTime <= 86400000) {
+    console.log("Streak up");
+    //   await db.student.update({
+    //   where: {
+    //     name: data.studentDetailsData.name,
+    //   },
+    //   data: {
+    //     streaks:data.studentDetailsData.streaks +1
+    //   },
+    // })
+  } else if (diffTime > 86400000) {
+    console.log("streak 0");
+    await db.student.update({
+      where: {
+        name: data.studentDetailsData.name,
+      },
+      data: {
+        streaks: 0,
+      },
+    });
+  } else {
+    console.log("Remain the sameeeee");
+
+    console.log("executed");
+  }
+
+  let allData = {
+    lastLogin: lastLog,
+    sName: name,
+    sStreaks: streaks,
+  };
+
+  // JSON.stringify(this,
+  //   (key,)=>(typeof value === 'bigint'))
+
+  //   if(typeof data.studentDetailsData.lastLogin ==='bigint'){
+  //     JSON
+  //   }
+
+  return allData;
 }
-
-
-
-
-
 
 export default function StudentDashboardContent() {
   const data = useLoaderData();
-// const lastLogin=BigInt(data.studentDetailsData.lastLogin).toString()
-
-
-
-
 
   useEffect(() => {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({
       key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command, articles,  }) => {
+      onCommand: ({ command, articles }) => {
         if (command === "newHeadlines") {
           console.log(articles);
           setNewsArticles(articles);
@@ -74,32 +135,41 @@ export default function StudentDashboardContent() {
           );
         } else if (command === "studentDash") {
           window.open("http://localhost:3000/StudentDashboard", "_self");
-        }
-         else if (command === "newsResource") {
+        } else if (command === "newsResource") {
           window.open("http://localhost:3000/newsResource", "_self");
         }
       },
     });
   }, []);
 
-
-  useEffect(()=>{
-    const currentLogin=new Date().getTime();
- 
-  console.log("current Login "+currentLogin)
-
-  
-
-
-
-  })
+  useEffect(async () => {
+    // const currentLogin=new Date().getTime();
+    // const lastLogin=data.lastLogin
+    //   diffTime=28800001  //up
+    //   diffTime=86400002  // 0
+    //   diffTime=28800000-3 //remain the same
+    // console.log("current Login "+currentLogin)
+    // console.log("Last login "+BigInt(lastLogin))
+    // console.log("Difference in time "+diffTime)
+    // if (diffTime >= 28800000 && diffTime <= 86400000){
+    //   console.log("Streak up")
+    // }
+    // else if (diffTime > 86400000) {
+    //   console.log("streak 0")
+    // }
+    // else{
+    //   console.log("Remain the sameeeee")
+    //   console.log("executed")
+    // }
+  }, []);
 
   return (
     <div>
-      <p>Name: {data.studentDetailsData.name}</p>
-      <p>Uid: {data.studentDetailsData.Uid}</p>
-      <p>Streaks: {data.studentDetailsData.streaks}</p>
-   
+      <p>Name: {data.sName}</p>
+
+      <p>Streaks: {data.sStreaks}</p>
+
+      <p>{data.lastLogin}</p>
     </div>
   );
 }
