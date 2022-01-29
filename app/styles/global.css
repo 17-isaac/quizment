@@ -41,10 +41,10 @@
 }
 
 .boxa{
-  background: linear-gradient(#eea44f, #e65e90);
-  height: 280px;
+  background: linear-gradient(#f1d3b3, #c97ca6);
+
   color: white;
-  font-size: 150px !important;
+  font-size: 100px !important;
   justify-content: center ;
   text-align: center;
   margin-top: 20px;
@@ -58,4 +58,63 @@
 
 .boxas{
   margin-left: 500px;
+}
+
+.boxForPts{
+  height: 70px;
+}
+
+
+.pieSize{
+  height: 400px;
+  width: 400px;
+  margin-top: 30px;
+}
+
+.streak1{
+  background-color: #ccfbff;
+  height: 40px;
+  width: 40px;
+}
+.streak2{
+  background-color: #ff8395;
+  height: 40px;
+  width: 40px;
+}
+.streak3{
+  background-color: #ffc29d;
+  height: 40px;
+  width: 40px;
+}
+.streak4{
+  background-color: #ef7ac5;
+  height: 40px;
+  width: 40px;
+}
+.streak5{
+  background-color: #fe3ba7;
+  height: 40px;
+  width: 40px;
+}
+.streakM{
+  background-color: #acf6db;
+  height: 40px;
+  width: 40px;
+}
+
+.streak0{
+  background-color: #5ab0f7;
+  height: 40px;
+  width: 40px;
+}
+
+
+
+.boxh{
+  height: 350px;
+}
+
+
+.label{
+  margin-left:-150px !important;
 }
