@@ -2,7 +2,8 @@ import {useState, useEffect } from "react";
 import QuizScreen from "../components/QuizScreen"
 import JoinScreen from "../components/JoinScreen"
 import { fdb } from "../../utils/firestore";
-import { useLoaderData, useNavigate, redirect, useLocation, LoaderFunction } from "remix";
+import { db } from "../../utils/db.server";
+import { useLoaderData, useNavigate, redirect, useLocation, LoaderFunction, ActionFunction } from "remix";
 import { collection, getDocs,getDoc, updateDoc, doc, query, where } from 'firebase/firestore';
 //import Navbar  from "../components/Navbar";
  
@@ -42,14 +43,29 @@ export let loader: LoaderFunction = async ({ params, request }) => {
 
  const allQuestions = [].concat(modifiedEvents, modifiedEvents2);
  const returning = [].concat([allQuestions], [quizDetails])
- 
+ const final = [].concat(returning, [(params.studentQuiz)])
 
 
-  return returning;
+  return final;
 }
 
 
+
+
 export default function startQuiz(){
+
+
+  function quizHistory(result:any){
+    const users:any =   db.quizHistory.create({
+      data: {
+        quizid: "",
+        studentid: "23",
+        pointsearned: 5,
+        marksearned:5
+    },
+  })
+  
+  }
  
 const [isQuizStarted, setisQuizStarted] = useState(false);
 return(
@@ -57,7 +73,8 @@ return(
 
 <div className ="quiz-container">
     { isQuizStarted ? (
-        <QuizScreen retry={()=>setisQuizStarted(false)} />
+        <QuizScreen retry={()=>setisQuizStarted(false)}
+        />
     ) : (
         <JoinScreen start={()=>setisQuizStarted(true)}/>
     )}

@@ -6,7 +6,7 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-modal';
 import QuizPopup from '../studentQuiz/quizPopup'
-import { Link } from "remix";
+
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 

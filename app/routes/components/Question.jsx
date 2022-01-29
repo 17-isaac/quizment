@@ -37,6 +37,7 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
     }, [question]);
     if (question.choices) {
         return (
+            
             <div className="question" >
                 <div className="progress-bar" ref={progressBar}></div>
                 <div className="question-count">

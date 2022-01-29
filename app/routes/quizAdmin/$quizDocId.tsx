@@ -8,7 +8,6 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useState } from "react";
-
 import AddMcqPopup from './EditQuiz/AddMcqPopup';
 import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz'
