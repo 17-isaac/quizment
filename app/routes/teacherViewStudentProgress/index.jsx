@@ -30,26 +30,26 @@ export async function loader() {
         name: true,
         Uid: true,
         streaks: true,
-        mazeLvl: true,
+    
         totalPts: true,
         redeemedPts: true,
       },
       orderBy: { name: "asc" },
     }),
 
-    bacdgeR: await db.badgeClass.findMany({
-      select: {
-        badge: {
-          select: {
-            name: true,
-            requirements: true,
-            pic_url: true,
-          },
-        },
-        className: true,
+    studentTotalMaxPts: await db.student.aggregate({
+      _max: {
+        totalPts: true,
       },
     }),
 
+    studentStreaksMax: await db.student.aggregate({
+      _max: {
+        streaks: true,
+      },
+    }),
+
+ 
     userCount: await db.student.count(),
   };
   console.log("==============================================");
@@ -58,6 +58,9 @@ export async function loader() {
 }
 
 export default function teacherViewStudentProgressContent() {
+
+  const data = useLoaderData();
+
   useEffect(() => {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({
@@ -125,27 +128,23 @@ export default function teacherViewStudentProgressContent() {
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 3);
   };
-  const TStreaks = 5;
-  const TMazeLvl = 8;
+;
+  
   const streakWeightage = 50;
-  const mazeWeightage = 50;
-  const overall = 0;
-  const y = 9;
-  const x = 9;
-  console.log("=+======+========= 1 ========+=================+");
-  console.log(bacdgeR);
+  const ptsWeightage = 50;
 
-  console.log("============================================");
+  var highPts=data.studentTotalMaxPts._max.totalPts;
 
-  // console.log("Badge info: "+bacdgeR[4].badge[0].name)
-  console.log("Badge name: " + bacdgeR[3].badge[0].name);
-  console.log("Badge requirement: " + bacdgeR[3].badge[0].requirements);
-  console.log("Badge pic url: " + bacdgeR[3].badge[0].pic_url);
-  console.log("class name: " + bacdgeR[3].className);
+  var highStreak=data.studentStreaksMax._max.streaks;
+
+  
+  
 
   return (
     <div>
       <div></div>
+
+      
       <Row style={{ marginLeft: 1300 }}>
         <DropdownButton
           id="dropdown-item-button"
@@ -177,14 +176,11 @@ export default function teacherViewStudentProgressContent() {
           >
             <Dropdown.Item as="button">Sort by lowPoints</Dropdown.Item>
           </Link>
-          <Link
-            style={{ textDecorationLine: "none" }}
-            to="/teacherViewStudentProgress/mz"
-          >
-            <Dropdown.Item as="button">Maze</Dropdown.Item>
-          </Link>
+        
         </DropdownButton>
       </Row>
+
+      
       <Row>
         <Row lg="4">
           {/* <h1>Total user:{userCount}</h1> */}
@@ -214,26 +210,9 @@ export default function teacherViewStudentProgressContent() {
                         now={data.streaks * 20}
                       />
 
-                      {/* <Card.Text
-                      variant={x * 20 > 75 ? "success" : "danger"}
-                      style={{ color: x * 20 > 75 ? "red" : "blue" }}
-                    >
-                      {x * 20}
-                      </Card.Text> */}
+             
 
-                      <Card.Text>Maze Level: {data.mazeLvl}</Card.Text>
-
-                      <ProgressBar
-                        style={{ width: "10rem" }}
-                        variant={
-                          data.mazeLvl * 12.5 > 75
-                            ? "success"
-                            : data.mazeLvl * 12.5 > 50
-                            ? "warning"
-                            : "danger"
-                        }
-                        now={data.mazeLvl * 12.5}
-                      />
+                      
 
                       <Card.Text>Reedemed points: {data.redeemedPts}</Card.Text>
 
@@ -251,21 +230,21 @@ export default function teacherViewStudentProgressContent() {
                           }}
                           src={
                             performanceCal(
+                              data.totalPts,
+                              highPts,
                               data.streaks,
-                              TStreaks,
-                              data.mazeLvl,
-                              TMazeLvl,
-                              mazeWeightage,
+                              highStreak,
+                              ptsWeightage,
                               streakWeightage
                             ) > 70
                               ? "https://img.icons8.com/emoji/48/000000/grinning-face-with-big-eyes--v2.png"
                               : performanceCal(
-                                  data.streaks,
-                                  TStreaks,
-                                  data.mazeLvl,
-                                  TMazeLvl,
-                                  mazeWeightage,
-                                  streakWeightage
+                                data.totalPts,
+                                highPts,
+                                data.streaks,
+                                highStreak,
+                                ptsWeightage,
+                                streakWeightage
                                 ) > 30
                               ? "https://img.icons8.com/emoji/48/000000/neutral-face.png"
                               : "https://img.icons8.com/emoji/48/000000/disappointed-face.png"
@@ -276,32 +255,32 @@ export default function teacherViewStudentProgressContent() {
                           <h6 style={{ fontSize: 10, marginTop: 9 }}>
                             Overall Performance:{" "}
                             {performanceCal(
-                              data.streaks,
-                              TStreaks,
-                              data.mazeLvl,
-                              TMazeLvl,
-                              mazeWeightage,
-                              streakWeightage
+                             data.totalPts,
+                             highPts,
+                             data.streaks,
+                             highStreak,
+                             ptsWeightage,
+                             streakWeightage
                             )}{" "}
                             %
                           </h6>
                           <strong>
                             {performanceCal(
-                              data.streaks,
-                              TStreaks,
-                              data.mazeLvl,
-                              TMazeLvl,
-                              mazeWeightage,
-                              streakWeightage
+                            data.totalPts,
+                            highPts,
+                            data.streaks,
+                            highStreak,
+                            ptsWeightage,
+                            streakWeightage
                             ) > 70
                               ? "Good"
                               : performanceCal(
-                                  data.streaks,
-                                  TStreaks,
-                                  data.mazeLvl,
-                                  TMazeLvl,
-                                  mazeWeightage,
-                                  streakWeightage
+                                data.totalPts,
+                              highPts,
+                              data.streaks,
+                              highStreak,
+                              ptsWeightage,
+                              streakWeightage
                                 ) > 30
                               ? "Ok"
                               : "Bad"}
@@ -314,6 +293,8 @@ export default function teacherViewStudentProgressContent() {
               </Card>
             ))
             .slice(0, visible)}
+     
+     
         </Row>
 
         {visible < numOfUser ? (

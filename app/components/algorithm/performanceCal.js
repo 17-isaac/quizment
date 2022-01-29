@@ -1,9 +1,10 @@
-export default function performanceCal(streakCount,TStreak,mazeLvlCount,TMazeLvl,mazeWeightage,streakWeightage){
+export default function performanceCal(pts,highestPts,streaks,highestStreaks,ptsWeightage,streakWeightage){
    
   
-    const overallPreformance=(streakCount/TStreak)*streakWeightage+(mazeLvlCount/TMazeLvl)*mazeWeightage
+    const overallPreformance=(pts/highestPts)*ptsWeightage+(streaks/highestStreaks)*streakWeightage
    
+    const result= overallPreformance.toFixed(2);
      
-       return overallPreformance
+       return result
          
      }
