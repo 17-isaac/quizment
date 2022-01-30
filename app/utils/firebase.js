@@ -19,79 +19,27 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 //authentication
-const auth = getAuth();
+const auth = getAuth(app);
 
 //initialize FireStore
 const fdb = getFirestore();
 
-// getting id of user 
-async function getUserId() {
-  let uid;
-  return await new Promise((resolve, reject) => {
-    const getCurrentUserID = onAuthStateChanged(auth, (currentUser) => {
-      try {
-        if (currentUser) {
-          uid = currentUser.uid;
-          console.log("YES");
-          resolve(uid);
-        } else {
-          uid = 0;
-          console.log("User type not defined");
-          resolve(uid);
-        }
-      } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(JSON.stringify(errorCode));
-        console.log(JSON.stringify(errorMessage));
-      }
-    getCurrentUserID();
-    });
-  });
-  // let uid;
-  // if (user) {
-  //   uid = user.uid;
-  //   console.log(uid + "Hello");
-  // } else {
-  //   uid = 0;
-  // }
-  // return uid;
-}
-
 // authentication status
 async function authStatus(userType) {
-  onAuthStateChanged(auth, (currentUser) => {
-    try {
-      if (currentUser) {
-        if (userType == 1) {
-          if (window.location.pathname.toLowerCase().includes('student')) {
-          } else {
-            window.location.assign('http://localhost:3000/studentDashboard');
-          }
-        } else if (userType == 2) {
-          if (window.location.pathname.toLowerCase().includes('teacher')) {
-          } else {
-            window.location.assign('http://localhost:3000/teacherDashboard');
-          }
-        }
-      } else {
-        if (window.location.pathname === '/auth' || window.location.pathname === '/') {
-          console.log("Not Signed In.")
-        } else {
-          console.log("Access Denied");
-          window.location.assign('http://localhost:3000/auth');
-        }
-      }
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(JSON.stringify(errorCode));
-      console.log(JSON.stringify(errorMessage));
+  if (userType == 1) {
+    if (window.location.pathname.toLowerCase().includes('student')) {
+    } else {
+      window.location.assign('http://localhost:3000/studentDashboard');
     }
-  });
+  } else if (userType == 2) {
+    if (window.location.pathname.toLowerCase().includes('teacher')) {
+    } else {
+      window.location.assign('http://localhost:3000/teacherDashboard');
+    }
+  }
 }
 
-export { auth, fdb, authStatus, getUserId };
+export { auth, fdb, authStatus };

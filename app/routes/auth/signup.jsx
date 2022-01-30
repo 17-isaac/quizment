@@ -2,13 +2,11 @@ import { useActionData, redirect, Form, Link as Linker } from "remix";
 import { getSession, commitSession } from "~/sessions.server";
 import { db } from "~/utils/db.server";
 import { auth } from '~/utils/firebase';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -32,7 +30,7 @@ function Copyright(props) {
 }
 
 export function meta() {
-  return { title: "Sign In" };
+    return { title: "Sign Up" };
 }
 
 // our action function will be launched when the submit button is clicked
@@ -41,7 +39,7 @@ export let action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
   let password = formData.get("password")
-  const { user, error } = await signInWithEmailAndPassword(auth, email, password)
+  const { user, error } = await createUserWithEmailAndPassword(auth, email, password)
   // if signin was successful then we have a user
   if (user) {
     // let's setup the session and cookie wth users idToken
@@ -77,7 +75,7 @@ export let action = async ({ request }) => {
   }
 }
 
-export default function AuthContent() {
+export default function Signup() {
   const theme = createTheme();
   const actionData = useActionData();
 
@@ -113,7 +111,7 @@ export default function AuthContent() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign Up
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Form method="post">
@@ -137,28 +135,24 @@ export default function AuthContent() {
                   id="password"
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  Sign Up
               </Button>
               </Form>
               <Grid container>
                 <Grid item xs>
-                  <Linker to="forgetPassword" variant="body2">
+                  <Linker to="../forgetPassword" variant="body2">
                     Forgot password?
                   </Linker>
                 </Grid>
                 <Grid item>
-                  <Linker to="signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Linker to="/auth" variant="body2">
+                    Login
                   </Linker>
                 </Grid>
               </Grid>

@@ -6,8 +6,46 @@ const { createRequestHandler } = require("@remix-run/express");
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "server/build");
-
+const port = process.env.PORT || 3000;
 const app = express();
+const socket = require("socket.io");
+const server = app.listen(port);
+const io = socket(server);
+
+let onlineUsers = [];
+const addNewUser = (username, socketID) => {
+  !onlineUsers.some(user => user.username === username) && onlineUsers.push({ username, socketID });
+}
+
+const removeUser = (socketID) => {
+  onlineUsers = onlineUsers.filter(user=> user.socketID !== socketID);
+}
+
+const getUser = (username) => {
+  return onlineUsers.find((user) => user.username === username);
+}
+
+io.on('connection', (socket) => {
+  console.log("a user connected");
+
+  socket.on("newUser", (username)=>{
+    addNewUser(username, socket.id);
+  })
+
+  socket.on("sendNotification", ({senderName, receiverName, content}) => {
+    const receiver = getUser(receiverName);
+    io.to(receiver.socketID).emit("getNotification", {
+      senderName,
+      content
+    });
+  });
+
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
+    console.log("a user disconnected");
+  })
+})
+
 app.use(compression());
 
 // You may want to be more aggressive with this caching
@@ -20,7 +58,9 @@ app.use(morgan("tiny"));
 app.all(
   "*",
   MODE === "production"
-    ? createRequestHandler({ build: require("./build") })
+    ? createRequestHandler({ 
+      build: require("./build") 
+    })
     : (req, res, next) => {
         purgeRequireCache();
         const build = require("./build");
@@ -28,10 +68,10 @@ app.all(
       }
 );
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
-});
+
+// server.listen(port, () => {
+//   console.log(`Express server listening on port ${port}`);
+// });
 
 ////////////////////////////////////////////////////////////////////////////////
 function purgeRequireCache() {
