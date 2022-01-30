@@ -47,6 +47,8 @@ export default function newsResourceContent() {
 
 
   //useEffect for alan
+
+
   useEffect(() => {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({

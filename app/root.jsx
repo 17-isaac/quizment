@@ -99,12 +99,13 @@ export default function App() {
   //         console.log(articles);
   //         setNewsArticles(articles);
   //         setActiveArticle(-1);
-  //       } else if (command === "studentProg") {
+  //       } else
+  //        if (command === "studentProg") {
   //         navigate('/teacherViewStudentProgress');
   //       } else if (command === "studentDash") {
   //         navigate('/studentDashboard');
   //       } else if (command === "newsResource") {
-  //         navigate('/newsResource');
+  //         navigate('/resourceNews');
   //       }
   //     },
   //   });
