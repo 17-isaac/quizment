@@ -169,26 +169,7 @@ export default function teacherDashboard() {
         <Card className="boxa col-4 boxh ms-5">
           <Card.Title className="boxaTitle">Average Student Points:</Card.Title>
           <Card.Text> {rAvgTotal}</Card.Text>
-        </Card>
-
-        <Card className="boxa boxh col-3 ms-5">
-          <Card.Title className="boxaTitle">Minimum Points :</Card.Title>
-          <Card.Text> {minPts}</Card.Text>
-        </Card>
-
-        <Card className="boxa boxh col-3 ms-5 ">
-          <Card.Title className="boxaTitle">Maximum Points:</Card.Title>
-          <Card.Text> {maxPts}</Card.Text>
-        </Card>
-      </Row>
-
-      <Row>
-        <Card className="boxa boxh col-4 ms-5 ">
-          <Card.Title className="boxaTitle">Average Streaks:</Card.Title>
-
-          <Card.Text> {rAvgStreaks}</Card.Text>
-        </Card>
-        <div className="pieSize col-3 ms-5 me-5">
+        </Card>        <div className="pieSize col-3 ms-5 me-5">
           <h3>Streaks Pie:</h3>
           <MDBContainer>
             <Pie data={dataP} options={{ responsive: true }} />
@@ -208,11 +189,13 @@ export default function teacherDashboard() {
         <Col className="col-4 me-5">
 
           <div className="label  ">
-          <div  className="mt-4">
+          <h6>Streaks Level Indicator</h6>
+        
+          <div  className="mt-3">
           <h3>0</h3>
 
           </div>
-          <div  className="mt-4">
+          <div  className="mt-2">
           <h3>1</h3>
 
           </div>
@@ -232,10 +215,11 @@ export default function teacherDashboard() {
           <h3>5</h3>
 
           </div>
-          <div className="mt-2">
+          <div className="mt-3">
           <h3>More than 5</h3>
 
           </div>
+          
           </div>
    
         </Col>
@@ -245,6 +229,29 @@ export default function teacherDashboard() {
         </Row>
         
        
+
+
+      </Row>
+
+      <Row>
+        <Card className="boxa boxh col-4 ms-5 ">
+          <Card.Title className="boxaTitle">Average Streaks:</Card.Title>
+
+          <Card.Text> {rAvgStreaks}</Card.Text>
+        </Card>
+
+        
+
+        <Card className="boxa boxh col-3 ms-5">
+          <Card.Title className="boxaTitle">Minimum Points :</Card.Title>
+          <Card.Text> {minPts}</Card.Text>
+        </Card>
+
+        <Card className="boxa boxh col-3 ms-5 ">
+          <Card.Title className="boxaTitle">Maximum Points:</Card.Title>
+          <Card.Text> {maxPts}</Card.Text>
+        </Card>
+
       </Row>
 
     </div>

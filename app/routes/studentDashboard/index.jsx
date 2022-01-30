@@ -1,19 +1,8 @@
 import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 import { useEffect, useState, createRef } from "react";
-import {
-  Button,
-  Card,
-  ProgressBar,
-  Row,
-  Col,
-  DropdownButton,
-  Dropdown,
-  Form,
-} from "react-bootstrap";
-//  import addTwoNum from "~/components/algorithm/sum";
-//  import performanceCal from "~/components/algorithm/performanceCal"
-// import NewsCards from "~/components/NewsCards";
+
+
 
 export function links() {
   return [

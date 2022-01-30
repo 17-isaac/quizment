@@ -1,12 +1,15 @@
 
 import { Outlet } from "remix";
-import React ,{ useEffect,useState } from 'react';
+//import react from react
+import React from 'react';
+//import navbar 
 import {Navbar} from "~/components/seacrchClone/Navbar"
 
-
+//import routes
 import {Routes} from "~/components/seacrchClone/Routes"
-
+//import ResultContextProvider
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
+//import gloabal.css for styling
 import Style from "../../styles/global.css"
 export function links() {
   return [

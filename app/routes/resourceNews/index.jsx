@@ -1,36 +1,27 @@
 import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  ProgressBar,
-  Row,
-  Col,
-  DropdownButton,
-  Dropdown,
-  Form,
-} from "react-bootstrap";
+
 
 import NewsCards from "~/components/NewsCards/NewsCards";
 
-import newResource from "~/styles/news.css";
+
 
 const infoCards = [
   {
     color: "#1565c0",
     title: "News by category",
-    text: "Try saying give me the latest : Business, Entertainment, Technology",
+    text: "Try saying 'give me the latest' : Business, Entertainment, Technology,Health,Science,Sports,Technology",
   },
   {
     color: "#4527a0",
     title: "News by Terms",
-    text: " Try saying What's up with : Bitcoin, Playstation 5, Smartphone",
+    text: " Try saying 'tell me news on': global warming, bitcoin ",
   },
   {
     color: "#283593",
     title: "News by Sources",
-    text: "Try saying give me the news from: ABC News, CNN, BBC News",
+    text: "Try saying 'give me the news from': ABC News, CNN, BBC News",
   },
 ];
 
