@@ -30,12 +30,12 @@ const fdb = getFirestore();
 // authentication status
 async function authStatus(userType) {
   if (userType == 1) {
-    if (window.location.pathname.toLowerCase().includes('student')) {
+    if (window.location.pathname.toLowerCase().includes('student') || window.location.pathname.toLowerCase().includes('search') || window.location.pathname.toLowerCase().includes('reourcenews') || window.location.pathname.toLowerCase().includes('images') || window.location.pathname.toLowerCase().includes('videos')) {
     } else {
       window.location.assign('http://localhost:3000/studentDashboard');
     }
   } else if (userType == 2) {
-    if (window.location.pathname.toLowerCase().includes('teacher')) {
+    if (window.location.pathname.toLowerCase().includes('teacher') || window.location.pathname.toLowerCase().includes('quizadmin')) {
     } else {
       window.location.assign('http://localhost:3000/teacherDashboard');
     }

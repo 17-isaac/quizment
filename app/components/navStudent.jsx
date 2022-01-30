@@ -21,8 +21,13 @@ export function NavigationStudent({ onClick }) {
          <div className="wrapper">
             <ul>
                <Link className={'linkForDashboards'} to="/studentDashboard" style={{ textDecoration: 'none' }}><li><a>Student Dashboard</a></li></Link>
-               <li><a href="#">About</a></li>
-               <li><a href="#">Services</a></li>
+               <li><a href="#">Quiz</a></li>
+               <li><a href="#">Rewards</a></li>
+               <li><a href="#">Rewards History</a></li>
+               <li><a href="#">Resource News</a></li>
+               <li><a href="#">Q Search</a></li>
+               <li><a href="#">Q Images</a></li>
+               <li><a href="#">Q Videos</a></li>
                <li><a href="#">Settings</a></li>
                <br></br>
                <Form method="post">

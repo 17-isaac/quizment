@@ -22,7 +22,9 @@ export function NavigationTeacher({ onClick }) {
             <ul>
                <Link className={'linkForDashboards'} to="/teacherDashboard" style={{ textDecoration: 'none' }}><li><a>Teacher Dashboard</a></li></Link>
                <li><a href="#">Student Progress Management</a></li>
-               <li><a href="#">Services</a></li>
+               <li><a href="#">Rewards Administration</a></li>
+               <li><a href="#">Rewards History</a></li>
+               <li><a href="#">Quiz Administration</a></li>
                <li><a href="#">Settings</a></li>
                <br></br>
                <Form method="post">

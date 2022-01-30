@@ -21,6 +21,7 @@ model Rewards {
   rewardName    String          @db.VarChar
   ptsRequired   Int
   url           String          @db.VarChar
+  isAvailable   Int             @default(1)
   rewardHistory RewardHistory[]
 }
 
@@ -30,9 +31,7 @@ model Student {
   Uid            String           @db.VarChar
   streaks        Int
   totalPts       Int
-  mazeLvl        Int
   redeemedPts    Int
-  type           Int
   lastLogin      BigInt?
   badgeHistory   BadgeHistory[]
   rewardHistory  RewardHistory[]
@@ -70,11 +69,6 @@ model Event {
   studentHistory StudentHistory[]
 }
 
-model MazeContent {
-  mazeLvl Int @id(map: "mazeContent_pkey") @default(autoincrement())
-  points  Int
-}
-
 model QuizHistory {
   quizhistoryid Int    @id @default(autoincrement())
   quizid        String @db.VarChar
@@ -84,11 +78,13 @@ model QuizHistory {
 }
 
 model RewardHistory {
-  rewardHistoryID Int     @id(map: "rewardHistory_pkey") @default(autoincrement())
+  rewardHistoryID Int      @id(map: "rewardHistory_pkey") @default(autoincrement())
   studentID       Int
   rewardID        Int
-  rewards         Rewards @relation(fields: [rewardID], references: [rewardID], onDelete: NoAction, onUpdate: NoAction, map: "rewardID")
-  student         Student @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
+  dateCreated     DateTime @default(now()) @db.Timestamptz(6)
+  isCollected     Int
+  rewards         Rewards  @relation(fields: [rewardID], references: [rewardID], onDelete: NoAction, onUpdate: NoAction, map: "rewardID")
+  student         Student  @relation(fields: [studentID], references: [studentID], onDelete: Cascade, onUpdate: NoAction, map: "studentID_FK")
 }
 
 model StudentHistory {
@@ -106,8 +102,8 @@ model Teacher {
 
 model User {
   userid Int     @id @default(autoincrement())
-  email  String  @db.VarChar
+  email  String  @db.VarChar @unique
   name   String? @db.VarChar
-  uid    String  @db.VarChar
+  uid    String  @db.VarChar @unique
   type   Int
 }

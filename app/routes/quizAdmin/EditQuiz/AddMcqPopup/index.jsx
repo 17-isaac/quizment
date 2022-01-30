@@ -7,7 +7,6 @@ import { Col, Row, Form } from "react-bootstrap";
 import { fdb } from "~/utils/firebase";
 import { Link } from "remix";
 import { Fragment, useState } from "react";
-import { async } from "@firebase/util";
 
 
 export default function AddMcqPopup() {

@@ -1,5 +1,5 @@
-import { useLoaderData, useNavigate} from "remix";
-import { collection, getDocs,  updateDoc, doc } from 'firebase/firestore';
+import { useLoaderData, useNavigate } from "remix";
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { fdb } from "~/utils/firebase";
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
@@ -8,6 +8,15 @@ import Modal from 'react-modal';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap';
+import { NavigationTeacher } from '~/components/navTeacher';
+import styleForNav from "~/styles/nav.css";
+
+export function links() {
+  return [{
+    rel: "stylesheet", href: styleForNav,
+    rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+  }];
+}
 
 export async function loader() {
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
@@ -21,17 +30,29 @@ export async function loader() {
 };
 
 export default function quizAdmin() {
+  const [clickStatus, setClickStatus] = useState(0);
+  const [displayStuff, setDisplayStatus] = useState(true);
+  function handleClick() {
+    if (clickStatus === 0) {
+      setClickStatus(1);
+      setDisplayStatus(false);
+    } else {
+      setClickStatus(0);
+      setDisplayStatus(true);
+    }
+  }
+
   const [state, setState] = useState({
     quizName: "",
     subject: "",
-    totalPoints:"",
-    totalMarks:"",
-    level:"",
-    dueDate:"",
-    duration:"",
-    publish:""
+    totalPoints: "",
+    totalMarks: "",
+    level: "",
+    dueDate: "",
+    duration: "",
+    publish: ""
   })
-    const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
 
   const [quizDocID, setQuizDocID] = useState("")
   let navigate = useNavigate();
@@ -53,12 +74,12 @@ export default function quizAdmin() {
     setState({
       quizName: e.quizName,
       subject: e.subject,
-      totalPoints:e.totalPoints,
-      totalMarks:e.totalMarks,
-      level:e.level,
-      dueDate:e.dueDate,
-      duration:e.duration,
-      publish:e.publish
+      totalPoints: e.totalPoints,
+      totalMarks: e.totalMarks,
+      level: e.level,
+      dueDate: e.dueDate,
+      duration: e.duration,
+      publish: e.publish
     })
   }
   const setModalIsOpenToFalseQuizEdit = () => {
@@ -69,12 +90,12 @@ export default function quizAdmin() {
 
     const value = e.target.value;
     let quiz = {
-      docId:value
+      docId: value
     }
     navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: value } });
-    
+
   }
-  function handleChange (e){
+  function handleChange(e) {
     e.preventDefault();
     //setQuizName(e.target.value);
     const value = e.target.value;
@@ -82,212 +103,203 @@ export default function quizAdmin() {
       ...state,
       [e.target.name]: value
     });
-}
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  await updateDoc(doc(fdb, "Quiz", quizDocID), {
-    quizName: state.quizName,
-    subject: state.subject,
-    totalPoints:state.totalPoints,
-    totalMarks:state.totalMarks,
-    level:state.level,
-    dueDate:state.dueDate,
-    duration:state.duration
-  });
-  window.alert('updated!')
-  window.location.reload();
-  
-}
-const publishHideButton = (docID, publish) => {
-const published = "1"
-const toHide = "0"
-  if(publish==="0"){
-    updateDoc(doc(fdb, "Quiz", docID), {
-    publish: published
-  })
-  }else if(publish==="1"){
-     updateDoc(doc(fdb, "Quiz", docID), {
-      publish:toHide
-    })
-   ;
-  }else {
-    console.log("error")
   }
-  
-  
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateDoc(doc(fdb, "Quiz", quizDocID), {
+      quizName: state.quizName,
+      subject: state.subject,
+      totalPoints: state.totalPoints,
+      totalMarks: state.totalMarks,
+      level: state.level,
+      dueDate: state.dueDate,
+      duration: state.duration
+    });
+    window.alert('updated!')
+    window.location.reload();
+
+  }
+  const publishHideButton = (docID, publish) => {
+    const published = "1"
+    const toHide = "0"
+    if (publish === "0") {
+      updateDoc(doc(fdb, "Quiz", docID), {
+        publish: published
+      })
+    } else if (publish === "1") {
+      updateDoc(doc(fdb, "Quiz", docID), {
+        publish: toHide
+      })
+        ;
+    } else {
+      console.log("error")
+    }
+
+
+  }
   const data = useLoaderData();
 
- 
+
   return (<>
     <div>
+      <div>
+        <NavigationTeacher onClick={handleClick} />
+      </div>
       <h1></h1>
+      { displayStuff &&
+        <div className="content">
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {data && data.map(quiz => {
 
-      <Row xs={1} md={2} lg={3} className="g-4">
-        {data && data.map(quiz => {   
-            
-        if (quiz.publish==="0") {
-          return ( <Col>
-            <Card border="warning">
-              <Card.Title>{quiz.quizName}</Card.Title>
-              <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-              <Card.Text>Subject : {quiz.subject}</Card.Text>
-              <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-              <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-              <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-            <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-            <Button size="sm" variant="success"  onClick={() => publishHideButton(quiz.id,quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
-           
-            </Card>
-          </Col>
-           
-          )
-        } else if (quiz.publish==="1") {
-          return (
-            <Col>
-            <Card border="warning">
-            <Card.Title>{quiz.quizName}</Card.Title>
-            <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-            <Card.Text>Subject : {quiz.subject}</Card.Text>
-            <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-            <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-            <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-          <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-          <Button size="sm"  variant="danger" onClick={() => publishHideButton(quiz.id, quiz.publish)}>Hide</Button>
-         
-          </Card>
-        </Col>
-          )
-        } else {
-          return (
-            <div>catch all</div>
-          )
-        }
-      
+              if (quiz.publish === "0") {
+                return (<Col>
+                  <Card border="warning">
+                    <Card.Title>{quiz.quizName}</Card.Title>
+                    <Card.Text>Points : {quiz.totalPoints}</Card.Text>
+                    <Card.Text>Subject : {quiz.subject}</Card.Text>
+                    <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
+                    <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+                    <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
+                    <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
+                    <Button size="sm" variant="success" onClick={() => publishHideButton(quiz.id, quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
 
+                  </Card>
+                </Col>
 
-    
- } )}
-      </Row>
+                )
+              } else if (quiz.publish === "1") {
+                return (
+                  <Col>
+                    <Card border="warning">
+                      <Card.Title>{quiz.quizName}</Card.Title>
+                      <Card.Text>Points : {quiz.totalPoints}</Card.Text>
+                      <Card.Text>Subject : {quiz.subject}</Card.Text>
+                      <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
+                      <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+                      <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
+                      <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
+                      <Button size="sm" variant="danger" onClick={() => publishHideButton(quiz.id, quiz.publish)}>Hide</Button>
 
-      <button onClick={setModalIsOpenToTrue} >Add New Quiz </button>
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        ariaHideApp={false} >
-
-        <button onClick={setModalIsOpenToFalse}>x</button>
-        <AddQuiz />
-      </Modal>
-
- <Modal
-        isOpen={modalIsOpenQuizEdit}
-        onRequestClose={() => setModalIsOpenQuizEdit(false)}
-        ariaHideApp={false} >
-
-        <button onClick={setModalIsOpenToFalseQuizEdit}>x</button>
-        <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Edit Form</Form.Label>
-                    <Form.Control 
-                    type="text"
-                     value={state.quizName}
-                     name="quizName"
-                    onChange={handleChange}/>
-                    <Form.Text className="text-muted">
-                        
-                    </Form.Text>
-                </Form.Group>
+                    </Card>
+                  </Col>
+                )
+              } else {
+                return (
+                  <div>catch all</div>
+                )
+              }
 
 
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Subject</Form.Label>
-                    <Form.Select aria-label="Default select example" name="subject"
-          defaultValue={state.subject}
-          onChange={handleChange}>
-                        <option>Select Quiz subject</option>
-                        <option value="Math">Math</option>
-                        <option value="Biology">Biology</option>
-                        <option value="Phyics">Physics</option>
-                    </Form.Select>
-                </Form.Group>
 
-                <Form.Group>
-                    <Form.Label>Level</Form.Label>
-                    <div key={`inline-radio`} className="mb-3">
-                        <Form.Check
-                            inline
-                            label="Secondary 1"
-                            name="level"
-                            type='radio'
-                            id={`inline-radio-1`}
-                            value= "1"
-                            checked={state.level === "1"}
-                            onChange={handleChange}
-                        />
-                        <Form.Check
-                            inline
-                            label="Secondary 2"
-                            name="level"
-                            type='radio'
-                            id={`inline-radio-2`}
-                            value ="2"
-                            checked={state.level === "2"}
-                            onChange={handleChange}
-                        />
+            })}
+          </Row>
 
-                    </div>
+          <button onClick={setModalIsOpenToTrue} >Add New Quiz </button>
 
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Due Date</Form.Label>
-                    <Form.Control
-                        type="date"
-                        name="dueDate"
-                        placeholder={state.dueDate}
-                        
-                        onChange={handleChange}
-                    />
-                </Form.Group>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => setModalIsOpen(false)}
+            ariaHideApp={false} >
 
+            <button onClick={setModalIsOpenToFalse}>x</button>
+            <AddQuiz />
+          </Modal>
 
-                <Form.Group>
-                    <Form.Label>Duration(Minutes)</Form.Label>
-                    <Form.Control 
-                    type="number"
-                     value={state.duration}
-                     name="duration"
-                     onChange={handleChange} />
-                </Form.Group>
+          <Modal
+            isOpen={modalIsOpenQuizEdit}
+            onRequestClose={() => setModalIsOpenQuizEdit(false)}
+            ariaHideApp={false} >
 
-                <Form.Group>
-                    <Form.Label>Total Mark</Form.Label>
-                    <Form.Control
-                     type="number" 
-                     value={state.totalMarks}
-                     name="totalMarks"
-                     onChange={handleChange}  />
-                </Form.Group>
+            <button onClick={setModalIsOpenToFalseQuizEdit}>x</button>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Edit Form</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={state.quizName}
+                  name="quizName"
+                  onChange={handleChange} />
+                <Form.Text className="text-muted">
+                </Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Subject</Form.Label>
+                <Form.Select aria-label="Default select example" name="subject"
+                  defaultValue={state.subject}
+                  onChange={handleChange}>
+                  <option>Select Quiz subject</option>
+                  <option value="Math">Math</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Phyics">Physics</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Level</Form.Label>
+                <div key={`inline-radio`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="Secondary 1"
+                    name="level"
+                    type='radio'
+                    id={`inline-radio-1`}
+                    value="1"
+                    checked={state.level === "1"}
+                    onChange={handleChange}
+                  />
+                  <Form.Check
+                    inline
+                    label="Secondary 2"
+                    name="level"
+                    type='radio'
+                    id={`inline-radio-2`}
+                    value="2"
+                    checked={state.level === "2"}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Due Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="dueDate"
+                  placeholder={state.dueDate}
 
-                <Form.Group>
-                    <Form.Label>Total Points</Form.Label>
-                    <Form.Control 
-                    type="number" 
-                    value={state.totalPoints}
-                    name="totalPoints"
-                     onChange={handleChange} />
-                </Form.Group>
-
-
-                <Button variant="primary" type="submit">
-                    Submittt
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Duration(Minutes)</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={state.duration}
+                  name="duration"
+                  onChange={handleChange} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Total Mark</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={state.totalMarks}
+                  name="totalMarks"
+                  onChange={handleChange} />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Total Points</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={state.totalPoints}
+                  name="totalPoints"
+                  onChange={handleChange} />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Submittt
                 </Button>
             </Form>
-
-        
-      </Modal>
+          </Modal>
+        </div>
+      }
     </div>
   </>
   );
@@ -300,10 +312,10 @@ export function ErrorBoundary({ error }) {
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
       </head>
       <body>
-     <div>
-        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
-        style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
-     </div>
+        <div>
+          <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json" background="transparent" speed="1"
+            style={{ width: 600, height: 600, 'margin-left': '25%' }} loop controls autoplay></lottie-player>
+        </div>
       </body>
     </html>
   );

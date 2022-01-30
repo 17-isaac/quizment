@@ -1,4 +1,13 @@
 import { Outlet } from "remix";
+import stylesNav from '~/styles/nav.css';
+
+export function meta() {
+  return { title: "Student Dashboard" };
+}
+
+export function links() {
+  return [{ rel: "stylesheet", href: stylesNav }];
+}
 
 export default function StudentDashboard() {
   return (
