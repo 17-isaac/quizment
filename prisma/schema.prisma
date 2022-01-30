@@ -28,7 +28,7 @@ model Rewards {
 model Student {
   studentID      Int              @id @default(autoincrement())
   name           String           @db.VarChar
-  Uid            String           @db.VarChar
+  Uid            String           @unique @db.VarChar
   streaks        Int
   totalPts       Int
   redeemedPts    Int
@@ -102,8 +102,8 @@ model Teacher {
 
 model User {
   userid Int     @id @default(autoincrement())
-  email  String  @db.VarChar
+  email  String  @unique @db.VarChar
   name   String? @db.VarChar
-  uid    String  @db.VarChar
+  uid    String  @unique @db.VarChar
   type   Int
 }
