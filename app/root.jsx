@@ -90,25 +90,25 @@ export default function App() {
   });
 
  
-  useEffect(() => {
-    const alanBtn = require("@alan-ai/alan-sdk-web");
-    alanBtn({
-      key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command, articles }) => {
-        if (command === "newHeadlines") {
-          console.log(articles);
-          setNewsArticles(articles);
-          setActiveArticle(-1);
-        } else if (command === "studentProg") {
-          navigate('/teacherViewStudentProgress');
-        } else if (command === "studentDash") {
-          navigate('/studentDashboard');
-        } else if (command === "newsResource") {
-          navigate('/newsResource');
-        }
-      },
-    });
-  }, []);
+  // useEffect(() => {
+  //   const alanBtn = require("@alan-ai/alan-sdk-web");
+  //   alanBtn({
+  //     key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
+  //     onCommand: ({ command, articles }) => {
+  //       if (command === "newHeadlines") {
+  //         console.log(articles);
+  //         setNewsArticles(articles);
+  //         setActiveArticle(-1);
+  //       } else if (command === "studentProg") {
+  //         navigate('/teacherViewStudentProgress');
+  //       } else if (command === "studentDash") {
+  //         navigate('/studentDashboard');
+  //       } else if (command === "newsResource") {
+  //         navigate('/newsResource');
+  //       }
+  //     },
+  //   });
+  // }, []);
 
   // console.log(userid);
   return (

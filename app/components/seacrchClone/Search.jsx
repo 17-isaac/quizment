@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { useResultContext } from "~/contexts/ResultContextProvider";
@@ -82,7 +82,7 @@ export const Search = () => {
         </Col>
       </Row>
 
-      <Links />
+      <Linkss />
     </div>
   );
 };
