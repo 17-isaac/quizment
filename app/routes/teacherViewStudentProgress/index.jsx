@@ -24,7 +24,14 @@ export function links() {
 const num = 5;
 
 export async function loader() {
+
+  
+
   const data = {
+
+  
+
+
     studentPerformanceDetails: await db.student.findMany({
       select: {
         name: true,
@@ -66,11 +73,7 @@ export default function teacherViewStudentProgressContent() {
     alanBtn({
       key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
       onCommand: ({ command }) => {
-        if (command === "newHeadlines") {
-          console.log(articles);
-          setNewsArticles(articles);
-          setActiveArticle(-1);
-        } else 
+     
         if (command === "studentProg") {
           window.open(
             "http://localhost:3000/teacherViewStudentProgress",

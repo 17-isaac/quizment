@@ -22,10 +22,7 @@ export const ResultContextProvider = ({ children }) => {
 
     const data = await response.json();
 
-    console.log("******************data***********");
-    console.log(data);
-    console.log("******************data***********");
-    // console.log({type,data})
+   
 
     if (type.includes("/images")) {
       setResults(data.image_results);

@@ -122,7 +122,7 @@ export async function loader() {
 }
 
 export default function teacherDashboard() {
-  const [darkTheme, setDarkTheme] = useState(false);
+  
   const data = useLoaderData();
 
   var avgTotal = data.studentTotalPtsAvg._avg.totalPts;

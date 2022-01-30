@@ -26,7 +26,7 @@ export function links() {
 
 export default function videos() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+ 
 
   return (
     <div>
@@ -35,7 +35,7 @@ export default function videos() {
  
       <div className="s1">
       <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
+        <Navbar/>
         <Routes/>
 
 

@@ -9,7 +9,7 @@ import {Routes} from "~/components/seacrchClone/Routes"
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
-// import globalS from '~/styles/global.css'
+
 
 import {
   Button,
@@ -25,10 +25,7 @@ import {
 
 export function links() {
   return [
-    // {
-    //   rel: "stylesheet",
-    //   href: globalS,
-    // },
+   
     {
       rel: "stylesheet",
       href: "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
@@ -39,7 +36,7 @@ export function links() {
 
 export default function videos() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+ 
 
   return (
 

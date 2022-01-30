@@ -23,7 +23,7 @@ export function links() {
 
 export default function images() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+   
 
   return (
     <div>
@@ -33,7 +33,7 @@ export default function images() {
 
       <div className="align-items-center ml-3 s1">
         <ResultContextProvider lg="4">
-          <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+          <Navbar  />
           <Routes />
       
         </ResultContextProvider>

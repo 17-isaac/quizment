@@ -32,7 +32,7 @@ export function links() {
 }
 
 export default function search() {
-  const [darkTheme, setDarkTheme] = useState(false);
+
 
   return (
     <div>
@@ -40,7 +40,7 @@ export default function search() {
 
       <div className="col-8 s1">
         <ResultContextProvider lg="4">
-          <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+          <Navbar  />
           <Routes />
           
         </ResultContextProvider>

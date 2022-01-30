@@ -12,7 +12,7 @@ import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 export default function images() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+  
 
   return (
     <div>
@@ -23,13 +23,7 @@ export default function images() {
         <Outlet/>
       </main>
       <div>
-      {/* <ResultContextProvider>
-        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
-        <Routes/>
-        <Footer/>
-
-        </ResultContextProvider> */}
-
+      
 
       </div>
     </div>

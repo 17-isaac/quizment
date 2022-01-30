@@ -13,7 +13,7 @@ import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 export default function search() {
 
-    const [darkTheme,setDarkTheme]=useState(false)
+  
 
   return (
     <div>

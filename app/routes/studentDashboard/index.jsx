@@ -43,14 +43,15 @@ export async function loader() {
   };
 
 
-  // await db.Student.update({
-  //   where: {
-  //     name: "isaa.71717@gmail.com",
-  //   },
-  //   data: {
-  //     lastLogin: new Date().getTime(),
-  //   },
-  // });
+  const currentDate=new Date().getTime()
+ const uDate= await db.student.update({
+    where: {
+      name: "isaa.71717@gmail.com",
+    },
+    data: {
+      lastLogin:currentDate,
+    },
+  });
 
 
   // await db.Student.upsert({
@@ -66,7 +67,6 @@ export async function loader() {
   //   },
   // })
 
-  const currentLogin = new Date().getTime();
 
   let lastLog = data.studentDetailsData.lastLogin.toString();
   let name = data.studentDetailsData.name;
@@ -85,9 +85,11 @@ export async function loader() {
     //     name: data.studentDetailsData.name,
     //   },
     //   data: {
-    //     streaks:data.studentDetailsData.streaks +1
+    //     streaks:1
     //   },
     // })
+
+
   } else if (diffTime > 86400000) {
     console.log("streak 0");
     // await db.student.update({
