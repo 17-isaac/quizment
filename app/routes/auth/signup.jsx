@@ -1,4 +1,4 @@
-import { useActionData, redirect, Form, Link as Linker } from "remix";
+import { useActionData, redirect, Form, Link as Linker, json } from "remix";
 import { getSession, commitSession } from "~/sessions.server";
 import { db } from "~/utils/db.server";
 import { auth } from '~/utils/firebase';
@@ -30,7 +30,7 @@ function Copyright(props) {
 }
 
 export function meta() {
-    return { title: "Sign Up" };
+  return { title: "Sign Up" };
 }
 
 // our action function will be launched when the submit button is clicked
@@ -40,41 +40,36 @@ export let action = async ({ request }) => {
   let emailInput = formData.get("email");
   let password = formData.get("password");
   let nameInput = formData.get("name");
-  await createUserWithEmailAndPassword(auth, emailInput, password);
-  await signInWithEmailAndPassword(auth, emailInput, password);
-  // if signin was successful then we have a user
-  if (auth.currentUser) {
-    // let's setup the session and cookie wth users idToken
-    let session = await getSession(request.headers.get("Cookie"))
-    session.set("access_token", await user.getIdToken())
-    // check user type
-    const userCreation = await db.user.create({
-        data: {
-          email: emailInput,
-          name: nameInput,
-          uid: user.uid,
-          type: 1
+  //setup user data 
+  let {session: sessionData, user, error: signUpError} =  await createUserWithEmailAndPassword(auth, emailInput, password)
+        if (!signUpError){
+            await db.user.create({
+                data: {
+                  email: emailInput,
+                  name: nameInput,
+                  uid: user.uid,
+                  type: 1
+                }
+            })
+          //   await db.student.create({
+          //     data: {
+          //       name: nameInput,
+          //       uid: user.uid,
+          //       streaks: 0,
+          //       totalPts: 0,
+          //       redeemedPts: 0
+          //     }
+          // })
+            let session = await getSession(request.headers.get("Cookie"));
+            session.set("access_token", auth.currentUser.access_token);
+            return redirect("/studentDashboard",{
+                headers: {
+                    "Set-Cookie": await commitSession(session),
+                }
+            })
+        } else {
+            return redirect('../auth', signUpError.code);
         }
-    });
-
-    const createStudent = await db.student.create({
-      data: {
-        name: nameInput,
-        uid: user.uid,
-        streaks: 0,
-        totalPts: 0,
-        redeemedPts: 0,
-        lastLogin: 0
-      }
-    });
-    return redirect("/studentDashboard", {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      }
-    })
-  } else {
-    return redirect('../auth', error.code);
-  }
 }
 
 export default function Signup() {

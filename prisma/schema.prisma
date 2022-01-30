@@ -28,7 +28,7 @@ model Rewards {
 model Student {
   studentID      Int              @id @default(autoincrement())
   name           String           @db.VarChar
-  Uid            String           @db.VarChar @unique
+  uid            String           @db.VarChar @unique @map("Uid")
   streaks        Int
   totalPts       Int
   redeemedPts    Int

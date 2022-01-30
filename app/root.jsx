@@ -75,40 +75,13 @@ export async function loader({ request }) {
 export default function App() {
   const data = useLoaderData();
   let location = useLocation();
-  let navigate = useNavigate();
 
-   //initialisation state variable for newsarticle
-   const [newsArticles, setNewsArticles] = useState([]);
-   //initialisation state variable for activearticle
-   const [activeArticle, setActiveArticle] = useState(-1);
- 
   useEffect(() => {
     const socket = io(location);
     if (data) {
       authStatus(data.userType.type);
     }
   });
-
- 
-  useEffect(() => {
-    const alanBtn = require("@alan-ai/alan-sdk-web");
-    alanBtn({
-      key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command, articles }) => {
-        if (command === "newHeadlines") {
-          console.log(articles);
-          setNewsArticles(articles);
-          setActiveArticle(-1);
-        } else if (command === "studentProg") {
-          navigate('/teacherViewStudentProgress');
-        } else if (command === "studentDash") {
-          navigate('/studentDashboard');
-        } else if (command === "newsResource") {
-          navigate('/newsResource');
-        }
-      },
-    });
-  }, []);
 
   // console.log(userid);
   return (
