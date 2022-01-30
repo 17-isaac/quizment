@@ -25,9 +25,10 @@ export function NavigationTeacher({ onClick }) {
                <li><a href="#">Rewards Administration</a></li>
                <li><a href="#">Rewards History</a></li>
                <li><a href="#">Quiz Administration</a></li>
-               <li><a href="#">Settings</a></li>
+               <li><a href="#">Teacher Settings</a></li>
                <br></br>
                <Form method="post">
+                  <input name='logout' value="LOGOUT" type='hidden'></input>
                   <button type="submit" style={{ border: "none", backgroundColor: "transparent", outline: "none" }}><li><a className="logoutColor">Logout</a></li></button>
                </Form>
             </ul>

@@ -34,7 +34,7 @@ export function meta() {
 }
 
 // our action function will be launched when the submit button is clicked
-// this will sign in our firebase user and create our session and cookie using user.getIDToken()
+// this will sign up our firebase user and create our session and cookie using user.getIDToken()
 export let action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");

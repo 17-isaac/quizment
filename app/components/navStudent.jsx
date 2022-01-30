@@ -28,9 +28,10 @@ export function NavigationStudent({ onClick }) {
                <li><a href="#">Q Search</a></li>
                <li><a href="#">Q Images</a></li>
                <li><a href="#">Q Videos</a></li>
-               <li><a href="#">Settings</a></li>
+               <li><a href="#">Student Settings</a></li>
                <br></br>
                <Form method="post">
+                  <input name='logout' value="LOGOUT" type='hidden'></input>
                   <button type="submit" style={{ border: "none", backgroundColor: "transparent", outline: "none" }}><li><a className="logoutColor">Logout</a></li></button>
                </Form>
             </ul>
