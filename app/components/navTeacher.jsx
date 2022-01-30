@@ -22,8 +22,8 @@ export function NavigationTeacher({ onClick }) {
             <ul>
                <Link className={'linkForDashboards'} to="/teacherDashboard" style={{ textDecoration: 'none' }}><li><a>Teacher Dashboard</a></li></Link>
                <Link className={'linkForDashboards'} to="/teacherStudentProgress" style={{ textDecoration: 'none' }}><li><a >Student Progress Management</a></li></Link>
-               <li><a >Rewards Administration</a></li>
-               <li><a >Rewards History</a></li>
+               <Link className={'linkForDashboards'} to="/teacherRewards" style={{ textDecoration: 'none' }}><li><a >Rewards Administration</a></li></Link>
+               <Link className={'linkForDashboards'} to="/teacherRewardsHistory" style={{ textDecoration: 'none' }}><li><a >Rewards History</a></li></Link>
                <Link className={'linkForDashboards'} to="/quizAdmin" style={{ textDecoration: 'none' }}><li><a >Quiz Administration</a></li></Link>
                <Link className={'linkForDashboards'} to="/teacherSettings" style={{ textDecoration: 'none' }}><li><a >Teacher Settings</a></li></Link>
                <br></br>
