@@ -11,7 +11,7 @@
     "pushnewdb": "cross-env NODE_ENV=development && export DATABASE_URL=$(heroku config:get DATABASE_URL -a quizment) && npx prisma db push && npx prisma generate",
     "prepare": "npx prisma generate",
     "start": "cross-env NODE_ENV=production node server/index.js",
-    "start:dev": "cross-env NODE_ENV=development && export DATABASE_URL=$(heroku config:get DATABASE_URL -a quizment) && npx prisma generate && node server/index.js"
+    "start:dev": "cross-env NODE_ENV=development node server/index.js"
   },
   "dependencies": {
     "@alan-ai/alan-sdk-web": "github:alan-ai/alan-sdk-web",
