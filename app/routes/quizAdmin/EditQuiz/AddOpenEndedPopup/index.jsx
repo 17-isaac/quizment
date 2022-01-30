@@ -15,7 +15,6 @@ export default function AddMcqPopup() {
 
     let navigate = useNavigate();
     const location = useLocation();
-    //console.log(JSON.stringify(location.state.doc) + "ITS over here")
     const quizDocID = location.state.doc;
     const [state, setState] = useState({
         question: "",
@@ -36,17 +35,14 @@ export default function AddMcqPopup() {
             ...state,
             [e.target.name]: value
         });
-       // console.log(value + "this is the value")
     }
     function handleFileUpload(e){
         e.preventDefault();
         const newUrl = e.target.files[0]
-     console.log(newUrl)
         setUrl(newUrl)
        
     }
     
-    // Add a new document with a generated id.
     function AddNewQues() {
         if(state.url==""){
         const docRef = addDoc(collection(fdb, "OpenEndedQues"), {
@@ -56,23 +52,18 @@ export default function AddMcqPopup() {
             quizDocID: quizDocID
 
         }).then(function (docRef) {
-            // var documentID = docRef.id;
-            // setDoc(documentID);
             navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
-
-            console.log("Document written with ID: " + docRef.id);
-
         })
             .catch(function (error) {
                 console.error("Error adding document: ", error);
             })
         }else{
 
-            console.log(JSON.stringify(url) +"this is the current state for url")
+    
             const storage = getStorage();
             const storageRef = ref(storage, 'img/' + url.name);
             const file = url;
-            console.log(file + "this is the file" + "this is the file type " + file.type)
+
             // Create file metadata including the content type
             /** @type {any} */
             const metadata = {
@@ -81,9 +72,7 @@ export default function AddMcqPopup() {
             uploadBytes(storageRef, file, metadata);
 
             getDownloadURL(storageRef).then((downloadURL) => {
-                console.log('File available at', downloadURL);
 
-               
                 const docRef = addDoc(collection(fdb, "OpenEndedQues"), {
                     question: state.question,
                     answers:[state.answer1,state.answer2,state.answer3,state.answer4] ,
@@ -92,11 +81,7 @@ export default function AddMcqPopup() {
                     quizDocID: quizDocID
         
                 }).then(function (docRef) {
-                    // var documentID = docRef.id;
-                    // setDoc(documentID);
                     navigate(`/quizAdmin/${quizDocID}`, { state: { doc: quizDocID } });
-        
-                    console.log("Document written with ID: " + docRef.id);
         
                 })
                     .catch(function (error) {
@@ -116,7 +101,6 @@ export default function AddMcqPopup() {
 
 
     const [date, setDate] = useState(new Date());
-    // console.log("DATE", date);
 
     const data = useLoaderData();
     return (<>

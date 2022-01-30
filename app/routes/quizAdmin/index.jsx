@@ -47,7 +47,6 @@ export default function quizAdmin() {
 
   const setModalIsOpenToTrueQuizEdit = (e) => {
     setModalIsOpenQuizEdit(true)
-    console.log(e)
     setQuizDocID(
       e.id
     )
@@ -69,7 +68,6 @@ export default function quizAdmin() {
   function bringToEdit(e) {
 
     const value = e.target.value;
-    console.log("quiz selected!!!" + value);
     let quiz = {
       docId:value
     }
@@ -101,7 +99,6 @@ const handleSubmit = async (e) => {
   
 }
 const publishHideButton = (docID, publish) => {
-  console.log(docID + publish)
 const published = "1"
 const toHide = "0"
   if(publish==="0"){

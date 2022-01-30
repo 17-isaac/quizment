@@ -1,16 +1,12 @@
 import { useLoaderData, useNavigate } from "remix";
-//import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore';
 import { collection, addDoc } from "firebase/firestore"; 
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap'
 import { fdb } from "../../../utils/firestore";
-import { Link } from "remix";
-import { Fragment, useState } from "react";
-import { async } from "@firebase/util";
+import {useState } from "react";
 
 
 export default  function AddQuiz() {
-    //eventhandler for form 
     
 let navigate = useNavigate();
     const [state, setState] = useState({
@@ -22,18 +18,17 @@ let navigate = useNavigate();
         dueDate:"",
         duration:""
       })
-      const [doc, setDoc]= useState ("");
 
     function handleChange (e){
         e.preventDefault();
-        //setQuizName(e.target.value);
         const value = e.target.value;
         setState({
           ...state,
           [e.target.name]: value
         });
     }
-// Add a new document with a generated id.
+
+
  function AddNewQuiz(){
     const docRef =  addDoc(collection(fdb, "Quiz"), {
         quizName : state.quizName ,
@@ -45,11 +40,9 @@ let navigate = useNavigate();
         duration:state.duration,
         publish:"0"
   }).then(function(docRef) {
-     // var documentID = docRef.id;
-     // setDoc(documentID);
      navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
     
-    console.log("Document written with ID: "+ docRef.id);
+  
     
 })
 .catch(function(error) {
@@ -64,10 +57,6 @@ const handleSubmit = (e) => {
     AddNewQuiz();
 }
 
-
-    const [date, setDate] = useState(new Date());
-
-    const data = useLoaderData();
     return (<>
         <div>
             <h1></h1>

@@ -1,4 +1,4 @@
-import { useLocation, useLoaderData } from "remix";
+import { useLocation, useLoaderData,useNavigate} from "remix";
 import { fdb } from "../../../utils/firestore";
 import { db } from "../../../utils/db.server";
 import { useState, useEffect } from "react";
@@ -31,11 +31,9 @@ export async function loader({ params, request }) {
 
 
 export default function results() {
-    const location = useLocation()
+    const location = useLocation();
     const results = location.state.doc;
-    console.log(JSON.stringify(results) + "RESULTS PAGE")
-    console.log("THIS IS HERERER")
-
+  
     const data = useLoaderData();
 
     return (
@@ -45,7 +43,21 @@ export default function results() {
         </div>
     )
 }
-
+export function CatchBoundary() {
+    let caught = useCatch();
+    let params = useParams();
+    let navigate = useNavigate();
+  let data
+    switch (caught.status) {
+     
+      case 404: {
+        return navigate('/studentQuiz')
+      }
+      default: {
+        throw new Error(`Unhandled error: ${caught.status}`);
+      }
+    }
+  }
 export function ErrorBoundary({ error }) {
     console.error(error);
     return (
@@ -56,7 +68,7 @@ export function ErrorBoundary({ error }) {
         <body>
        <div>
           <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
-          style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
+          style={{width: 500, height: 500,  'margin-left':'30%'}}  loop controls autoplay></lottie-player> 
        </div>
         </body>
       </html>

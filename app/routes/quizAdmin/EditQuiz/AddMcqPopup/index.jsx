@@ -16,7 +16,6 @@ export default function AddMcqPopup() {
 
     let navigate = useNavigate();
     const location = useLocation();
-    //console.log(JSON.stringify(location.state.doc) + "ITS over here")
     const quizDocID = location.state.doc;
     const [state, setState] = useState({
         question: "",
@@ -33,23 +32,19 @@ export default function AddMcqPopup() {
 
     function handleChange(e) {
         e.preventDefault();
-        //setQuizName(e.target.value);
         const value = e.target.value;
         setState({
             ...state,
             [e.target.name]: value
         });
-        // console.log(value + "this is the value")
     }
 function handleFileUpload(e){
     e.preventDefault();
     const newUrl = e.target.files[0]
- console.log(newUrl)
     setUrl(newUrl)
    
 }
 
-    // Add a new document with a generated id.
     function AddNewQues() {
         if(url==""){
   const docRef = addDoc(collection(fdb, "Questions"), {
@@ -59,8 +54,6 @@ function handleFileUpload(e){
             quizDocID: quizDocID
 
         }).then(function (docRef) {
-            // var documentID = docRef.id;
-            // setDoc(documentID);
             navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
 
             console.log("Document written with ID: " + docRef.id);
@@ -75,7 +68,6 @@ function handleFileUpload(e){
             const storageRef = ref(storage, 'img/' + url.name);
             const file = url;
             console.log(file + "this is the file" + "this is the file type " + file.type)
-            // Create file metadata including the content type
             /** @type {any} */
             const metadata = {
                 contentType: file.type,
@@ -83,7 +75,6 @@ function handleFileUpload(e){
             uploadBytes(storageRef, file, metadata);
 
             getDownloadURL(storageRef).then((downloadURL) => {
-                console.log('File available at', downloadURL);
 
                
                 const docRef = addDoc(collection(fdb, "Questions"), {
@@ -121,9 +112,7 @@ function handleFileUpload(e){
 
 
     const [date, setDate] = useState(new Date());
-    // console.log("DATE", date);
 
-    const data = useLoaderData();
     return (<>
         <div>
             <h1></h1>

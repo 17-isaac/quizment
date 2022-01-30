@@ -2,9 +2,7 @@ import { useLoaderData, useNavigate, redirect } from "remix";
 function JoinScreen({ start }) {
 
     const data = useLoaderData();
-    console.log(data)
     const quizDetails = data[1]
-    console.log(data[1])
     return (
 
         <div className="join-screen">
@@ -34,6 +32,7 @@ function JoinScreen({ start }) {
     );
 }
 export default JoinScreen;
+
 export function ErrorBoundary({ error }) {
     console.error(error);
     return (

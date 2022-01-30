@@ -8,19 +8,14 @@ import { fdb } from "../../utils/firestore";
 import { Fragment, useState } from "react";
 
 export async function loader() {
- 
-    console.log(JSON.stringify(data[0].quizDocID) + "THIS IS PARAAM");
     const docRef = doc(fdb, "Quiz", "quiz");
     const docSnap = await getDoc(docRef);
-    console.log("Document data:", docSnap.data());
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
+      
     } else {
-      // doc.data() will be undefined in this case
       console.log("No such document!");
     }
   return docSnap;
- console.log(data+"this one")
   
   };
   

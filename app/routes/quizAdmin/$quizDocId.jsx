@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useCatch, redirect, useParams ,LoaderFunction, useNavigate, useLocation} from "remix";
+import { Link, useLoaderData, useCatch, redirect, useParams, useNavigate, useLocation } from "remix";
 import { collection, query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import Modal from 'react-modal';
 import { fdb } from "../../utils/firestore";
@@ -11,11 +11,8 @@ import { useState } from "react";
 import AddMcqPopup from './EditQuiz/AddMcqPopup';
 import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz'
-export async function loader({ params, request })  {
-  //let userId = await getUserId(request);
- 
-  //console.log(JSON.stringify(params.quizDocId) + "THIS IS PARAAM");
-  
+export async function loader({ params, request }) {
+
   const q = query(collection(fdb, "Questions"), where("quizDocID", "==", params.quizDocId));
   const querySnapshot = await getDocs(q);
   const modifiedEvents = querySnapshot.docs.map((doc) => {
@@ -40,12 +37,9 @@ export async function loader({ params, request })  {
 
 export default function JokeRoute() {
   const location = useLocation();
-    //console.log(JSON.stringify(location.state.doc) + "ITS over here")
-
-   // const quizDocID :any = location.state.doc;
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
-  const [urlName, setUrlName]= useState("")
+  const [urlName, setUrlName] = useState("")
   const [selectedQues, setSelected] = useState([])
   const [questionDocID, setQuestionDocID] = useState("")
   const [stateMcq, setStateMcq] = useState({
@@ -57,12 +51,12 @@ export default function JokeRoute() {
     answer: []
   })
   const [stateOpenEnd, setStateOpenEnd] = useState({
-      question: "",
-        answer1:"",
-        answer2:"",
-        answer3:"",
-        answer4:"",
-})
+    question: "",
+    answer1: "",
+    answer2: "",
+    answer3: "",
+    answer4: "",
+  })
 
   const [modal1IsOpen, setModal1IsOpen] = useState(false);
   const [modal2IsOpen, setModal2IsOpen] = useState(false);
@@ -80,7 +74,6 @@ export default function JokeRoute() {
   function setModal2IsOpenToTrue(e) {
 
     setModal2IsOpen(true);
-    console.log
     setQuestionDocID(
       e.id
     )
@@ -97,7 +90,7 @@ export default function JokeRoute() {
   const setModal2IsOpenToFalse = () => {
     setModal2IsOpen(false)
   }
-  
+
   //model3
   const setModal3IsOpenToTrue = () => {
     setModal3IsOpen(true)
@@ -122,10 +115,10 @@ export default function JokeRoute() {
     )
     setStateOpenEnd({
       question: e.question,
-      answer1:e.answers[0],
-      answer2:e.answers[1],
-      answer3:e.answers[2],
-      answer4:e.answers[3],
+      answer1: e.answers[0],
+      answer2: e.answers[1],
+      answer3: e.answers[2],
+      answer4: e.answers[3],
     })
 
   }
@@ -137,7 +130,6 @@ export default function JokeRoute() {
     e.preventDefault();
 
     const value = e.target.value;
-    console.log(value);
     setStateMcq({
       ...stateMcq,
       [e.target.name]: value
@@ -147,7 +139,6 @@ export default function JokeRoute() {
   const handleSubmitMCQ = async (e) => {
     e.preventDefault();
     const value = e.target.value;
-    console.log(questionDocID)
     await updateDoc(doc(fdb, "Questions", questionDocID), {
       question: stateMcq.question,
       choices: [stateMcq.choice1, stateMcq.choice2, stateMcq.choice3, stateMcq.choice4],
@@ -161,99 +152,53 @@ export default function JokeRoute() {
     e.preventDefault();
 
     const value = e.target.value;
-    console.log(value);
     setStateOpenEnd({
       ...stateOpenEnd,
       [e.target.name]: value
     });
 
   }
-  function handleFileUpload(e){
+  function handleFileUpload(e) {
     e.preventDefault();
     const newUrl = e.target.files[0]
- console.log(newUrl.name)
 
     setUrl(newUrl)
-   
-}
-function handleSubmitOpenEnded(e)  {
-    if(url==""){
-    e.preventDefault();
-    const value = e.target.value;
-    console.log(questionDocID)
-     updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
-      question: stateOpenEnd.question,
-      answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
-    });
-    window.alert('updated!')
-    window.location.reload()
-  }else{
-    console.log("else statement")
-    console.log(JSON.stringify(url) +"this is the current state for url")
-    const storage = getStorage();
-    let file = url;
-    console.log(file.name)
-    const storageRef = ref(storage, 'img/' + file.name);
-   
-    //this console can be seen
-    console.log(file + "this is the file" + "this is the file type " + file.type)
-    // Create file metadata including the content type
-    
-    const metadata = {
-        contentType: file.type
-    };
-    uploadBytes(storageRef, file, metadata);
-    window.alert('updated!')
-    
-
-   
-// is not able to get into this function
-    getDownloadURL(storageRef).then((downloadURL) => {
-        console.log('File available at', downloadURL);
-
-        updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
-          question: stateOpenEnd.question,
-          answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4],
-          img_url: downloadURL
-        }).then(function(){
-          console.log("DONE")
-          window.location.reload();
-        })
-    
-       // window.location.reload();
-        
-
-    
-  })
 
   }
-}
+  function handleSubmitOpenEnded(e) {
+    
+      e.preventDefault();
+      const value = e.target.value;
+      updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
+        question: stateOpenEnd.question,
+        answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
+      });
+      window.alert('updated!')
+      window.location.reload()
+   
+  }
 
 
-
-  // let data = useLoaderData<LoaderData>();
   const data = useLoaderData()[0];
- // console.log(data[0].img_url)
   const data2 = useLoaderData()[1];
-  const displaySelected = []
   return (<>
     <div>
       <h1></h1>
 
-      <Row  className="g-4">
+      <Row className="g-4">
         <h1> MCQ</h1>
-        {data && data.map(mcq => 
+        {data && data.map(mcq =>
 
 
           <Col>
             <Card border="warning" style={{ width: '45rem' }}>
               <Card.Title>{mcq.question}</Card.Title>
-               {(mcq.img_url=="")? (
-               <Card.Text></Card.Text>
-              ):( 
+              {(mcq.img_url == "") ? (
+                <Card.Text></Card.Text>
+              ) : (
                 <Card.Text><img src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
               )}
-          
+
               <Card.Title>MCQ choices</Card.Title>
               <Card.Text>{mcq.choices[0]}</Card.Text>
               <Card.Text>{mcq.choices[1]}</Card.Text>
@@ -261,7 +206,7 @@ function handleSubmitOpenEnded(e)  {
               <Card.Text>{mcq.choices[3]}</Card.Text>
 
               <Card.Text>Answer : {mcq.answer}</Card.Text>
-             
+
               <Button type="button" variant="warning" onClick={() => setModal2IsOpenToTrue(mcq)}>Edit question</Button>
             </Card>
 
@@ -269,9 +214,9 @@ function handleSubmitOpenEnded(e)  {
 
         )}
       </Row>
-      <Row 
-      // xs={1} md={2} lg={3} 
-      className="g-4">
+      <Row
+        // xs={1} md={2} lg={3} 
+        className="g-4">
         <h1> Open endeded</h1>
         {data2 && data2.map(openEnded =>
 
@@ -279,9 +224,9 @@ function handleSubmitOpenEnded(e)  {
           <Col>
             <Card border="info" style={{ width: '45rem' }}>
               <Card.Title>{openEnded.question}</Card.Title>
-              {(openEnded.img_url=="")? (
-               <Card.Text></Card.Text>
-              ):( 
+              {(openEnded.img_url == "") ? (
+                <Card.Text></Card.Text>
+              ) : (
                 <Card.Text><img src={openEnded.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
               )}
               <Card.Title>Answers</Card.Title>
@@ -293,8 +238,8 @@ function handleSubmitOpenEnded(e)  {
 
               {/* <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
                       <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text> */}
-                      
-              <Button type="button" variant="primary"  onClick={() => setModal5IsOpenToTrue(openEnded)}>Edit question</Button>
+
+              <Button type="button" variant="primary" onClick={() => setModal5IsOpenToTrue(openEnded)}>Edit question</Button>
             </Card>
           </Col>
         )}
@@ -310,7 +255,7 @@ function handleSubmitOpenEnded(e)  {
         onRequestClose={() => setModal1IsOpen(false)}
         ariaHideApp={false}>
         <button onClick={setModal1IsOpenToFalse}>x</button>
-        <EditQuiz/>
+        <EditQuiz />
       </Modal>
       {/* edit question popup */}
       <Modal
@@ -365,18 +310,7 @@ function handleSubmitOpenEnded(e)  {
             value={stateMcq.answer}
             name="choice4"
             onChange={handleChangeMCQ} />
-               <Form.Group controlId="imageUpload">
-                    <Form.Label>Upload image here</Form.Label>
-                    <Form.Control
-                        type="file"
-                         className="form-control-file"
-                        placeholder="Enter New Question"
-                        name="img_url"
-                        onChange={handleFileUpload} />
-                    <Form.Text className="text-muted">
-
-                    </Form.Text>
-                </Form.Group>
+       
           <Button variant="primary" type="submit" value={questionDocID}>
             Submit
           </Button>
@@ -408,83 +342,68 @@ function handleSubmitOpenEnded(e)  {
 
         <button onClick={setModal5IsOpenToFalse}>x</button>
         <Form onSubmit={handleSubmitOpenEnded}>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Question</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={stateOpenEnd.question}
-                        name="question"
-                        onChange={handleChangeOpenEnded} />
-                    <Form.Text className="text-muted">
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Question</Form.Label>
+            <Form.Control
+              type="text"
+              value={stateOpenEnd.question}
+              name="question"
+              onChange={handleChangeOpenEnded} />
+            <Form.Text className="text-muted">
 
-                    </Form.Text>
-                </Form.Group>
-
-
-
-                <Form.Group as={Row} >
-
-                    <Form.Control
-                        type="text"
-                        value={stateOpenEnd.answer1}
-                        name="answer1"
-                        onChange={handleChangeOpenEnded} />
-                        
-               
-                </Form.Group>
-
-                <Form.Group as={Row} >
-                
-                    <Form.Control
-                        type="text"
-                        value={stateOpenEnd.answer2}
-                        name="answer2"
-                        onChange={handleChangeOpenEnded} />
-                    
-                 
-                </Form.Group>
-
-
-                <Form.Group as={Row} >
-                    <Form.Control
-                        type="text"
-                        value={stateOpenEnd.answer3}
-                        name="answer3"
-                        onChange={handleChangeOpenEnded} />
-                      
-                </Form.Group>
-
-                <Form.Group as={Row} >
-                    <Form.Control
-                        type="text"
-                        value={stateOpenEnd.answer4}
-                        name="answer4"
-                        onChange={handleChangeOpenEnded} />
-
-
-                </Form.Group>
-
-                <Form.Group controlId="imageUpload">
-                    <Form.Label>Upload image here</Form.Label>
-                    <Form.Control
-                        type="file"
-                         className="form-control-file"
-                        placeholder="Enter New Question"
-                        name="img_url"
-                        onChange={handleFileUpload} />
-                    <Form.Text className="text-muted">
-
-                    </Form.Text>
-                </Form.Group>
+            </Form.Text>
+          </Form.Group>
 
 
 
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
+          <Form.Group as={Row} >
 
-        </Modal>
+            <Form.Control
+              type="text"
+              value={stateOpenEnd.answer1}
+              name="answer1"
+              onChange={handleChangeOpenEnded} />
+
+
+          </Form.Group>
+
+          <Form.Group as={Row} >
+
+            <Form.Control
+              type="text"
+              value={stateOpenEnd.answer2}
+              name="answer2"
+              onChange={handleChangeOpenEnded} />
+
+
+          </Form.Group>
+
+
+          <Form.Group as={Row} >
+            <Form.Control
+              type="text"
+              value={stateOpenEnd.answer3}
+              name="answer3"
+              onChange={handleChangeOpenEnded} />
+
+          </Form.Group>
+
+          <Form.Group as={Row} >
+            <Form.Control
+              type="text"
+              value={stateOpenEnd.answer4}
+              name="answer4"
+              onChange={handleChangeOpenEnded} />
+          </Form.Group>
+
+       
+
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+
+      </Modal>
 
     </div>
   </>
@@ -493,21 +412,12 @@ function handleSubmitOpenEnded(e)  {
 
 export function CatchBoundary() {
   let caught = useCatch();
-  let params = useParams();
+  let navigate = useNavigate();
+  let data
   switch (caught.status) {
+
     case 404: {
-      return (
-        <div className="error-container">
-          Huh? What the heck is {params.quizDocId}?
-        </div>
-      );
-    }
-    case 401: {
-      return (
-        <div className="error-container">
-          Sorry, but {params.quizDocId} is not your joke.
-        </div>
-      );
+      return navigate('/quizAdmin')
     }
     default: {
       throw new Error(`Unhandled error: ${caught.status}`);
@@ -515,13 +425,6 @@ export function CatchBoundary() {
   }
 }
 
-// export function ErrorBoundary({ error }: { error: Error }) {
-//   console.error(error);
-//   let { quizDocId } = useParams();
-//   return (
-//     <div className="error-container">{`There was an error loading quiz by the id ${quizDocId}. Sorry.`}</div>
-//   );
-// }
 export function ErrorBoundary({ error }) {
   console.error(error);
   return (
@@ -530,10 +433,10 @@ export function ErrorBoundary({ error }) {
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
       </head>
       <body>
-     <div>
-        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
-        style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
-     </div>
+        <div>
+          <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json" background="transparent" speed="1"
+            style={{ width: 600, height: 600, 'margin-left': '25%' }} loop controls autoplay></lottie-player>
+        </div>
       </body>
     </html>
   );

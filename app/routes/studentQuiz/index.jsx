@@ -22,21 +22,18 @@ export async function loader() {
       quizid: true
     }
   })
-  console.log(JSON.stringify(data) + "is what the student has completed");
   //this is where ALL the quiz ID are kept
   //const allQuizID = modifiedEvents
   var result = data.map(quiz => (quiz.quizid));
-  console.log(JSON.stringify(result) + "QUIZ students completed");
 
 
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
 
     if (result.includes(doc.id)) {
-      console.log("TRUE DONT SHOW THIS")
 
     } else {
-      console.log("DISPLAYING")
+      
       const eventData = doc.data()
       eventData.id = doc.id
       return eventData;
@@ -45,13 +42,10 @@ export async function loader() {
   const modifiedEvents2 = querySnapshot.docs.map((doc) => {
 
     if (result.includes(doc.id)) {
-
-      console.log("DISPLAYING")
       const eventData = doc.data()
       eventData.id = doc.id
       return eventData;
     } else {
-      console.log("TRUE DONT SHOW THIS")
     }
   });
 
@@ -61,12 +55,10 @@ export async function loader() {
   var filtered = modifiedEvents.filter(function (el) {
     return el != null;
   });
-  console.log("mordified  " + filtered)
 
   var filtered2 = modifiedEvents2.filter(function (el) {
     return el != null;
   });
-  console.log("mordified  " + filtered2)
 
   const allQuiz = [filtered, filtered2]
   return allQuiz;
@@ -76,16 +68,7 @@ export default function studentQuiz() {
   let navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState("")
-  // function setModalIsOpenToTrue(e) {
-  //   setSelectedQuiz(
-  //     e.id
-  //   )
-  //   setModalIsOpen(true);
-
-  // }
-  function startQuiz(e) {
-    // navigate(`/quizAdmin/${quiz.docId}`, { state: { doc: quizDocID } });
-  }
+ 
   const setModalIsOpenToFalse = () => {
     setModalIsOpen(false)
   }
@@ -93,7 +76,6 @@ export default function studentQuiz() {
 
   function bringToStartQuiz(e) {
     const value = e.target.value;
-    console.log("BUTTON LCICKED!!!" + value);
     let quiz = {
       docId: value
     }
@@ -103,7 +85,6 @@ export default function studentQuiz() {
   const data = useLoaderData();
   const quizNotDone = data[0];
   const quizDone = data[1]
-  console.log(data)
 
   return (<>
     <div>

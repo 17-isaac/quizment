@@ -4,6 +4,7 @@ import { flushSync } from "react-dom"
 
 function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
     const [selectOption, setSelectedOption] = useState(null);
+    const [input, setInput]=useState("")
     const timer = useRef(null);
     const progressBar = useRef(null);
     const [timerOrNext, setTimerOrNext] = useState()
@@ -14,14 +15,15 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
         }
         flushSync(() => {
             setAnswer(selectOption);
-            console.log(selectOption + "IT IS FLUSHED")
         });
         setSelectedOption(null);
+
     }
     function handleChange(e) {
         const value = e.target.value;
-        console.log(value + "this is the value in the input box")
+       
         setSelectedOption(value)
+       
     }
 
 
@@ -29,7 +31,6 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
         progressBar.current.classList.remove("active");
         setTimeout(() => {
             progressBar.current.classList.add("active");
-            console.log("is it timed out")
         }, 0);
         timer.current = setTimeout(gotoNextQuestion, 20 * 1000); //20 seconds
 
@@ -101,12 +102,12 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
                             <img src={question.img_url} width="400" height="100%" alt="Image"></img>
                         )}</div>
                     <div className="" >
-                        <input onChange={handleChange}></input>
+                        <input id="quizInput" onChange={handleChange}></input>
                     </div>
 
                 </div>
                 <div className="control">
-                    <button onClick={gotoNextQuestion}>Next</button>
+                    <button  onClick={gotoNextQuestion}>Next</button>
                 </div>
             </div>
         )
