@@ -119,3 +119,19 @@ function QuizScreen({ retry ,setResults}) {
     );
 }
 export default QuizScreen;
+export function ErrorBoundary({ error }) {
+    console.error(error);
+    return (
+      <html>
+        <head>
+          <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        </head>
+        <body>
+       <div>
+          <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
+          style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
+       </div>
+        </body>
+      </html>
+    );
+  }

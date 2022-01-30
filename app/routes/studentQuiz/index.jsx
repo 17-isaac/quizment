@@ -6,7 +6,7 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-modal';
 import Lottie from 'react-lottie';
-import animationData from '../../lotties';
+//import animationData from '../../lotties/error1';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
@@ -165,30 +165,19 @@ export default function studentQuiz() {
   </>
   );
 }
+
 export function ErrorBoundary({ error }) {
   console.error(error);
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  };
-
   return (
     <html>
       <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
       </head>
       <body>
-      <Lottie 
-	    options={defaultOptions}
-        height={400}
-        width={400}
-      />
+     <div>
+        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
+        style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
+     </div>
       </body>
     </html>
   );

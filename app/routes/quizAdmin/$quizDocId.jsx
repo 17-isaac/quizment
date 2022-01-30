@@ -11,7 +11,7 @@ import { useState } from "react";
 import AddMcqPopup from './EditQuiz/AddMcqPopup';
 import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz'
-export let loader: LoaderFunction = async ({ params, request }) => {
+export async function loader({ params, request })  {
   //let userId = await getUserId(request);
  
   //console.log(JSON.stringify(params.quizDocId) + "THIS IS PARAAM");
@@ -191,7 +191,7 @@ function handleSubmitOpenEnded(e)  {
     console.log("else statement")
     console.log(JSON.stringify(url) +"this is the current state for url")
     const storage = getStorage();
-    let file: any = url;
+    let file = url;
     console.log(file.name)
     const storageRef = ref(storage, 'img/' + file.name);
    
@@ -515,10 +515,26 @@ export function CatchBoundary() {
   }
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
+// export function ErrorBoundary({ error }: { error: Error }) {
+//   console.error(error);
+//   let { quizDocId } = useParams();
+//   return (
+//     <div className="error-container">{`There was an error loading quiz by the id ${quizDocId}. Sorry.`}</div>
+//   );
+// }
+export function ErrorBoundary({ error }) {
   console.error(error);
-  let { quizDocId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading quiz by the id ${quizDocId}. Sorry.`}</div>
+    <html>
+      <head>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      </head>
+      <body>
+     <div>
+        <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_aiphuevx.json"  background="transparent"  speed="1"  
+        style={{width: 600, height: 600,  'margin-left':'25%'}}  loop controls autoplay></lottie-player> 
+     </div>
+      </body>
+    </html>
   );
 }
