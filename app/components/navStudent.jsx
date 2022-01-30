@@ -1,10 +1,11 @@
-import { Link, Form } from 'remix';
+import { Link, Form, useNavigate } from 'remix';
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function NavigationStudent({ onClick }) {
+   let navigate = useNavigate();
    const [openCloseStatus, setOpenCloseStatus] = useState(faBars);
    function handleClick() {
       if (openCloseStatus === faBars) {
@@ -21,14 +22,14 @@ export function NavigationStudent({ onClick }) {
          <div className="wrapper">
             <ul>
                <Link className={'linkForDashboards'} to="/studentDashboard" style={{ textDecoration: 'none' }}><li><a>Student Dashboard</a></li></Link>
-               <li><a href="#">Quiz</a></li>
-               <li><a href="#">Rewards</a></li>
-               <li><a href="#">Rewards History</a></li>
-               <li><a href="#">Resource News</a></li>
-               <li><a href="#">Q Search</a></li>
-               <li><a href="#">Q Images</a></li>
-               <li><a href="#">Q Videos</a></li>
-               <li><a href="#">Student Settings</a></li>
+               <Link className={'linkForDashboards'} to="/studentQuiz" style={{ textDecoration: 'none' }}><li><a>Quiz</a></li></Link>
+               <Link className={'linkForDashboards'} to="/studentRewards" style={{ textDecoration: 'none' }}><li><a>Rewards</a></li></Link>
+               <Link className={'linkForDashboards'} to="/studentRewardsHistory" style={{ textDecoration: 'none' }}><li><a>Rewards History</a></li></Link>
+               <Link className={'linkForDashboards'} to="/resourceNews" style={{ textDecoration: 'none' }}><li><a>Resource News</a></li></Link>
+               <Link className={'linkForDashboards'} to="/search" style={{ textDecoration: 'none' }}><li><a>Q Search</a></li></Link>
+               <Link className={'linkForDashboards'} to="/images" style={{ textDecoration: 'none' }}><li><a>Q Images</a></li></Link>
+               <Link className={'linkForDashboards'} to="/videos" style={{ textDecoration: 'none' }}><li><a>Q Videos</a></li></Link>
+               <Link className={'linkForDashboards'} to="/studentSettings" style={{ textDecoration: 'none' }}><li><a>Student Settings</a></li></Link>
                <br></br>
                <Form method="post">
                   <input name='logout' value="LOGOUT" type='hidden'></input>

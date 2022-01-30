@@ -17,15 +17,15 @@ export function NavigationTeacher({ onClick }) {
       <Container fluid>
       <div>
          <input type="checkbox" id="active"></input>
-         <label htmlFor="active" className="menu-btn" onClick={onClick}><FontAwesomeIcon icon={faBars} onClick={handleClick} className={'fas fa-bars'}/></label>
+         <label htmlFor="active" className="menu-btn" onClick={onClick}><FontAwesomeIcon icon={openCloseStatus} onClick={handleClick} className={'fas fa-bars'}/></label>
          <div className="wrapper">
             <ul>
                <Link className={'linkForDashboards'} to="/teacherDashboard" style={{ textDecoration: 'none' }}><li><a>Teacher Dashboard</a></li></Link>
-               <li><a href="#">Student Progress Management</a></li>
-               <li><a href="#">Rewards Administration</a></li>
-               <li><a href="#">Rewards History</a></li>
-               <li><a href="#">Quiz Administration</a></li>
-               <li><a href="#">Teacher Settings</a></li>
+               <Link className={'linkForDashboards'} to="/teacherStudentProgress" style={{ textDecoration: 'none' }}><li><a >Student Progress Management</a></li></Link>
+               <li><a >Rewards Administration</a></li>
+               <li><a >Rewards History</a></li>
+               <Link className={'linkForDashboards'} to="/quizAdmin" style={{ textDecoration: 'none' }}><li><a >Quiz Administration</a></li></Link>
+               <Link className={'linkForDashboards'} to="/teacherSettings" style={{ textDecoration: 'none' }}><li><a >Teacher Settings</a></li></Link>
                <br></br>
                <Form method="post">
                   <input name='logout' value="LOGOUT" type='hidden'></input>
