@@ -14,6 +14,7 @@
     "start:dev": "cross-env NODE_ENV=development && export DATABASE_URL=$(heroku config:get DATABASE_URL -a quizment) && npx prisma generate && node server/index.js"
   },
   "dependencies": {
+    "@alan-ai/alan-sdk-web": "github:alan-ai/alan-sdk-web",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -27,24 +28,29 @@
     "@remix-run/react": "^1.1.1",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.1.3",
+    "classnames": "^2.3.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "dotenv": "^14.1.0",
     "express": "^4.17.1",
     "firebase": "^9.6.5",
+    "mdbreact": "^5.2.0",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.1",
+    "react-chartjs-2": "^4.0.1",
     "react-dom": "^17.0.2",
     "react-grid-layout": "^1.3.3",
     "react-lottie": "^1.2.3",
     "react-modal": "^3.14.4",
     "react-notifications-component": "^3.1.0",
+    "react-player": "^2.9.0",
     "react-redux": "^7.2.6",
     "react-sizeme": "^3.0.2",
     "remix": "^1.1.1",
     "socket.io": "^4.4.1",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "use-debounce": "^7.0.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",
