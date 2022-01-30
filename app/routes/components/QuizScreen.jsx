@@ -1,22 +1,15 @@
-import { useLoaderData, useNavigate, redirect, Form, useFormAction, useActionData } from "remix";
+import { useLoaderData, useNavigate, redirect } from "remix";
 import { collection, getDocs, updateDoc, doc, query, where } from 'firebase/firestore';
-import { fdb } from "../../utils/firestore";
-import { db } from "../../utils/db.server";
-import Card from 'react-bootstrap/Card';
-import { Row, Col } from 'react-bootstrap';
-import Modal from 'react-modal';
-import QuizPopup from '../studentQuiz/quizPopup'
-import { Link } from "remix";
-import { useEffect, useState } from "react";
-import { createNewQuizHistory} from "../../functions/query"
+
+import { useState } from "react";
 import QuizResult from "../components/QuizResult"
 import Question from "../components/Question"
 
 
+  
 
-function QuizScreen({ retry }) {
-    const dataTest = useActionData();
-    console.log(dataTest)
+function QuizScreen({ retry ,setResults}) {
+    //
     const data = useLoaderData();
     const QuestionList = data[0]
     const QuizDetails = data[1]
@@ -63,17 +56,8 @@ function QuizScreen({ retry }) {
                 )
                 console.log(usersInput)
             }
-          
-
         })
          
-    
-     
-    console.log("its inside here")
-    
-  
-    
-
 
         console.log('check openEnded answers here')
 
@@ -95,9 +79,10 @@ function QuizScreen({ retry }) {
                     isQuestionEnd ? (
                         <QuizResult
                             result={calculateResult()}
-                            retry={retry} />
+                            retry={retry} 
+                            setResults = {setResults}/>
                     ) : (
-                       
+                        
                         <Question
                             question={QuestionList[currentQuestionIndex]}
                             totalQuestion={QuestionList.length}
@@ -124,10 +109,8 @@ function QuizScreen({ retry }) {
                                 console.log(currentQuestionIndex + " this is the setAnswer currentQUes index")
                                 setCurrentQuestionIndex(currentQuestionIndex + 1);
                             }}
-                            
 
-                        />  
-                       
+                        />
                     )}
                     
             </div>

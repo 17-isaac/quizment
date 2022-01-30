@@ -4,9 +4,9 @@ export default function Index() {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Welcome to Remixxxx</h1>
       <Link to="quizAdmin">teacher quiz</Link>
-      <Link to ="mapOfMaze"> MAze</Link>
+    
       <Link to ="studentQuiz"> Student QUiz</Link>
-      <Link to ="startQuiz"> START</Link>
+      
       <ul>
         <li>
           <a

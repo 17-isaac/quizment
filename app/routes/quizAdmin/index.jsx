@@ -1,19 +1,18 @@
-import { useLoaderData, useNavigate, redirect } from "remix";
+import { useLoaderData, useNavigate} from "remix";
 import { collection, getDocs,  updateDoc, doc } from 'firebase/firestore';
 import { fdb } from "../../utils/firestore";
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import AddQuiz from './AddQuiz';
 import Modal from 'react-modal';
-import { Link } from "remix";
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap'
-import { async } from "@firebase/util";
+
 export async function loader() {
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
-    // console.log(`${doc.id} => ${doc.data()}`);
+
     const eventData = doc.data()
     eventData.id = doc.id
     return eventData
@@ -109,13 +108,11 @@ const toHide = "0"
     updateDoc(doc(fdb, "Quiz", docID), {
     publish: published
   })
-
   }else if(publish==="1"){
      updateDoc(doc(fdb, "Quiz", docID), {
       publish:toHide
     })
    ;
-  
   }else {
     console.log("error")
   }
@@ -142,7 +139,7 @@ const toHide = "0"
               <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
               <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
             <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-            <Button size="sm" variant="success"  onClick={() => publishHideButton(quiz.id,quiz.publish)}>Publish</Button>
+            <Button size="sm" variant="success"  onClick={() => publishHideButton(quiz.id,quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
            
             </Card>
           </Col>

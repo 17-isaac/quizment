@@ -3,11 +3,14 @@ import QuizScreen from "../components/QuizScreen"
 import JoinScreen from "../components/JoinScreen"
 import { fdb } from "../../utils/firestore";
 import { db } from "../../utils/db.server";
-import { useLoaderData, useNavigate, redirect, useLocation, LoaderFunction, ActionFunction } from "remix";
+import { useLoaderData, redirect, useLocation, useNavigate } from "remix";
 import { collection, getDocs,getDoc, updateDoc, doc, query, where } from 'firebase/firestore';
 //import Navbar  from "../components/Navbar";
  
-export let loader: LoaderFunction = async ({ params, request }) => {
+export async function loader ({ params, request }) {
+
+
+  
 
   const q =  query(collection(fdb, "Questions"), where("quizDocID", "==", params.studentQuiz));
   const querySnapshot = await getDocs(q);
@@ -49,32 +52,60 @@ export let loader: LoaderFunction = async ({ params, request }) => {
   return final;
 }
 
+// export const action = async ({ request }) => {
+//   let formData = await request.formData();
+//   let {_action, ...value} = Object.fromEntries(formData);
 
+//   if(_action ==="post"){
+
+//   } const QuizHistory = await  db.quizHistory.create({
+//     data: {
+      
+//       quizid: "quiz",
+//       studentid: "18",
+//       pointsearned: 100,
+//       marksearned:5
+//   },
+// })
+// }
 
 
 export default function startQuiz(){
-
-
-  function quizHistory(result:any){
-    const users:any =   db.quizHistory.create({
-      data: {
-        quizid: "",
-        studentid: "23",
-        pointsearned: 5,
-        marksearned:5
-    },
-  })
-  
-  }
- 
 const [isQuizStarted, setisQuizStarted] = useState(false);
+const [results, setResults] = useState([]);
+   const navigate = useNavigate();
+
+ async function result(index){
+//const newResult = index.quizDocId+index.pointsEarned+index.correct"
+    navigate(`/studentQuiz/results/${index.quizDocId}`+`+${index.pointsEarned}`+`+${index.correct}`, {state :{ doc : index}})
+  //  const QuizHistory = await  db.quizHistory.create({
+  //       data: {
+          
+  //         quizid: index.quizDocId,
+  //         studentid: "18",
+  //         pointsearned: index.pointsEarned,
+  //         marksearned:index.marksEarned
+  //     },
+  // })
+}
+
+
 return(
 <>
 
 <div className ="quiz-container">
     { isQuizStarted ? (
         <QuizScreen retry={()=>setisQuizStarted(false)}
-        />
+        setResults={(index) => {
+          console.log("INDEX HERE" + index)
+          if (index !== null) {
+              console.log( JSON.stringify(index)+ " this is the setAnswer currentQUes index")
+              result(index)
+          }
+         
+          
+      }}/>
+       
     ) : (
         <JoinScreen start={()=>setisQuizStarted(true)}/>
     )}

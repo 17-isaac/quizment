@@ -25,20 +25,7 @@ export async function loader() {
   };
   
 export default  function editQuiz() {
-    //eventhandler for form 
-    // const data=useLoaderData()
-    // console.log(data);
-    //     const docRef = doc(fdb, "Quiz", data[0].quizDocID);
-    // const docSnap = await getDoc(docRef);
-    // console.log("Document data:", docSnap.data());
-    // if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-    // } else {
-    //   // doc.data() will be undefined in this case
-    //   console.log("No such document!");
-    // }
-
-//let navigate = useNavigate();
+ 
     const [state, setState] = useState({
         quizName: "",
         subject: "",
@@ -52,43 +39,18 @@ export default  function editQuiz() {
 
     function handleChange (e){
         e.preventDefault();
-        //setQuizName(e.target.value);
         const value = e.target.value;
         setState({
           ...state,
           [e.target.name]: value
         });
     }
-// Add a new document with a generated id.
-//  function AddNewQuiz(){
-//     const docRef =  addDoc(collection(fdb, "Quiz"), {
-//         quizName : state.quizName ,
-//         subject : state.subject,
-//         totalPoints: state.totalPoints,
-//         totalMarks: state.totalMarks,
-//         level: state.level,
-//         dueDate : state.dueDate,
-//         duration:state.duration,
-//         publish:"0"
-//   }).then(function(docRef) {
-//      // var documentID = docRef.id;
-//      // setDoc(documentID);
-//     // navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
-    
-//     console.log("Document written with ID: "+ docRef.id);
-    
-// })
-// .catch(function(error) {
-//     console.error("Error adding document: ", error);
-// })
-  
+
   
 
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    // AddNewQuiz();
-    
 }
 const [date, setDate] = useState(new Date());
   

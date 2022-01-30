@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { flushSync } from "react-dom"
+
+
 function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
     const [selectOption, setSelectedOption] = useState(null);
     const timer = useRef(null);
     const progressBar = useRef(null);
     const [timerOrNext, setTimerOrNext] = useState()
-
-
 
     function gotoNextQuestion() {
         if (timer.current) {
@@ -32,8 +32,9 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
             console.log("is it timed out")
         }, 0);
         timer.current = setTimeout(gotoNextQuestion, 20 * 1000); //20 seconds
-        //setSelectedOption(null)
-        //  return gotoNextQuestion;
+
+
+
     }, [question]);
     if (question.choices) {
         return (

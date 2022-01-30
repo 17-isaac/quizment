@@ -5,12 +5,14 @@ import { db } from "~/utils/db.server";
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-modal';
-import QuizPopup from '../studentQuiz/quizPopup'
-
+import Lottie from 'react-lottie';
+import animationData from '../../lotties';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
 export async function loader() {
+ 
+
 
   const data = await db.quizHistory.findMany({
     where: {
@@ -152,7 +154,7 @@ export default function studentQuiz() {
         onRequestClose={() => setModalIsOpen(false)}
         ariaHideApp={false}>
         <button onClick={setModalIsOpenToFalse}>x</button>
-        <QuizPopup />
+      
         <Button type="button" variant="primary" value={selectedQuiz} onClick={bringToStartQuiz}>start Quiz</Button>
       </Modal>
 
@@ -161,5 +163,33 @@ export default function studentQuiz() {
 
     </div>
   </>
+  );
+}
+export function ErrorBoundary({ error }) {
+  console.error(error);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
+
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+      <Lottie 
+	    options={defaultOptions}
+        height={400}
+        width={400}
+      />
+      </body>
+    </html>
   );
 }

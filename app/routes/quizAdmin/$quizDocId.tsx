@@ -515,10 +515,10 @@ export function CatchBoundary() {
   }
 }
 
-// export function ErrorBoundary({ error }: { error: Error }) {
-//   console.error(error);
-//   let { quizDocId } = useParams();
-//   return (
-//     <div className="error-container">{`There was an error loading joke by the id ${quizDocId}. Sorry.`}</div>
-//   );
-// }
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  let { quizDocId } = useParams();
+  return (
+    <div className="error-container">{`There was an error loading quiz by the id ${quizDocId}. Sorry.`}</div>
+  );
+}
