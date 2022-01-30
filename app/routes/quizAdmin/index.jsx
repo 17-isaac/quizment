@@ -7,7 +7,16 @@ import AddQuiz from './AddQuiz';
 import Modal from 'react-modal';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-import { Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap';
+import Css from '../../styles/quizAdmin'
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: Css,
+    },
+  ];
+}
 
 export async function loader() {
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
@@ -104,16 +113,20 @@ const toHide = "0"
   if(publish==="0"){
     updateDoc(doc(fdb, "Quiz", docID), {
     publish: published
-  })
+  }).then(() => {
+    location.reload(true);
+});
   }else if(publish==="1"){
      updateDoc(doc(fdb, "Quiz", docID), {
       publish:toHide
-    })
+    }).then(() => {
+      location.reload(true);
+  });
    ;
   }else {
     console.log("error")
   }
-  
+ // 
   
 }
   const data = useLoaderData();
@@ -121,23 +134,27 @@ const toHide = "0"
  
   return (<>
     <div>
-      <h1></h1>
-
+      <h1 id="quizAdminTitle" >Quizzes</h1>
+      <button className="addNewQuizButton" onClick={setModalIsOpenToTrue} >Add New Quiz </button>
       <Row xs={1} md={2} lg={3} className="g-4">
-        {data && data.map(quiz => {   
+        {data && data.map((quiz,index) => {   
             
         if (quiz.publish==="0") {
           return ( <Col>
-            <Card border="warning">
-              <Card.Title>{quiz.quizName}</Card.Title>
-              <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-              <Card.Text>Subject : {quiz.subject}</Card.Text>
-              <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-              <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-              <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-            <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-            <Button size="sm" variant="success"  onClick={() => publishHideButton(quiz.id,quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
+            <Card className={"card-"+index} >
+              <Card.Title className="card__title">{quiz.quizName}</Card.Title>
+              <Card.Text  className="card__details">Total points : {quiz.totalPoints}</Card.Text>
+              <Card.Text  className="card__details">Subject : {quiz.subject}</Card.Text>
+              <Card.Text  className="card__details">total Marks : {quiz.totalMarks}</Card.Text>
+              <Card.Text  className="card__details">Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+              
+            <Button className="card__edit" size="sm" type="button" variant="outline-dark" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
            
+           <p class="card__view">
+           <button class="card__viewbutton" type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz
+           </button> 
+              </p> 
+              <Button className="card__publish" size="sm" variant="success"  onClick={() => publishHideButton(quiz.id,quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
             </Card>
           </Col>
            
@@ -145,15 +162,20 @@ const toHide = "0"
         } else if (quiz.publish==="1") {
           return (
             <Col>
-            <Card border="warning">
-            <Card.Title>{quiz.quizName}</Card.Title>
-            <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-            <Card.Text>Subject : {quiz.subject}</Card.Text>
-            <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-            <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-            <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-          <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-          <Button size="sm"  variant="danger" onClick={() => publishHideButton(quiz.id, quiz.publish)}>Hide</Button>
+           <Card className={"card-"+index} >
+              <Card.Title className="card__title">{quiz.quizName}</Card.Title>
+              <Card.Text  className="card__details">Total points : {quiz.totalPoints}</Card.Text>
+              <Card.Text  className="card__details">Subject : {quiz.subject}</Card.Text>
+              <Card.Text  className="card__details">Total marks : {quiz.totalMarks}</Card.Text>
+              <Card.Text  className="card__details">Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+              
+            <Button className="card__edit" size="sm" type="button" variant="outline-dark" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
+           
+           <p class="card__view">
+           <button class="card__viewbutton" type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz
+              </button> 
+              </p> 
+              <Button className="card__publish" size="sm" variant="danger"  onClick={() => publishHideButton(quiz.id,quiz.publish).then(navigate('/quizAdmin'))}>Hide</Button>
          
           </Card>
         </Col>
@@ -170,26 +192,29 @@ const toHide = "0"
  } )}
       </Row>
 
-      <button onClick={setModalIsOpenToTrue} >Add New Quiz </button>
+    
 
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
-        ariaHideApp={false} >
+        ariaHideApp={false} 
+          className ="formModal">
 
-        <button onClick={setModalIsOpenToFalse}>x</button>
+        <button className="exitModel" onClick={setModalIsOpenToFalse}>x</button>
         <AddQuiz />
       </Modal>
 
  <Modal
         isOpen={modalIsOpenQuizEdit}
         onRequestClose={() => setModalIsOpenQuizEdit(false)}
-        ariaHideApp={false} >
+        ariaHideApp={false} 
+        className ="formModal">
 
-        <button onClick={setModalIsOpenToFalseQuizEdit}>x</button>
-        <Form onSubmit={handleSubmit}>
+        <button className="exitModel" onClick={setModalIsOpenToFalseQuizEdit}>x</button>
+        <p className="formTitle">Edit Quiz</p>
+        <Form className="formForm" onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Edit Form</Form.Label>
+                    <Form.Label>Quiz Name</Form.Label>
                     <Form.Control 
                     type="text"
                      value={state.quizName}
@@ -241,6 +266,8 @@ const toHide = "0"
                     </div>
 
                 </Form.Group>
+                <Row>
+                    <Col>
                 <Form.Group>
                     <Form.Label>Due Date</Form.Label>
                     <Form.Control
@@ -251,8 +278,8 @@ const toHide = "0"
                         onChange={handleChange}
                     />
                 </Form.Group>
-
-
+</Col>
+<Col>
                 <Form.Group>
                     <Form.Label>Duration(Minutes)</Form.Label>
                     <Form.Control 
@@ -261,7 +288,10 @@ const toHide = "0"
                      name="duration"
                      onChange={handleChange} />
                 </Form.Group>
-
+                </Col>
+</Row>
+<Row>
+                    <Col>
                 <Form.Group>
                     <Form.Label>Total Mark</Form.Label>
                     <Form.Control
@@ -270,7 +300,8 @@ const toHide = "0"
                      name="totalMarks"
                      onChange={handleChange}  />
                 </Form.Group>
-
+                </Col>
+<Col>
                 <Form.Group>
                     <Form.Label>Total Points</Form.Label>
                     <Form.Control 
@@ -280,7 +311,8 @@ const toHide = "0"
                      onChange={handleChange} />
                 </Form.Group>
 
-
+                </Col>
+</Row>
                 <Button variant="primary" type="submit">
                     Submittt
                 </Button>

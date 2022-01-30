@@ -6,9 +6,16 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Col, Row, Form } from "react-bootstrap";
 import { fdb } from "../../../../utils/firestore";
 import { Link } from "remix";
-import { Fragment, useState } from "react";
-import { async } from "@firebase/util";
-
+import { useState } from "react";
+import Css from '../../../../styles/quizAdmin'
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: Css,
+    },
+  ];
+}
 
 export default function AddMcqPopup() {
     //eventhandler for form 
@@ -105,9 +112,9 @@ export default function AddMcqPopup() {
     const data = useLoaderData();
     return (<>
         <div>
-            <h1>Enter New Open-ended question</h1>
+        <p className="formTitle">Add Open-ended Questions</p>
 
-            <Form onSubmit={handleSubmit}>
+        <Form className="formForm"  onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Question</Form.Label>
                     <Form.Control
@@ -123,7 +130,7 @@ export default function AddMcqPopup() {
 
 
                 <Form.Group as={Row} >
-
+                <Form.Label>Enter key words for open-ended Question</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="enter answer choice"
@@ -137,7 +144,7 @@ export default function AddMcqPopup() {
                 
                     <Form.Control
                         type="text"
-                        placeholder="Enter MCQ choice"
+                        placeholder="Enter Key Word"
                         name="answer2"
                         onChange={handleChange} />
                     
@@ -148,7 +155,7 @@ export default function AddMcqPopup() {
                 <Form.Group as={Row} >
                     <Form.Control
                         type="text"
-                        placeholder="Enter MCQ choice"
+                        placeholder="Enter Key Word"
                         name="answer3"
                         onChange={handleChange} />
                       
@@ -157,7 +164,7 @@ export default function AddMcqPopup() {
                 <Form.Group as={Row} >
                     <Form.Control
                         type="text"
-                        placeholder="Enter MCQ choice"
+                        placeholder="Enter Key Word"
                         name="answer4"
                         onChange={handleChange} />
 
@@ -165,7 +172,7 @@ export default function AddMcqPopup() {
                 </Form.Group>
 
                 <Form.Group controlId="imageUpload">
-                    <Form.Label>Upload image here</Form.Label>
+                    <Form.Label>Upload image</Form.Label>
                     <Form.Control
                         type="file"
                          class="form-control-file"

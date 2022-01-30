@@ -8,7 +8,15 @@ import { Col, Row, Form } from "react-bootstrap";
 import { fdb } from "../../../../utils/firestore";
 import { Link } from "remix";
 import { Fragment, useState } from "react";
-import { async } from "@firebase/util";
+import Css from '../../../../styles/quizAdmin'
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: Css,
+    },
+  ];
+}
 
 
 export default function AddMcqPopup() {
@@ -115,9 +123,9 @@ function handleFileUpload(e){
 
     return (<>
         <div>
-            <h1></h1>
+        <p className="formTitle">Add MCQ Question</p>
 
-            <Form onSubmit={handleSubmit}>
+            <Form  className="formForm" onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Question</Form.Label>
                     <Form.Control
@@ -133,10 +141,10 @@ function handleFileUpload(e){
 
 
                 <Form.Group as={Row} >
-
+                <Form.Label>Multiple Choices</Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder="enter answer choice"
+                        placeholder="Enter MCQ choice"
                         name="choice1"
                         onChange={handleChange} />
 
@@ -211,7 +219,7 @@ function handleFileUpload(e){
                 </Form.Group>
 
                 <Form.Group controlId="imageUpload">
-                    <Form.Label>Upload image here</Form.Label>
+                    <Form.Label>Upload image</Form.Label>
                     <Form.Control
                         type="file"
                          class="form-control-file"

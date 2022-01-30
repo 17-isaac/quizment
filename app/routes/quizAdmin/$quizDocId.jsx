@@ -11,6 +11,16 @@ import { useState } from "react";
 import AddMcqPopup from './EditQuiz/AddMcqPopup';
 import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz'
+import Css from '../../styles/quizAdmin'
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: Css,
+    },
+  ];
+}
+
 export async function loader({ params, request }) {
 
   const q = query(collection(fdb, "Questions"), where("quizDocID", "==", params.quizDocId));
@@ -185,13 +195,11 @@ export default function JokeRoute() {
     <div>
       <h1></h1>
 
-      <Row className="g-4">
-        <h1> MCQ</h1>
-        {data && data.map(mcq =>
-
-
+      <Row className="quizDoc" xs={1} md={2} lg={1} >
+      <h1 id="quizAdminTitle" > MCQ</h1>
+        {data && data.map((mcq,index) =>
           <Col>
-            <Card border="warning" style={{ width: '45rem' }}>
+            <Card  className={"Ncard-"+index} id="quizQuestion">
               <Card.Title>{mcq.question}</Card.Title>
               {(mcq.img_url == "") ? (
                 <Card.Text></Card.Text>
@@ -214,15 +222,15 @@ export default function JokeRoute() {
 
         )}
       </Row>
-      <Row
-        // xs={1} md={2} lg={3} 
+      <Row className="quizDoc"
+        xs={1} md={2} lg={1} 
         className="g-4">
-        <h1> Open endeded</h1>
-        {data2 && data2.map(openEnded =>
+         <h1 id="quizAdminTitle" > Open endeded</h1>
+        {data2 && data2.map((openEnded,index) =>
 
 
           <Col>
-            <Card border="info" style={{ width: '45rem' }}>
+            <Card border="info" className={"Ncard-"+index} id="quizQuestion">
               <Card.Title>{openEnded.question}</Card.Title>
               {(openEnded.img_url == "") ? (
                 <Card.Text></Card.Text>
@@ -245,8 +253,6 @@ export default function JokeRoute() {
         )}
       </Row>
 
-
-      <button onClick={setModal1IsOpenToTrue} >Edit Quizzz</button>
       <button onClick={setModal3IsOpenToTrue} >ADD MCQ question</button>
       <button onClick={setModal4IsOpenToTrue} >Add open-ended</button>
       {/* edit quiz popup  */}
@@ -261,13 +267,14 @@ export default function JokeRoute() {
       <Modal
         isOpen={modal2IsOpen}
         onRequestClose={() => setModal2IsOpen(false)}
-        ariaHideApp={false}>
+        ariaHideApp={false}
+        className ="formModal">
 
-        <button onClick={setModal2IsOpenToFalse}>x</button>
-
-        <Form onSubmit={handleSubmitMCQ}>
+<button className="exitModel" onClick={setModal2IsOpenToFalse}>x</button>
+<p className="formTitle">Edit Question</p>
+        <Form className="formForm" onSubmit={handleSubmitMCQ}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Questionsss</Form.Label>
+            <Form.Label>Questions</Form.Label>
             <Form.Control
               type="text"
               value={stateMcq.question}
@@ -278,6 +285,7 @@ export default function JokeRoute() {
             </Form.Text>
           </Form.Group>
           <Form.Group as={Row} >
+          <Form.Label>Multiple Choices</Form.Label>
             <Form.Control
               type="text"
               value={stateMcq.choice1}
@@ -305,11 +313,15 @@ export default function JokeRoute() {
               name="choice4"
               onChange={handleChangeMCQ} />
           </Form.Group>
-          <Form.Control
+          <Form.Group>
+          <Form.Label>Correct Answer</Form.Label>
+            <Form.Control
             type="text"
             value={stateMcq.answer}
             name="choice4"
             onChange={handleChangeMCQ} />
+          </Form.Group>
+          
        
           <Button variant="primary" type="submit" value={questionDocID}>
             Submit
@@ -323,25 +335,31 @@ export default function JokeRoute() {
       <Modal
         isOpen={modal3IsOpen}
         onRequestClose={() => setModal3IsOpen(false)}
-        ariaHideApp={false}>
-        <button onClick={setModal3IsOpenToFalse}>x</button>
+        ariaHideApp={false}
+        className ="formModal">
+
+<button className="exitModel" onClick={setModal3IsOpenToFalse}>x</button>
         <AddMcqPopup />
       </Modal>
       {/* Add open ended  */}
       <Modal
         isOpen={modal4IsOpen}
         onRequestClose={() => setModal4IsOpen(false)}
-        ariaHideApp={false}>
-        <button onClick={setModal4IsOpenToFalse}>x</button>
+        ariaHideApp={false}
+        className ="formModal">
+       <button className="exitModel" onClick={setModal4IsOpenToFalse}>x</button>
         <AddOpenEndedPopup />
       </Modal>
+       {/* edit question popup */}
       <Modal
         isOpen={modal5IsOpen}
         onRequestClose={() => setModal5IsOpen(false)}
-        ariaHideApp={false}>
+        ariaHideApp={false}
+        className ="formModal">
 
-        <button onClick={setModal5IsOpenToFalse}>x</button>
-        <Form onSubmit={handleSubmitOpenEnded}>
+        <button className="exitModel" onClick={setModal5IsOpenToFalse}>x</button>
+        <p className="formTitle">Edit Question</p>
+        <Form className="formForm" onSubmit={handleSubmitOpenEnded}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Question</Form.Label>
             <Form.Control

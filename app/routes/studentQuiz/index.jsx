@@ -27,13 +27,13 @@ export async function loader() {
   var result = data.map(quiz => (quiz.quizid));
 
 
-  const querySnapshot = await getDocs(collection(fdb, "Quiz"));
+  const querySnapshot = await getDocs((collection(fdb, "Quiz"), where("publish", "==", "0")));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
 
     if (result.includes(doc.id)) {
 
     } else {
-      
+
       const eventData = doc.data()
       eventData.id = doc.id
       return eventData;
