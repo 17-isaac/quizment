@@ -5,7 +5,7 @@ import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 
 import { Routes } from "~/components/seacrchClone/Routes";
-import { SideCanva } from "../../components/SideMenuBar/SideCanva";
+
 
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
@@ -15,16 +15,17 @@ import { Chart, ArcElement } from "chart.js";
 Chart.register(ArcElement);
 
 import {
-  Button,
+
   Card,
-  ProgressBar,
+ 
   Row,
   Col,
-  DropdownButton,
-  Dropdown,
+
 } from "react-bootstrap";
 
+//import sylesheet
 import Style from "../../styles/global.css";
+//links for styling
 export function links() {
   return [
     {

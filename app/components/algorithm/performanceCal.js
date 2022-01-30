@@ -1,3 +1,5 @@
+
+//function that calculate student performance
 export default function performanceCal(pts,highestPts,streaks,highestStreaks,ptsWeightage,streakWeightage){
    
   

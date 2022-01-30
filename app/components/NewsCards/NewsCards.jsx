@@ -1,6 +1,6 @@
-import React from "react";
-import { Grid, Grow, Typography } from "@material-ui/core";
-
+//import Grid and Grow from material-ui
+import { Grid, Grow } from "@material-ui/core";
+//i
 import useStyles from "./styles.js";
 import NewsCard from "../NewsCard/NewsCard";
 
@@ -23,6 +23,7 @@ const infoCards = [
 ];
 
 const NewsCards = ({ articles,activeArticle }) => {
+  
   const classes = useStyles();
 
   if (!articles.length) {
@@ -34,16 +35,18 @@ const NewsCards = ({ articles,activeArticle }) => {
           alignItems="stretch"
           spacing={3}
         >
-          {infoCards.map((infoCard) => (
+          {infoCards.map((infoCard,i) => (
             <Grid
               item
               xs={12}
               sm={6}
               md={4}
               lg={3}
+              key={i}
               className={classes.infoCard}
             >
               <div
+            
                 className={classes.card}
                 style={{ backgroundColor: infoCard.color }}
               >

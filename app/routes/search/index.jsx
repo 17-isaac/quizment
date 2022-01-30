@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
+//import navbar for searchClone
 import { Navbar } from "~/components/seacrchClone/Navbar";
 
 
-
+//import routs for searchClone
 import { Routes } from "~/components/seacrchClone/Routes";
-
+//import ResultContextProvider
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
-import {
-  Button,
-  Card,
-  ProgressBar,
-  Row,
-  Col,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
 
+//import sylesheet
 import Style from "../../styles/global.css"
+
+//links for styling
 export function links() {
   return [
     {
@@ -32,7 +27,7 @@ export function links() {
 }
 
 export default function search() {
-
+//search function
 
   return (
     <div>

@@ -1,9 +1,9 @@
 import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
-import { useEffect, useState, createRef } from "react";
+import { useEffect } from "react";
 
 
-
+//links for styling
 export function links() {
   return [
     {

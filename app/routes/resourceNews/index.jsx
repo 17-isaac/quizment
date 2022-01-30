@@ -2,11 +2,11 @@ import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 import { useEffect, useState } from "react";
 
-
+//importing NewsCards from component
 import NewsCards from "~/components/NewsCards/NewsCards";
 
 
-
+//info card display
 const infoCards = [
   {
     color: "#1565c0",
@@ -25,6 +25,8 @@ const infoCards = [
   },
 ];
 
+
+//links for styling
 export function links() {
   return [
     {
@@ -34,13 +36,16 @@ export function links() {
   ];
 }
 
+
 export default function newsResourceContent() {
   const data = useLoaderData();
-
+//initialisation state variable for newsarticle
   const [newsArticles, setNewsArticles] = useState([]);
-
+//initialisation state variable for activearticle
   const [activeArticle, setActiveArticle] = useState(-1);
 
+
+  //useEffect for alan
   useEffect(() => {
     const alanBtn = require("@alan-ai/alan-sdk-web");
     alanBtn({
@@ -68,21 +73,6 @@ export default function newsResourceContent() {
     });
   }, []);
 
-  const userFeedback = () => {
-    alanBtn.callProjectApi(
-      "sendFeedback",
-      {
-        data: "User's feedback",
-      },
-      function (error, result) {
-        if (error) {
-          console.error(error);
-          return;
-        }
-        console.log(result);
-      }
-    );
-  };
 
   return (
     <div>

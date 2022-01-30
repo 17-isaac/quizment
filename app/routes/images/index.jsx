@@ -11,6 +11,8 @@ import {Routes} from "~/components/seacrchClone/Routes"
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 //import gloabal.css for styling
 import Style from "../../styles/global.css"
+
+//all the styling links
 export function links() {
   return [
     {
@@ -24,16 +26,15 @@ export function links() {
   ];
 }
 
+//function to images
 export default function images() {
 
    
-
+//rendering for images
   return (
-    <div>
-     
-      <div id="alan-btn"></div>
    
-
+    <div>
+   
       <div className="align-items-center ml-3 s1">
         <ResultContextProvider lg="4">
           <Navbar  />

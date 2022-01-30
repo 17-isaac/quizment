@@ -10,6 +10,7 @@ import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 
 import Style from "../../styles/global.css"
+//links for styling
 export function links() {
   return [
     {

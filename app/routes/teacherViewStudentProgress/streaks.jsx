@@ -10,8 +10,10 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import performanceCal from "~/components/algorithm/performanceCal";
 
+//import sylesheet
+import performanceCal from "~/components/algorithm/performanceCal";
+//links for styling
 export function links() {
   return [
     {
@@ -21,10 +23,13 @@ export function links() {
   ];
 }
 
-const num = 5;
+
 
 export async function loader() {
+
+  //load data from database
   const data = {
+    //student performance information retrieved orderd by descending streaks value
     studentPerformanceDetails: await db.student.findMany({
       select: {
         name: true,
@@ -36,24 +41,23 @@ export async function loader() {
       },
       orderBy: { streaks: "desc" },
     }),
-
+// get the highest points that is obtained by students
     studentTotalMaxPts: await db.student.aggregate({
       _max: {
         totalPts: true,
       },
     }),
-
+// get the highest streaks that is taken
     studentStreaksMax: await db.student.aggregate({
       _max: {
         streaks: true,
       },
     }),
 
- 
+ //get the total number of students
     userCount: await db.student.count(),
   };
-  console.log("==============================================");
-  // db.$disconnect();
+
   return data;
 }
 
@@ -61,75 +65,24 @@ export default function teacherViewStudentProgressContent() {
 
   const data = useLoaderData();
 
-  useEffect(() => {
-    const alanBtn = require("@alan-ai/alan-sdk-web");
-    alanBtn({
-      key: "b1283306f4a5fd0478ce1ceec798da192e956eca572e1d8b807a3e2338fdd0dc/stage",
-      onCommand: ({ command }) => {
-        if (command === "newHeadlines") {
-          console.log(articles);
-          setNewsArticles(articles);
-          setActiveArticle(-1);
-        } else 
-        if (command === "studentProg") {
-          window.open(
-            "http://localhost:3000/teacherViewStudentProgress",
-            "_self"
-          );
-        }
-         else if (command === "topStudents") {
-          window.open(
-            "http://localhost:3000/teacherViewStudentProgress/sortHighPts",
-            "_self"
-          );
-        } else if (command === "bottomStudents") {
-          window.open(
-            "http://localhost:3000/teacherViewStudentProgress/sortLowPts",
-            "_self"
-          );
-        } else if (command === "mzStudents") {
-          window.open(
-            "http://localhost:3000/teacherViewStudentProgress/mz",
-            "_self"
-          );
-        } else if (command === "streakStudents") {
-          window.open(
-            "http://localhost:3000/teacherViewStudentProgress/streaks",
-            "_self"
-          );
-        } else if (command === "studentDash") {
-          window.open("http://localhost:3000/StudentDashboard", "_self");
-        } else if (command === "newsResource") {
-          window.open("http://localhost:3000/resourceNews", "_self");
-        } 
-        else if (command === "testCommand") {
-          alert("test command ")
-        }
-      },
-    });
 
-    function sendData() {
-      alanBtn.activate();
-      alanBtn.callProjectApi(
-        "greetUser",
-        {
-          user: "John Smith",
-        },
-        function (error, result) {}
-      );
-    }
-  }, []);
 
-  const { studentPerformanceDetails, userCount, bacdgeR } = useLoaderData();
 
+  //destructure methods from useLoaderData
+  const { studentPerformanceDetails, userCount } = useLoaderData();
+
+  //declare a const for userCount
   const numOfUser = userCount;
-
+// using state variable visible to limit number of data 
   const [visible, setVisible] = useState(3);
+
+  //showMoreItems function to show 3 more data as teacher clicks more
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 3);
   };
 ;
-  
+  // streakWeightage,ptsWeightage,highPts,highStreak along with total points and streaks of every student is used to
+  // calculate the total performance
   const streakWeightage = 50;
   const ptsWeightage = 50;
 
@@ -142,8 +95,10 @@ export default function teacherViewStudentProgressContent() {
 
   return (
     <div>
-      <div></div>
+     
 
+
+{/* dropdown for navigation */}
 
       
       <Row style={{ marginLeft: 1300 }}>
@@ -182,12 +137,9 @@ export default function teacherViewStudentProgressContent() {
       </Row>
 
       
-
+{/*  a map function to show student performace insights */}
       <Row>
         <Row lg="4">
-          {/* <h1>Total user:{userCount}</h1> */}
-
-          {/* <h1>{badge.name}</h1> */}
 
           {studentPerformanceDetails
             .map((data, i) => (
