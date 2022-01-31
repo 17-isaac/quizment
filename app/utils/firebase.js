@@ -41,5 +41,5 @@ async function authStatus(userType) {
     }
   }
 }
-
+// exports
 export { auth, fdb, authStatus };
