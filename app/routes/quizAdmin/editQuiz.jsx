@@ -1,11 +1,8 @@
-import { Link, useLoaderData, useCatch, redirect, useParams } from "remix";
-import { getFirestore, doc, getDoc, getDocs, Firestore } from 'firebase/firestore';
-
+import {doc, getDoc} from 'firebase/firestore';
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap'
 import { fdb } from "~/utils/firebase";
-
-import { Fragment, useState } from "react";
+import {useState } from "react";
 
 export async function loader() {
     const docRef = doc(fdb, "Quiz", "quiz");
