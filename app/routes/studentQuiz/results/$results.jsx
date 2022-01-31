@@ -1,8 +1,14 @@
 import { useLocation, useLoaderData,useNavigate} from "remix";
-import { fdb } from "~/utils/firebase";
 import { db } from "~/utils/db.server";
-import { useState, useEffect } from "react";
-//import animationData from '~/lotties';
+import styleForNav from "~/styles/nav.css";
+import Css from '~/styles/quiz'
+export function links() {
+  return [{
+    rel: "stylesheet", href: styleForNav,
+    rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+    rel: "stylesheet", href: Css,
+  }];
+}
 
 
 export async function loader({ params, request }) {
@@ -37,9 +43,17 @@ export default function results() {
     const data = useLoaderData();
 
     return (
+      
         <div className="result-screen">
+          <div>
+        <NavigationTeacher onClick={handleClick} />
+      </div>
+      {displayStuff && 
+      <div>
             <h1>Redeemed!</h1>
             <p>{data}</p>
+            </div>
+      }
         </div>
     )
 }

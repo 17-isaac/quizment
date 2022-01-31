@@ -5,12 +5,17 @@ import { fdb } from "~/utils/firebase";
 import { db } from "~/utils/db.server";
 import { useLoaderData, redirect, useLocation, useNavigate } from "remix";
 import { collection, getDocs,getDoc, updateDoc, doc, query, where } from 'firebase/firestore';
-//import Navbar  from "~/components/Navbar";
- 
+import styleForNav from "~/styles/nav.css";
+
+import Css from '../../styles/quiz'
+export function links() {
+  return [{
+    rel: "stylesheet", href: styleForNav,
+    rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+    rel: "stylesheet", href: Css,
+  }];
+}
 export async function loader ({ params, request }) {
-
-
-  
 
   const q =  query(collection(fdb, "Questions"), where("quizDocID", "==", params.studentQuiz));
   const querySnapshot = await getDocs(q);
