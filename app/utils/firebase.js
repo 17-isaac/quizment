@@ -32,12 +32,12 @@ async function authStatus(userType) {
   if (userType == 1) {
     if (window.location.pathname.toLowerCase().includes('student') || window.location.pathname.toLowerCase().includes('search') || window.location.pathname.toLowerCase().includes('resourcenews') || window.location.pathname.toLowerCase().includes('images') || window.location.pathname.toLowerCase().includes('videos')) {
     } else {
-      window.location.assign('http://localhost:3000/studentDashboard');
+      window.location.assign('https://quizment.herokuapp.com/studentDashboard');
     }
   } else if (userType == 2) {
     if (window.location.pathname.toLowerCase().includes('teacher') || window.location.pathname.toLowerCase().includes('quizadmin')) {
     } else {
-      window.location.assign('http://localhost:3000/teacherDashboard');
+      window.location.assign('https://quizment.herokuapp.com/teacherDashboard');
     }
   }
 }
