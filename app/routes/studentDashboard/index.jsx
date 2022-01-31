@@ -87,7 +87,6 @@ export default function StudentDashboardContent() {
 }
 
 export function StudentDashboardLayout() {
-
   const originalItems = ["a", "b", "c", "d", "e", "f", "g"];
   const initialLayouts = {
     lg: [
@@ -154,9 +153,9 @@ export function StudentDashboardLayout() {
 }
 
 function Widget({ id, backgroundColor }) {
+  const data = useLoaderData();
   return (
     <div style={{ width: '100%', height: '100%', backgroundColor }}>{id}
-
     </div>
   );
 }
