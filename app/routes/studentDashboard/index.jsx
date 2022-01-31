@@ -37,7 +37,12 @@ export async function loader() {
         },
         select: {
           name: true,
-          type: true
+          type: true,
+          totalPts:true,
+          redeemedPts:true,
+  
+          streaks: true,
+        
         }
       }),
       studentOtherData: await db.student.findUnique({
@@ -48,9 +53,58 @@ export async function loader() {
           name: true,
           streaks: true
         }
-      })
+      }),
+   
     };
-    return data;
+
+
+    const currentLogin = new Date().getTime();
+
+    let lastLog = data.studentDetailsData.lastLogin.toString();
+    let name = data.studentDetailsData.name;
+    let totalPts=data.studentDetailsData.totalPts
+    let redeemedPts=data.studentDetailsData.redeemedPts
+    let streaks = data.studentDetailsData.streaks;
+    let diffTime = currentLogin - lastLog;
+
+    
+  if (diffTime >= 28800000 && diffTime <= 86400000) {
+    console.log("Streak up");
+    //   await db.student.update({
+    //   where: {
+    //     name: data.studentDetailsData.name,
+    //   },
+    //   data: {
+    //     streaks:data.studentDetailsData.streaks +1
+    //   },
+    // })
+  } else if (diffTime > 86400000) {
+    console.log("streak 0");
+    // await db.student.update({
+    //   where: {
+    //     name: data.studentDetailsData.name,
+    //   },
+    //   data: {
+    //     streaks: 0,
+    //   },
+    // });
+  } else {
+    console.log("Remain the sameeeee");
+
+    console.log("executed");
+  }
+
+
+  let allData = {
+    lastLogin: lastLog,
+    sName: name,
+    sStreaks: streaks,
+    totalPoints:totalPts,
+    rPts:redeemedPts
+  };
+
+
+     return allData;;
   } else {
     return redirect('/auth');
   }
@@ -107,6 +161,8 @@ export function StudentDashboardLayout() {
   );
 
   return (
+
+    <div>
     <SizeMe refreshMode="debounce"
       refreshRate={60}
       render={({ size }) =>
@@ -149,7 +205,19 @@ export function StudentDashboardLayout() {
             <Widget id="f" backgroundColor="#c449c2" />
           </div> */}
         </ResponsiveGridLayout>
+      
       } />
+        <div>
+      <p>Name: {data.sName}</p>
+
+      <p>Total points: {data.totalPoints}</p>
+      <p>Redeemable points:{data.rPts}</p>
+
+      <p>Streaks: {data.sStreaks}</p>
+
+    
+    </div>
+        </div>
   );
 }
 
