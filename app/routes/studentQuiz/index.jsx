@@ -5,15 +5,20 @@ import { db } from "~/utils/db.server";
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-modal';
-import Lottie from 'react-lottie';
-//import animationData from '../../lotties/error1';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-
+import styleForNav from "../../styles/nav.css";
+import Css from '../../styles/quiz'
+import { NavigationStudent } from '~/components/navStudent'
+export function links() {
+  return [{
+    rel: "stylesheet", href: styleForNav,
+    rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+    rel: "stylesheet", href: Css,
+  }];
+}
 export async function loader() {
  
-
-
   const data = await db.quizHistory.findMany({
     where: {
       studentid: "23",
@@ -22,11 +27,8 @@ export async function loader() {
       quizid: true
     }
   })
-  //this is where ALL the quiz ID are kept
-  //const allQuizID = modifiedEvents
+
   var result = data.map(quiz => (quiz.quizid));
-
-
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
 
@@ -65,6 +67,18 @@ export async function loader() {
 };
 
 export default function studentQuiz() {
+
+ const [clickStatus, setClickStatus] = useState(0);
+  const [displayStuff, setDisplayStatus] = useState(true);
+  function handleClick() {
+    if (clickStatus === 0) {
+      setClickStatus(1);
+      setDisplayStatus(false);
+    } else {
+      setClickStatus(0);
+      setDisplayStatus(true);
+    }
+  }
   let navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState("")
@@ -88,6 +102,9 @@ export default function studentQuiz() {
 
   return (<>
     <div>
+      <div>
+      
+      <div>
       <h1>Quiz Not Completed</h1>
 
       <Row xs={1} md={2} lg={3} className="g-4">
@@ -141,7 +158,10 @@ export default function studentQuiz() {
 
 
 
-
+      </div>
+      
+       
+    </div>
     </div>
   </>
   );

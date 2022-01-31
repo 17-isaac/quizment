@@ -39,7 +39,7 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
     }, [question]);
     if (question.choices) {
         return (
-            
+            <div className="quiz-screen">
             <div className="question" >
                 <div className="progress-bar" ref={progressBar}></div>
                 <div className="question-count">
@@ -78,6 +78,7 @@ function Question({ question, totalQuestion, currentQuestion, setAnswer }) {
                 <div className="control">
                     <button onClick={gotoNextQuestion}>Next</button>
                 </div>
+            </div>
             </div>
         )
     } else {

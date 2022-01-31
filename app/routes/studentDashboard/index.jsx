@@ -16,7 +16,6 @@ export function links() {
     rel: "stylesheet", href: dashboardStyles
   }];
 }
-
 export let action = async ({ request }) => {
   const session = await getSession(
     request.headers.get("Cookie")

@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css');
+#quizTitle{
+    text-align: center;
+}
+
+.quiz-container {
+    position: relative;
+    margin: 50px auto 20px;
+    width: 95%;
+    max-width: 650px;
+    min-height: 350px;
+    background: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.05);
+}
+.join-screen{
+    width: 100%;
+    height: 80%;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-align:center;
+    padding:20px
+}
+.quiz-screen .question .progress-bar {
+width: 0%;
+height: 5px;
+font-family: 'Quicksand', sans-serif;
+}
+.quiz-screen .question .progress-bar.active{
+animation: progress 10s linear;
+}
+.quiz-screen .question .question-count {
+margin: 20px Opx;
+text-align: center;
+font-size: 15px;
+color: #555;
+}
+.quiz-screen .question .main {
+padding: 20px 40px;
+}
+.quiz-screen .question .main .title span {
+font-size: 15px;
+color: #555;
+font-weight: 600;
+}
+.quiz-screen .question .main .title p {
+margin-top: 5px;
+color: #111;
+}
+
+.quiz-screen .question .main .options {
+  margin:40px 0px 20px;
+  display:flex;
+  justify-content: space-between;
+  flex-wrap:wrap;
+  gap: 20px
+    }
+.quiz-screen .question .main .option {
+     
+width: calc(100%- 20px);
+border: 1px solid #bbb;
+padding: 10px;
+border-radius: 5px;
+cursor: pointer;
+          }
+
+ .quiz-screen .question .main .option.active {
+     
+background: #1428cd;
+color: #fff
+                      }
+
+ .quiz-screen .question .control {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items:center;
+    border-top: 1px solid #eee;  }
+
+.result-screen{
+    width: 100%;
+height: 350px;
+display: flex;
+flex-direction: column;
+justify-content:center;
+align-items: center;
+gap:15px;
+font-family: 'Quicksand', sans-serif;
+}
+
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .card {
+    margin: 20px;
+    padding: 20px;
+    width: 350px;
+    min-height: 200px;
+    display: grid;
+    grid-template-rows: 20px 50px 1fr 50px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+  }
+  
+  .card:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    transform: scale(1.01);
+  }
+  
+  .card__viewbutton {
+    position: relative;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .card__viewbutton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: all 0.5s;
+  }
+  
+  .card__viewbutton:hover::after {
+    width: 100%;
+  }
+  
+
+  .card__title {
+    font-weight: 500;
+    font-size: 170%;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+  }
+  
+  .card__details {
+    font-weight: 400;
+    font-size: 120% !important;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+  }
+ 
+  .card__view {
+    align-self: center;
+    font-size: 150%;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .card__viewbutton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+  }
+  .card__edit {
+    align-self: center;
+   width: 70px;
+   grid-row: 1/2;
+   margin-left: 75%;
+   margin-top: 20%;
+   font-family: 'Quicksand', sans-serif;
+  }
+  .card__publish {
+    align-self: center;
+   width: 70px;
+   margin-left: 75%;
+   margin-top: 0%;
+   font-family: 'Quicksand', sans-serif;
+  }
+  
+  /* CARD BACKGROUNDS */
+  
+  .card-1 {
+    background: radial-gradient(#1fe4f5, #4fbffc);
+  }
+  
+  .card-2 {
+    background: radial-gradient(#fbc1cc, #fa99b2);
+  }
+  
+  .card-3 {
+    background: radial-gradient(#76b2fe, #b69efe);
+  }
+  
+  .card-4 {
+    background: radial-gradient(#60efbc, #58d5c9);
+  }
+  
+  .card-0 {
+    background: radial-gradient(#f588d8, #c0a3e5);
+  }
+  
+
+    @keyframes progress {
+        
+            0% {
+            width: 0%;
+            background: #555;}
+            79% {
+            width: 79%;
+            background: #555;
+            }
+            80% {
+            width: 80%;
+            }
+        
+    }
