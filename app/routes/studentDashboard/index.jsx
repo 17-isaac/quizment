@@ -106,48 +106,6 @@ export function StudentDashboardLayout() {
     initialLayouts
   );
 
-  function getFromLS(key) {
-    let ls = {};
-    if (typeof window !== 'undefined') {
-    if (localStorage) {
-      try {
-        ls = JSON.parse(localStorage.getItem("rgl-8")) || {};
-      } catch (e) { }
-    }
-    return ls[key];
-  }
-  }
-
-  function saveToLS(key, value) {
-    if (typeof window !== 'undefined') {
-    if (localStorage) {
-      localStorage.setItem(
-        "rgl-8",
-        JSON.stringify({
-          [key]: value
-        })
-      );
-    }
-  }
-  }
-
-  const onLayoutChange = (_, allLayouts) => {
-    getFromLS("layouts") || setLayouts(allLayouts);
-  };
-  const onLayoutSave = () => {
-    saveToLS("layouts", layouts);
-  };
-  // const onRemoveItem = (itemId) => {
-  //   setItems(items.filter((i) => i !== itemId));
-  // };
-  // const onAddItem = (itemId) => {
-  //   setItems([...items, itemId]);
-  // };  
-
-  useEffect(() => {
-    onLayoutSave();
-  });
-
   return (
     <SizeMe refreshMode="debounce"
       refreshRate={60}
@@ -159,9 +117,7 @@ export function StudentDashboardLayout() {
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
           rowHeight={60}
           width={size.width}
-          onLayoutChange={onLayoutChange}
         >
-
           {items.map((key) => (
             <div
               key={key}
