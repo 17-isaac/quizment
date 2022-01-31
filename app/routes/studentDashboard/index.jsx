@@ -2,7 +2,6 @@ import { useLoaderData } from "remix";
 import { db } from "~/utils/db.server";
 import { useEffect } from "react";
 
-
 //links for styling
 export function links() {
   return [
@@ -14,16 +13,15 @@ export function links() {
 }
 
 export async function loader() {
- 
   let data = {
     studentDetailsData: await db.student.findUnique({
       where: {
-        studentID: 16,
+        studentID: 17,
       },
       select: {
         name: true,
-        totalPts:true,
-        redeemedPts:true,
+        totalPts: true,
+        redeemedPts: true,
 
         streaks: true,
         lastLogin: true,
@@ -31,87 +29,59 @@ export async function loader() {
     }),
   };
 
-
-  const currentDate=new Date().getTime()
- const uDate= await db.student.update({
+  const currentDate = new Date().getTime();
+  const uDate = await db.student.update({
     where: {
-      name: "isaa.71717@gmail.com",
+      studentID: 17,
     },
     data: {
-      lastLogin:currentDate,
+      lastLogin: currentDate,
     },
   });
 
-
-  // await db.Student.upsert({
-  //   where: {
-  //     name: 'isaa.71717@gmail.com',
-  //   },
-  //   update: {
-  //     streaks: 1,
-  //   },
-  //   create: {
-  //     name: 'isaa.71717@gmail.com',
-  //     streaks: 2,
-  //   },
-  // })
-
-
   let lastLog = data.studentDetailsData.lastLogin.toString();
+
   let name = data.studentDetailsData.name;
-  let totalPts=data.studentDetailsData.totalPts
-  let redeemedPts=data.studentDetailsData.redeemedPts
+  let totalPts = data.studentDetailsData.totalPts;
+  let redeemedPts = data.studentDetailsData.redeemedPts;
   let streaks = data.studentDetailsData.streaks;
-  let diffTime = currentLogin - lastLog;
-  console.log("-----------------------------");
-  console.log(diffTime);
-  console.log("-----------------------------");
+  let diffTime = currentDate - lastLog;
 
   if (diffTime >= 28800000 && diffTime <= 86400000) {
     console.log("Streak up");
-    //   await db.student.update({
-    //   where: {
-    //     name: data.studentDetailsData.name,
-    //   },
-    //   data: {
-    //     streaks:1
-    //   },
-    // })
-
-
+    await db.student.update({
+      where: {
+        studentID: 17,
+      },
+      data: {
+        streaks: streaks + 1,
+      },
+    });
   } else if (diffTime > 86400000) {
-    console.log("streak 0");
-    // await db.student.update({
-    //   where: {
-    //     name: data.studentDetailsData.name,
-    //   },
-    //   data: {
-    //     streaks: 0,
-    //   },
-    // });
-  } else {
-    console.log("Remain the sameeeee");
-
-    console.log("executed");
+    await db.student.update({
+      where: {
+        studentID: 17,
+      },
+      data: {
+        streaks: 0,
+      },
+    });
   }
 
   let allData = {
     lastLogin: lastLog,
     sName: name,
     sStreaks: streaks,
-    totalPoints:totalPts,
-    rPts:redeemedPts
+    totalPoints: totalPts,
+    rPts: redeemedPts,
   };
-
-  // JSON.stringify(this,
-  //   (key,)=>(typeof value === 'bigint'))
-
-  //   if(typeof data.studentDetailsData.lastLogin ==='bigint'){
-  //     JSON
-  //   }
 
   return allData;
 }
+
+
+
+
 
 export default function StudentDashboardContent() {
   const data = useLoaderData();
@@ -139,27 +109,6 @@ export default function StudentDashboardContent() {
     });
   }, []);
 
-  useEffect(async () => {
-    // const currentLogin=new Date().getTime();
-    // const lastLogin=data.lastLogin
-    //   diffTime=28800001  //up
-    //   diffTime=86400002  // 0
-    //   diffTime=28800000-3 //remain the same
-    // console.log("current Login "+currentLogin)
-    // console.log("Last login "+BigInt(lastLogin))
-    // console.log("Difference in time "+diffTime)
-    // if (diffTime >= 28800000 && diffTime <= 86400000){
-    //   console.log("Streak up")
-    // }
-    // else if (diffTime > 86400000) {
-    //   console.log("streak 0")
-    // }
-    // else{
-    //   console.log("Remain the sameeeee")
-    //   console.log("executed")
-    // }
-  }, []);
-
   return (
     <div>
       <p>Name: {data.sName}</p>
@@ -168,8 +117,6 @@ export default function StudentDashboardContent() {
       <p>Redeemable points:{data.rPts}</p>
 
       <p>Streaks: {data.sStreaks}</p>
-
-    
     </div>
   );
 }
