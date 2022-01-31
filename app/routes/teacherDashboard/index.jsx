@@ -6,7 +6,6 @@ import { db } from "~/utils/db.server";
 
 import { Routes } from "~/components/seacrchClone/Routes";
 
-
 import { ResultContextProvider } from "~/contexts/ResultContextProvider";
 
 import { MDBContainer } from "mdbreact";
@@ -14,14 +13,9 @@ import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 Chart.register(ArcElement);
 
-import {
+import { DragDropContext, Droppable,Draggable } from "react-beautiful-dnd";
 
-  Card,
- 
-  Row,
-  Col,
-
-} from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 
 //import sylesheet
 import Style from "../../styles/global.css";
@@ -122,8 +116,9 @@ export async function loader() {
   return data;
 }
 
+
+
 export default function teacherDashboard() {
-  
   const data = useLoaderData();
 
   var avgTotal = data.studentTotalPtsAvg._avg.totalPts;
@@ -149,8 +144,23 @@ export default function teacherDashboard() {
   const dataP = {
     datasets: [
       {
-        data: [streakZero, streakOne, streakTwo, streakThree, streakFour,streakFive],
-        backgroundColor: ["#5ab0f7", "#ccfbff", "#ff8395", "#ffc29d", "#ef7ac5", "#fe3ba7","#acf6db"],
+        data: [
+          streakZero,
+          streakOne,
+          streakTwo,
+          streakThree,
+          streakFour,
+          streakFive,
+        ],
+        backgroundColor: [
+          "#5ab0f7",
+          "#ccfbff",
+          "#ff8395",
+          "#ffc29d",
+          "#ef7ac5",
+          "#fe3ba7",
+          "#acf6db",
+        ],
         hoverBackgroundColor: [
           "#2d8fe0",
           "#bee9ed",
@@ -158,11 +168,14 @@ export default function teacherDashboard() {
           "#e3a37d",
           "#d160a9",
           "#d42686",
-          "#6fd9b2"
+          "#6fd9b2",
         ],
       },
     ],
   };
+
+
+ 
 
   return (
     <div>
@@ -170,68 +183,51 @@ export default function teacherDashboard() {
         <Card className="boxa col-4 boxh ms-5">
           <Card.Title className="boxaTitle">Average Student Points:</Card.Title>
           <Card.Text> {rAvgTotal}</Card.Text>
-        </Card>        <div className="pieSize col-3 ms-5 me-5">
+        </Card>{" "}
+        <div className="pieSize col-3 ms-5 me-5">
           <h3>Streaks Pie:</h3>
           <MDBContainer>
             <Pie data={dataP} options={{ responsive: true }} />
           </MDBContainer>
         </div>
-
         <Row className="col-4 ms-5 me-4">
           <Col className="col-4 mt-4 ms-5">
-          <div className="streak0 mt-2"></div>
-          <div className="streak1 mt-2"></div>
-          <div className="streak2 mt-2"></div>
-          <div className="streak3 mt-2"></div>
-          <div className="streak4 mt-2"></div>
-          <div className="streak5 mt-2"></div>
-          <div className="streakM mt-2"></div>
+            <div className="streak0 mt-2"></div>
+            <div className="streak1 mt-2"></div>
+            <div className="streak2 mt-2"></div>
+            <div className="streak3 mt-2"></div>
+            <div className="streak4 mt-2"></div>
+            <div className="streak5 mt-2"></div>
+            <div className="streakM mt-2"></div>
           </Col>
-        <Col className="col-4 me-5">
+          <Col className="col-4 me-5">
+            <div className="label  ">
+              <h6>Streaks Level Indicator</h6>
 
-          <div className="label  ">
-          <h6>Streaks Level Indicator</h6>
-        
-          <div  className="mt-3">
-          <h3>0</h3>
-
-          </div>
-          <div  className="mt-2">
-          <h3>1</h3>
-
-          </div>
-          <div className="mt-3">
-          <h3>2</h3>
-
-          </div>
-          <div className="mt-3">
-          <h3>3</h3>
-
-          </div>
-          <div className="mt-3">
-          <h3>4</h3>
-
-          </div>
-          <div className="mt-3">
-          <h3>5</h3>
-
-          </div>
-          <div className="mt-3">
-          <h3>More than 5</h3>
-
-          </div>
-          
-          </div>
-   
-        </Col>
-
-        
-          
+              <div className="mt-3">
+                <h3>0</h3>
+              </div>
+              <div className="mt-2">
+                <h3>1</h3>
+              </div>
+              <div className="mt-3">
+                <h3>2</h3>
+              </div>
+              <div className="mt-3">
+                <h3>3</h3>
+              </div>
+              <div className="mt-3">
+                <h3>4</h3>
+              </div>
+              <div className="mt-3">
+                <h3>5</h3>
+              </div>
+              <div className="mt-3">
+                <h3>More than 5</h3>
+              </div>
+            </div>
+          </Col>
         </Row>
-        
-       
-
-
       </Row>
 
       <Row>
@@ -240,8 +236,6 @@ export default function teacherDashboard() {
 
           <Card.Text> {rAvgStreaks}</Card.Text>
         </Card>
-
-        
 
         <Card className="boxa boxh col-3 ms-5">
           <Card.Title className="boxaTitle">Minimum Points :</Card.Title>
@@ -252,9 +246,11 @@ export default function teacherDashboard() {
           <Card.Title className="boxaTitle">Maximum Points:</Card.Title>
           <Card.Text> {maxPts}</Card.Text>
         </Card>
-
       </Row>
 
+      <div>
+  
+      </div>
     </div>
   );
 }
