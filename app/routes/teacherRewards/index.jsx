@@ -9,7 +9,6 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import { io } from 'socket.io-client';
 import { Prisma } from '@prisma/client';
-import Modal from 'react-modal';
 
 export async function loader() {
   const data = await db.rewards.findMany();
