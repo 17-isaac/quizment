@@ -10,18 +10,18 @@ import Button from 'react-bootstrap/Button';
 import { Form } from 'react-bootstrap';
 import { NavigationTeacher } from '~/components/navTeacher';
 import styleForNav from "~/styles/nav.css";
-
+import Css from '../../styles/quizAdmin'
 export function links() {
   return [{
     rel: "stylesheet", href: styleForNav,
     rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+    rel: "stylesheet", href: Css,
   }];
 }
 
 export async function loader() {
   const querySnapshot = await getDocs(collection(fdb, "Quiz"));
   const modifiedEvents = querySnapshot.docs.map((doc) => {
-
     const eventData = doc.data()
     eventData.id = doc.id
     return eventData
@@ -53,7 +53,6 @@ export default function quizAdmin() {
     publish: ""
   })
   const [date, setDate] = useState(new Date());
-
   const [quizDocID, setQuizDocID] = useState("")
   let navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -125,16 +124,20 @@ export default function quizAdmin() {
     if (publish === "0") {
       updateDoc(doc(fdb, "Quiz", docID), {
         publish: published
-      })
+      }).then(() => {
+        location.reload(true);
+      });
     } else if (publish === "1") {
       updateDoc(doc(fdb, "Quiz", docID), {
         publish: toHide
-      })
-        ;
+      }).then(() => {
+        location.reload(true);
+      });
+      ;
     } else {
       console.log("error")
     }
-
+    // 
 
   }
   const data = useLoaderData();
@@ -145,120 +148,142 @@ export default function quizAdmin() {
       <div>
         <NavigationTeacher onClick={handleClick} />
       </div>
-      <h1></h1>
-      { displayStuff &&
-        <div className="content">
-          <Row xs={1} md={2} lg={3} className="g-4">
-            {data && data.map(quiz => {
+      {displayStuff && 
+      <div className="content">
+      <h1 id="quizAdminTitle" >Quizzes</h1>
+      <button className="addNewQuizButton" onClick={setModalIsOpenToTrue} >Add New Quiz </button>
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {data && data.map((quiz, index) => {
 
-              if (quiz.publish === "0") {
-                return (<Col>
-                  <Card border="warning">
-                    <Card.Title>{quiz.quizName}</Card.Title>
-                    <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-                    <Card.Text>Subject : {quiz.subject}</Card.Text>
-                    <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-                    <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-                    <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-                    <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-                    <Button size="sm" variant="success" onClick={() => publishHideButton(quiz.id, quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
+          if (quiz.publish === "0") {
+            return (<Col>
+              <Card className={"card-" + index} >
+                <Card.Title className="card__title">{quiz.quizName}</Card.Title>
+                <Card.Text className="card__details">Total points : {quiz.totalPoints}</Card.Text>
+                <Card.Text className="card__details">Subject : {quiz.subject}</Card.Text>
+                <Card.Text className="card__details">total Marks : {quiz.totalMarks}</Card.Text>
+                <Card.Text className="card__details">Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
 
-                  </Card>
-                </Col>
+                <Button className="card__edit" size="sm" type="button" variant="outline-dark" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
 
-                )
-              } else if (quiz.publish === "1") {
-                return (
-                  <Col>
-                    <Card border="warning">
-                      <Card.Title>{quiz.quizName}</Card.Title>
-                      <Card.Text>Points : {quiz.totalPoints}</Card.Text>
-                      <Card.Text>Subject : {quiz.subject}</Card.Text>
-                      <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-                      <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
-                      <button type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz</button>
-                      <Button type="button" variant="primary" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
-                      <Button size="sm" variant="danger" onClick={() => publishHideButton(quiz.id, quiz.publish)}>Hide</Button>
+                <p class="card__view">
+                  <button class="card__viewbutton" type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz
+                  </button>
+                </p>
+                <Button className="card__publish" size="sm" variant="success" onClick={() => publishHideButton(quiz.id, quiz.publish).then(navigate('/quizAdmin'))}>Publish</Button>
+              </Card>
+            </Col>
 
-                    </Card>
-                  </Col>
-                )
-              } else {
-                return (
-                  <div>catch all</div>
-                )
-              }
+            )
+          } else if (quiz.publish === "1") {
+            return (
+              <Col>
+                <Card className={"card-" + index} >
+                  <Card.Title className="card__title">{quiz.quizName}</Card.Title>
+                  <Card.Text className="card__details">Total points : {quiz.totalPoints}</Card.Text>
+                  <Card.Text className="card__details">Subject : {quiz.subject}</Card.Text>
+                  <Card.Text className="card__details">Total marks : {quiz.totalMarks}</Card.Text>
+                  <Card.Text className="card__details">Due : {JSON.stringify(quiz.dueDate)}</Card.Text>
+
+                  <Button className="card__edit" size="sm" type="button" variant="outline-dark" value={quiz.id} onClick={() => setModalIsOpenToTrueQuizEdit(quiz)}>Edit Quiz</Button>
+
+                  <p class="card__view">
+                    <button class="card__viewbutton" type="button" variant="warning" value={quiz.id} onClick={bringToEdit}>View Quiz
+                    </button>
+                  </p>
+                  <Button className="card__publish" size="sm" variant="danger" onClick={() => publishHideButton(quiz.id, quiz.publish).then(navigate('/quizAdmin'))}>Hide</Button>
+
+                </Card>
+              </Col>
+            )
+          } else {
+            return (
+              <div>catch all</div>
+            )
+          }
 
 
 
 
-            })}
-          </Row>
+        })}
+      </Row>
 
-          <button onClick={setModalIsOpenToTrue} >Add New Quiz </button>
 
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => setModalIsOpen(false)}
-            ariaHideApp={false} >
 
-            <button onClick={setModalIsOpenToFalse}>x</button>
-            <AddQuiz />
-          </Modal>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        ariaHideApp={false}
+        className="formModal">
 
-          <Modal
-            isOpen={modalIsOpenQuizEdit}
-            onRequestClose={() => setModalIsOpenQuizEdit(false)}
-            ariaHideApp={false} >
+        <button className="exitModel" onClick={setModalIsOpenToFalse}>x</button>
+        <AddQuiz />
+      </Modal>
 
-            <button onClick={setModalIsOpenToFalseQuizEdit}>x</button>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Edit Form</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={state.quizName}
-                  name="quizName"
-                  onChange={handleChange} />
-                <Form.Text className="text-muted">
-                </Form.Text>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Subject</Form.Label>
-                <Form.Select aria-label="Default select example" name="subject"
-                  defaultValue={state.subject}
-                  onChange={handleChange}>
-                  <option>Select Quiz subject</option>
-                  <option value="Math">Math</option>
-                  <option value="Biology">Biology</option>
-                  <option value="Phyics">Physics</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Level</Form.Label>
-                <div key={`inline-radio`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="Secondary 1"
-                    name="level"
-                    type='radio'
-                    id={`inline-radio-1`}
-                    value="1"
-                    checked={state.level === "1"}
-                    onChange={handleChange}
-                  />
-                  <Form.Check
-                    inline
-                    label="Secondary 2"
-                    name="level"
-                    type='radio'
-                    id={`inline-radio-2`}
-                    value="2"
-                    checked={state.level === "2"}
-                    onChange={handleChange}
-                  />
-                </div>
-              </Form.Group>
+      <Modal
+        isOpen={modalIsOpenQuizEdit}
+        onRequestClose={() => setModalIsOpenQuizEdit(false)}
+        ariaHideApp={false}
+        className="formModal">
+
+        <button className="exitModel" onClick={setModalIsOpenToFalseQuizEdit}>x</button>
+        <p className="formTitle">Edit Quiz</p>
+        <Form className="formForm" onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Quiz Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={state.quizName}
+              name="quizName"
+              onChange={handleChange} />
+            <Form.Text className="text-muted">
+
+            </Form.Text>
+          </Form.Group>
+
+
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Subject</Form.Label>
+            <Form.Select aria-label="Default select example" name="subject"
+              defaultValue={state.subject}
+              onChange={handleChange}>
+              <option>Select Quiz subject</option>
+              <option value="Math">Math</option>
+              <option value="Biology">Biology</option>
+              <option value="Phyics">Physics</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Level</Form.Label>
+            <div key={`inline-radio`} className="mb-3">
+              <Form.Check
+                inline
+                label="Secondary 1"
+                name="level"
+                type='radio'
+                id={`inline-radio-1`}
+                value="1"
+                checked={state.level === "1"}
+                onChange={handleChange}
+              />
+              <Form.Check
+                inline
+                label="Secondary 2"
+                name="level"
+                type='radio'
+                id={`inline-radio-2`}
+                value="2"
+                checked={state.level === "2"}
+                onChange={handleChange}
+              />
+
+            </div>
+
+          </Form.Group>
+          <Row>
+            <Col>
               <Form.Group>
                 <Form.Label>Due Date</Form.Label>
                 <Form.Control
@@ -269,6 +294,8 @@ export default function quizAdmin() {
                   onChange={handleChange}
                 />
               </Form.Group>
+            </Col>
+            <Col>
               <Form.Group>
                 <Form.Label>Duration(Minutes)</Form.Label>
                 <Form.Control
@@ -277,6 +304,10 @@ export default function quizAdmin() {
                   name="duration"
                   onChange={handleChange} />
               </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               <Form.Group>
                 <Form.Label>Total Mark</Form.Label>
                 <Form.Control
@@ -285,6 +316,8 @@ export default function quizAdmin() {
                   name="totalMarks"
                   onChange={handleChange} />
               </Form.Group>
+            </Col>
+            <Col>
               <Form.Group>
                 <Form.Label>Total Points</Form.Label>
                 <Form.Control
@@ -293,13 +326,18 @@ export default function quizAdmin() {
                   name="totalPoints"
                   onChange={handleChange} />
               </Form.Group>
-              <Button variant="primary" type="submit">
-                Submittt
-                </Button>
-            </Form>
-          </Modal>
-        </div>
-      }
+
+            </Col>
+          </Row>
+          <Button variant="primary" type="submit">
+            Submittt
+          </Button>
+        </Form>
+
+
+      </Modal>
+      </div>
+}
     </div>
   </>
   );

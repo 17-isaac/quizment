@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css');
+#quizAdminTitle{
+    text-align: center;
+}
+.addNewQuizButton{
+    align-self: center;
+    width: 200px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-family: 'Quicksand', sans-serif;
+        position: relative;
+      
+}
+.addNewQuizButton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(232, 153, 248, 0.849);
+    transition: all 0.5s;
+  }
+  
+  .addNewQuizButton:hover::after {
+    width: 100%;
+  }
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .card {
+    margin: 20px;
+    padding: 20px;
+    width: 350px;
+    min-height: 200px;
+    display: grid;
+    grid-template-rows: 20px 50px 1fr 50px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s;
+  }
+  
+  .card:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    transform: scale(1.01);
+  }
+  
+  .card__viewbutton {
+    position: relative;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .card__viewbutton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: all 0.5s;
+  }
+  
+  .card__viewbutton:hover::after {
+    width: 100%;
+  }
+  
+
+  .card__title {
+    font-weight: 500;
+    font-size: 170%;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+  }
+  
+  .card__details {
+    font-weight: 400;
+    font-size: 120% !important;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+  }
+ 
+  .card__view {
+    align-self: center;
+    font-size: 150%;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .card__viewbutton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+  }
+  .card__edit {
+    align-self: center;
+   width: 70px;
+   grid-row: 1/2;
+   margin-left: 75%;
+   margin-top: 20%;
+   font-family: 'Quicksand', sans-serif;
+  }
+  .card__publish {
+    align-self: center;
+   width: 70px;
+   margin-left: 75%;
+   margin-top: 0%;
+   font-family: 'Quicksand', sans-serif;
+  }
+  
+  /* CARD BACKGROUNDS */
+  
+  .card-1 {
+    background: radial-gradient(#1fe4f5, #4fbffc);
+  }
+  
+  .card-2 {
+    background: radial-gradient(#fbc1cc, #fa99b2);
+  }
+  
+  .card-3 {
+    background: radial-gradient(#76b2fe, #b69efe);
+  }
+  
+  .card-4 {
+    background: radial-gradient(#60efbc, #58d5c9);
+  }
+  
+  .card-0 {
+    background: radial-gradient(#f588d8, #c0a3e5);
+  }
+  
+  /* RESPONSIVE */
+  
+  @media (max-width: 1600px) {
+    .cards {
+      justify-content: center;
+    }
+  }
+
+.formModal{
+        background: white;
+        margin-left: 10%;
+        margin-right:10%;
+        margin-bottom: 5%;
+        margin-top:2%
+}
+.exitModel{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-family: 'Quicksand', sans-serif;
+    position: relative;
+    float: right;
+    font-size: 150%;
+    margin-right:5%
+}
+  /* Add NEW QUIZ */
+/* .AddQuizDiv{
+
+} */
+.formForm{
+    font-family: 'Quicksand', sans-serif;
+   margin-left:10%;
+   margin-right:10%
+}
+
+.formTitle{
+    font-size: 140%;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 45%;
+    padding-top:1%
+}
+
+  /* QuizAdmin/PARAMS */
+  .Ncard-1 {
+    border-color: #1fe4f5;
+  }
+  
+  .Ncard-2 {
+    border-color:#fbc1cc;
+  }
+  
+  .Ncard-3 {
+    border-color: #b69efe;
+  }
+  
+  .Ncard-4 {
+    border-color: #58d5c9
+  }
+  
+  .Ncard-0 {
+    border-color:  #c0a3e5
+  }
+ 
+  .card__img{
+    object-fit: contain;
+float:right;
+height:420%
+  }
+  #quizQuestion{
+      width: 80%;
+      margin-left:10%;
+  }
+
+  #mcqOpenEnd{
+    margin-left:10%;
+    margin-top:2%
+  }
+
+  #addMcqOpenEndButton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 120%;
+    width: 20%;
+    font-family: 'Quicksand', sans-serif;
+    margin-left:80%;
+      position: relative;
+    text-decoration: none;
+    color: rgba(17, 4, 4, 0.9);
+  }
+  
+  #addMcqOpenEndButton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(10, 54, 150, 0.6);
+    transition: all 0.5s;
+  }
+  
+  #addMcqOpenEndButton:hover::after {
+    width: 100%;
+  }
+  #quizDocBackButton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 120%;
+    font-family: 'Quicksand', sans-serif;
+    float:left
+  }
+  #quizDocBackButton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(10, 54, 150, 0.6);
+    transition: all 0.5s;
+  }
+  
+  #quizDocBackButton:hover::after {
+    width: 10%;
+  }
+  .card__details2 {
+    font-weight: 400;
+    color: #000000;
+    font-family: 'Quicksand', sans-serif;
+    float:left
+  }
+  .noMCQ{
+    margin-left:30%;
+    width:40%;
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(255, 238, 0);
+  }

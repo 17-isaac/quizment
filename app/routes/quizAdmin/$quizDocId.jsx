@@ -2,7 +2,6 @@ import { Link, useLoaderData, useCatch, redirect, useParams, useNavigate, useLoc
 import { collection, query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import Modal from 'react-modal';
 import { fdb } from "~/utils/firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Form } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
@@ -11,6 +10,17 @@ import { useState } from "react";
 import AddMcqPopup from './EditQuiz/AddMcqPopup';
 import AddOpenEndedPopup from './EditQuiz/AddOpenEndedPopup'
 import EditQuiz from './editQuiz';
+import { NavigationTeacher } from '~/components/navTeacher';
+import styleForNav from "~/styles/nav.css";
+
+import Css from '../../styles/quizAdmin'
+export function links() {
+  return [{
+    rel: "stylesheet", href: styleForNav,
+    rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
+    rel: "stylesheet", href: Css,
+  }];
+}
 export async function loader({ params, request }) {
 
   const q = query(collection(fdb, "Questions"), where("quizDocID", "==", params.quizDocId));
@@ -35,8 +45,19 @@ export async function loader({ params, request }) {
 };
 
 
-export default function JokeRoute() {
-  const location = useLocation();
+export default function QuizRoute() {
+  const [clickStatus, setClickStatus] = useState(0);
+  const [displayStuff, setDisplayStatus] = useState(true);
+  function handleClick() {
+    if (clickStatus === 0) {
+      setClickStatus(1);
+      setDisplayStatus(false);
+    } else {
+      setClickStatus(0);
+      setDisplayStatus(true);
+    }
+  }
+
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [urlName, setUrlName] = useState("")
@@ -150,7 +171,6 @@ export default function JokeRoute() {
 
   function handleChangeOpenEnded(e) {
     e.preventDefault();
-
     const value = e.target.value;
     setStateOpenEnd({
       ...stateOpenEnd,
@@ -166,46 +186,64 @@ export default function JokeRoute() {
 
   }
   function handleSubmitOpenEnded(e) {
-    
-      e.preventDefault();
-      const value = e.target.value;
-      updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
-        question: stateOpenEnd.question,
-        answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
-      });
-      window.alert('updated!')
-      window.location.reload()
-   
-  }
 
+    e.preventDefault();
+    const value = e.target.value;
+    updateDoc(doc(fdb, "OpenEndedQues", questionDocID), {
+      question: stateOpenEnd.question,
+      answers: [stateOpenEnd.answer1, stateOpenEnd.answer2, stateOpenEnd.answer3, stateOpenEnd.answer4]
+    });
+    window.alert('updated!')
+    window.location.reload()
+
+  }
+  function goBack() {
+    navigate("/quizAdmin")
+  }
 
   const data = useLoaderData()[0];
   const data2 = useLoaderData()[1];
+  var displayMCQ;
+  var displayOpenEnded;
+
+  if (Object.keys(data).length === 0) {
+    displayMCQ = <h3 className="noMCQ">there are no mcq questions</h3>
+  } else {
+    displayMCQ = <h3></h3>
+  }
+  if (Object.keys(data2).length === 0) {
+    displayOpenEnded = <h3 className="noMCQ">there are no open-ended questions</h3>
+  } else {
+    displayOpenEnded = <h3></h3>
+  }
+
   return (<>
     <div>
-      <h1></h1>
+      <NavigationTeacher onClick={handleClick} />
+      <h1 id="quizAdminTitle">Quiz Question</h1>
+      <button id="quizDocBackButton" onClick={goBack}>back</button>
+      <Row className="quizDoc" xs={1} md={2} lg={1} >
+        <button id="addMcqOpenEndButton" onClick={setModal3IsOpenToTrue} >ADD MCQ question</button>
+        <h1 id="mcqOpenEnd" > MCQ</h1>
 
-      <Row className="g-4">
-        <h1> MCQ</h1>
-        {data && data.map(mcq =>
-
+        {data && data.map((mcq, index) =>
 
           <Col>
-            <Card border="warning" style={{ width: '45rem' }}>
+            <Card className={"Ncard-" + index} id="quizQuestion">
               <Card.Title>{mcq.question}</Card.Title>
               {(mcq.img_url == "") ? (
                 <Card.Text></Card.Text>
               ) : (
-                <Card.Text><img src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
+                <Card.Text><img className="card__img" src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
               )}
 
-              <Card.Title>MCQ choices</Card.Title>
-              <Card.Text>{mcq.choices[0]}</Card.Text>
-              <Card.Text>{mcq.choices[1]}</Card.Text>
-              <Card.Text>{mcq.choices[2]}</Card.Text>
-              <Card.Text>{mcq.choices[3]}</Card.Text>
+              <Card.Title className="card__details2">MCQ choices</Card.Title>
+              <Card.Text className="card__details2">{mcq.choices[0]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[1]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[2]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[3]}</Card.Text>
 
-              <Card.Text>Answer : {mcq.answer}</Card.Text>
+              <Card.Text className="card__details2">Answer : {mcq.answer}</Card.Text>
 
               <Button type="button" variant="warning" onClick={() => setModal2IsOpenToTrue(mcq)}>Edit question</Button>
             </Card>
@@ -213,16 +251,21 @@ export default function JokeRoute() {
           </Col>
 
         )}
+        <div>
+          {displayMCQ}
+        </div>
+
       </Row>
-      <Row
-        // xs={1} md={2} lg={3} 
+      <Row className="quizDoc"
+        xs={1} md={2} lg={1}
         className="g-4">
-        <h1> Open endeded</h1>
-        {data2 && data2.map(openEnded =>
+        <h1 id="mcqOpenEnd" > Open endeded</h1>
+        <button id="addMcqOpenEndButton" onClick={setModal4IsOpenToTrue} >Add open-ended</button>
+        {data2 && data2.map((openEnded, index) =>
 
 
           <Col>
-            <Card border="info" style={{ width: '45rem' }}>
+            <Card border="info" className={"Ncard-" + index} id="quizQuestion">
               <Card.Title>{openEnded.question}</Card.Title>
               {(openEnded.img_url == "") ? (
                 <Card.Text></Card.Text>
@@ -236,19 +279,18 @@ export default function JokeRoute() {
               <Card.Text> {openEnded.answers[3]}</Card.Text>
 
 
-              {/* <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-                      <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text> */}
-
               <Button type="button" variant="primary" onClick={() => setModal5IsOpenToTrue(openEnded)}>Edit question</Button>
             </Card>
           </Col>
         )}
+        <div>
+          {displayOpenEnded}
+        </div>
+
+
       </Row>
 
 
-      <button onClick={setModal1IsOpenToTrue} >Edit Quizzz</button>
-      <button onClick={setModal3IsOpenToTrue} >ADD MCQ question</button>
-      <button onClick={setModal4IsOpenToTrue} >Add open-ended</button>
       {/* edit quiz popup  */}
       <Modal
         isOpen={modal1IsOpen}
@@ -261,13 +303,14 @@ export default function JokeRoute() {
       <Modal
         isOpen={modal2IsOpen}
         onRequestClose={() => setModal2IsOpen(false)}
-        ariaHideApp={false}>
+        ariaHideApp={false}
+        className="formModal">
 
-        <button onClick={setModal2IsOpenToFalse}>x</button>
-
-        <Form onSubmit={handleSubmitMCQ}>
+        <button className="exitModel" onClick={setModal2IsOpenToFalse}>x</button>
+        <p className="formTitle">Edit Question</p>
+        <Form className="formForm" onSubmit={handleSubmitMCQ}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Questionsss</Form.Label>
+            <Form.Label>Questions</Form.Label>
             <Form.Control
               type="text"
               value={stateMcq.question}
@@ -278,6 +321,7 @@ export default function JokeRoute() {
             </Form.Text>
           </Form.Group>
           <Form.Group as={Row} >
+            <Form.Label>Multiple Choices</Form.Label>
             <Form.Control
               type="text"
               value={stateMcq.choice1}
@@ -305,12 +349,16 @@ export default function JokeRoute() {
               name="choice4"
               onChange={handleChangeMCQ} />
           </Form.Group>
-          <Form.Control
-            type="text"
-            value={stateMcq.answer}
-            name="choice4"
-            onChange={handleChangeMCQ} />
-       
+          <Form.Group>
+            <Form.Label>Correct Answer</Form.Label>
+            <Form.Control
+              type="text"
+              value={stateMcq.answer}
+              name="choice4"
+              onChange={handleChangeMCQ} />
+          </Form.Group>
+
+
           <Button variant="primary" type="submit" value={questionDocID}>
             Submit
           </Button>
@@ -323,25 +371,31 @@ export default function JokeRoute() {
       <Modal
         isOpen={modal3IsOpen}
         onRequestClose={() => setModal3IsOpen(false)}
-        ariaHideApp={false}>
-        <button onClick={setModal3IsOpenToFalse}>x</button>
+        ariaHideApp={false}
+        className="formModal">
+
+        <button className="exitModel" onClick={setModal3IsOpenToFalse}>x</button>
         <AddMcqPopup />
       </Modal>
       {/* Add open ended  */}
       <Modal
         isOpen={modal4IsOpen}
         onRequestClose={() => setModal4IsOpen(false)}
-        ariaHideApp={false}>
-        <button onClick={setModal4IsOpenToFalse}>x</button>
+        ariaHideApp={false}
+        className="formModal">
+        <button className="exitModel" onClick={setModal4IsOpenToFalse}>x</button>
         <AddOpenEndedPopup />
       </Modal>
+      {/* edit question popup */}
       <Modal
         isOpen={modal5IsOpen}
         onRequestClose={() => setModal5IsOpen(false)}
-        ariaHideApp={false}>
+        ariaHideApp={false}
+        className="formModal">
 
-        <button onClick={setModal5IsOpenToFalse}>x</button>
-        <Form onSubmit={handleSubmitOpenEnded}>
+        <button className="exitModel" onClick={setModal5IsOpenToFalse}>x</button>
+        <p className="formTitle">Edit Question</p>
+        <Form className="formForm" onSubmit={handleSubmitOpenEnded}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Question</Form.Label>
             <Form.Control
@@ -396,7 +450,7 @@ export default function JokeRoute() {
               onChange={handleChangeOpenEnded} />
           </Form.Group>
 
-       
+
 
           <Button variant="primary" type="submit">
             Submit

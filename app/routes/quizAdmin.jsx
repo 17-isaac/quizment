@@ -12,7 +12,6 @@ export function links() {
 export default function quizAdmin() {
   return (
     <div>
-      <h1>Quiz Admin</h1>
       <main>
         <Outlet/>
       </main>

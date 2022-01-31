@@ -1,10 +1,18 @@
-import { useLoaderData, useNavigate } from "remix";
+import { useNavigate } from "remix";
 import { collection, addDoc } from "firebase/firestore"; 
 import Button from 'react-bootstrap/Button';
-import { Form } from 'react-bootstrap'
+import { Form, Col, Row } from 'react-bootstrap'
 import { fdb } from "~/utils/firebase";
 import {useState } from "react";
-
+import Css from '~/styles/quizAdmin'
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: Css,
+    },
+  ];
+}
 
 export default  function AddQuiz() {
     
@@ -40,7 +48,7 @@ let navigate = useNavigate();
         duration:state.duration,
         publish:"0"
   }).then(function(docRef) {
-     navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
+     navigate(`/quizAdmin/${docRef.id}`,{state:{doc:docRef.id}});
     
   
     
@@ -58,10 +66,10 @@ const handleSubmit = (e) => {
 }
 
     return (<>
-        <div>
-            <h1></h1>
+        <div className="AddQuizDiv">
+            <p className="formTitle">Add Quiz</p>
 
-            <Form onSubmit={handleSubmit}>
+            <Form className="formForm" onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Quiz Name</Form.Label>
                     <Form.Control 
@@ -115,6 +123,8 @@ const handleSubmit = (e) => {
                     </div>
 
                 </Form.Group>
+                <Row>
+                    <Col>
                 <Form.Group>
                     <Form.Label>Due Date</Form.Label>
                     <Form.Control
@@ -125,8 +135,8 @@ const handleSubmit = (e) => {
                         onChange={handleChange}
                     />
                 </Form.Group>
-
-
+</Col>
+<Col>
                 <Form.Group>
                     <Form.Label>Duration(Minutes)</Form.Label>
                     <Form.Control 
@@ -135,7 +145,11 @@ const handleSubmit = (e) => {
                      name="duration"
                      onChange={handleChange} />
                 </Form.Group>
+        </Col>        
+</Row>
 
+<Row>
+                    <Col>
                 <Form.Group>
                     <Form.Label>Total Mark</Form.Label>
                     <Form.Control
@@ -144,7 +158,8 @@ const handleSubmit = (e) => {
                      name="totalMarks"
                      onChange={handleChange}  />
                 </Form.Group>
-
+                </Col>
+<Col>
                 <Form.Group>
                     <Form.Label>Total Points</Form.Label>
                     <Form.Control 
@@ -153,7 +168,8 @@ const handleSubmit = (e) => {
                     name="totalPoints"
                      onChange={handleChange} />
                 </Form.Group>
-
+                </Col>        
+</Row>
 
                 <Button variant="primary" type="submit">
                     Submit
