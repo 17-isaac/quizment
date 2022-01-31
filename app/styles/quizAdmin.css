@@ -206,8 +206,87 @@
   .Ncard-0 {
     border-color:  #c0a3e5
   }
-
+ 
+  .card__img{
+    object-fit: contain;
+float:right;
+height:420%
+  }
   #quizQuestion{
       width: 80%;
       margin-left:10%;
+  }
+
+  #mcqOpenEnd{
+    margin-left:10%;
+    margin-top:2%
+  }
+
+  #addMcqOpenEndButton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 120%;
+    width: 20%;
+    font-family: 'Quicksand', sans-serif;
+    margin-left:80%;
+      position: relative;
+    text-decoration: none;
+    color: rgba(17, 4, 4, 0.9);
+  }
+  
+  #addMcqOpenEndButton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(10, 54, 150, 0.6);
+    transition: all 0.5s;
+  }
+  
+  #addMcqOpenEndButton:hover::after {
+    width: 100%;
+  }
+  #quizDocBackButton{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 120%;
+    font-family: 'Quicksand', sans-serif;
+    float:left
+  }
+  #quizDocBackButton::after {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 3px;
+    background-color: rgba(10, 54, 150, 0.6);
+    transition: all 0.5s;
+  }
+  
+  #quizDocBackButton:hover::after {
+    width: 10%;
+  }
+  .card__details2 {
+    font-weight: 400;
+    color: #000000;
+    font-family: 'Quicksand', sans-serif;
+    float:left
+  }
+  .noMCQ{
+    margin-left:30%;
+    width:40%;
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(255, 238, 0);
   }

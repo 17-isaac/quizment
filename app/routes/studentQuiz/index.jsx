@@ -1,7 +1,7 @@
 import { useLoaderData, useNavigate, redirect } from "remix";
 import { collection, getDocs, updateDoc, doc, query, where } from 'firebase/firestore';
 import { fdb } from "../../utils/firestore";
-import { db } from "~/utils/db.server";
+import { db } from "../../utils/db.server";
 import Card from 'react-bootstrap/Card';
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-modal';
@@ -12,8 +12,6 @@ import Button from 'react-bootstrap/Button';
 
 export async function loader() {
  
-
-
   const data = await db.quizHistory.findMany({
     where: {
       studentid: "23",
@@ -26,12 +24,11 @@ export async function loader() {
   //const allQuizID = modifiedEvents
   var result = data.map(quiz => (quiz.quizid));
 
-
-  const querySnapshot = await getDocs((collection(fdb, "Quiz"), where("publish", "==", "0")));
+const q = query(collection(fdb, "Quiz"), where("publish", "==", "1"));
+  const querySnapshot = await getDocs(q);
   const modifiedEvents = querySnapshot.docs.map((doc) => {
 
     if (result.includes(doc.id)) {
-
     } else {
 
       const eventData = doc.data()
@@ -90,6 +87,7 @@ export default function studentQuiz() {
     <div>
       <h1>Quiz Not Completed</h1>
 
+
       <Row xs={1} md={2} lg={3} className="g-4">
         {quizNotDone && quizNotDone.map(quiz =>
 
@@ -109,6 +107,7 @@ export default function studentQuiz() {
 
         )}
       </Row>
+      
       <h1>Quiz Completed</h1>
 
       <Row xs={1} md={2} lg={3} className="g-4">

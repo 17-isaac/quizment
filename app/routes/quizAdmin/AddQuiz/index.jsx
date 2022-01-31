@@ -48,7 +48,7 @@ let navigate = useNavigate();
         duration:state.duration,
         publish:"0"
   }).then(function(docRef) {
-     navigate(`/quizAdmin/${quiz.docId}`,{state:{doc:docRef.id}});
+     navigate(`/quizAdmin/${docRef.id}`,{state:{doc:docRef.id}});
     
   
     

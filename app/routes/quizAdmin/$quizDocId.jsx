@@ -29,9 +29,11 @@ export async function loader({ params, request }) {
     console.log(`${doc.id} => ${doc.data()}`);
     const eventData = doc.data()
     eventData.id = doc.id
-    return eventData
+   return eventData
+    
   });
-
+  
+  console.log(modifiedEvents + "MODIFIEDDD")
   const q2 = query(collection(fdb, "OpenEndedQues"), where("quizDocID", "==", params.quizDocId));
   const querySnapshot2 = await getDocs(q2);
   const modifiedEvents2 = querySnapshot2.docs.map((doc) => {
@@ -40,7 +42,9 @@ export async function loader({ params, request }) {
     eventData.id = doc.id
     return eventData
   });
+
   const Final = [modifiedEvents, modifiedEvents2]
+  
   return Final;
 };
 
@@ -187,33 +191,55 @@ export default function JokeRoute() {
       window.location.reload()
    
   }
+function goBack(){
+  navigate("/quizAdmin")
+}
 
-
-  const data = useLoaderData()[0];
+  const data  = useLoaderData()[0];
   const data2 = useLoaderData()[1];
+  console.log(JSON.stringify(data) + "dataHWHEWHEWHE")
+  console.log(JSON.stringify(data2) + "dataHWHEWHEWHE")
+  
+  var displayMCQ;
+  var displayOpenEnded;
+  if(Object.keys(data).length === 0){
+  displayMCQ = <h3 className="noMCQ">there are no mcq questions</h3>
+  }else{
+     displayMCQ = <h3></h3>
+  }
+  if(Object.keys(data2).length === 0){
+    displayOpenEnded = <h3 className="noMCQ">there are no open-ended questions</h3>
+  }else{
+     displayOpenEnded =<h3></h3>
+  }
+  
+     
   return (<>
     <div>
-      <h1></h1>
-
+    <h1 id="quizAdminTitle">Quiz Question</h1>
+      <button id="quizDocBackButton" onClick={goBack}>back</button>
       <Row className="quizDoc" xs={1} md={2} lg={1} >
-      <h1 id="quizAdminTitle" > MCQ</h1>
+      <button id="addMcqOpenEndButton" onClick={setModal3IsOpenToTrue} >ADD MCQ question</button>
+      <h1 id="mcqOpenEnd" > MCQ</h1>
+      
         {data && data.map((mcq,index) =>
+        
           <Col>
             <Card  className={"Ncard-"+index} id="quizQuestion">
               <Card.Title>{mcq.question}</Card.Title>
               {(mcq.img_url == "") ? (
                 <Card.Text></Card.Text>
               ) : (
-                <Card.Text><img src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
+                <Card.Text><img className="card__img" src={mcq.img_url} width="400" height="100%" alt="Image"></img></Card.Text>
               )}
 
-              <Card.Title>MCQ choices</Card.Title>
-              <Card.Text>{mcq.choices[0]}</Card.Text>
-              <Card.Text>{mcq.choices[1]}</Card.Text>
-              <Card.Text>{mcq.choices[2]}</Card.Text>
-              <Card.Text>{mcq.choices[3]}</Card.Text>
+              <Card.Title className="card__details2">MCQ choices</Card.Title>
+              <Card.Text className="card__details2">{mcq.choices[0]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[1]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[2]}</Card.Text>
+              <Card.Text className="card__details2">{mcq.choices[3]}</Card.Text>
 
-              <Card.Text>Answer : {mcq.answer}</Card.Text>
+              <Card.Text className="card__details2">Answer : {mcq.answer}</Card.Text>
 
               <Button type="button" variant="warning" onClick={() => setModal2IsOpenToTrue(mcq)}>Edit question</Button>
             </Card>
@@ -221,11 +247,16 @@ export default function JokeRoute() {
           </Col>
 
         )}
+        <div>
+          {displayMCQ}
+       </div>
+       
       </Row>
       <Row className="quizDoc"
         xs={1} md={2} lg={1} 
         className="g-4">
-         <h1 id="quizAdminTitle" > Open endeded</h1>
+         <h1 id="mcqOpenEnd" > Open endeded</h1>
+      <button id="addMcqOpenEndButton" onClick={setModal4IsOpenToTrue} >Add open-ended</button>
         {data2 && data2.map((openEnded,index) =>
 
 
@@ -244,17 +275,18 @@ export default function JokeRoute() {
               <Card.Text> {openEnded.answers[3]}</Card.Text>
 
 
-              {/* <Card.Text>total Marks : {quiz.totalMarks}</Card.Text>
-                      <Card.Text>Due : {JSON.stringify(quiz.dueDate)}</Card.Text> */}
-
               <Button type="button" variant="primary" onClick={() => setModal5IsOpenToTrue(openEnded)}>Edit question</Button>
             </Card>
           </Col>
         )}
+          <div>
+          {displayOpenEnded}
+       </div>
+        
+       
       </Row>
 
-      <button onClick={setModal3IsOpenToTrue} >ADD MCQ question</button>
-      <button onClick={setModal4IsOpenToTrue} >Add open-ended</button>
+      
       {/* edit quiz popup  */}
       <Modal
         isOpen={modal1IsOpen}
