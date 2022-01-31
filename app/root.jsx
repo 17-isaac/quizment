@@ -20,6 +20,7 @@ import { Container } from "react-bootstrap";
 import store from './store';
 import { getData } from "~/features/counterSlice";
 import ReactNotification from 'react-notifications-component';
+import stylesMain from '~/styles/index.css'
 import styles1 from '~/styles/error.css';
 import styles2 from 'react-notifications-component/dist/theme.css';
 import styles3 from 'animate.css/animate.min.css';
@@ -35,7 +36,8 @@ export function links() {
     { rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" },
     { rel: "stylesheet", href: styles2 },
     { rel: "stylesheet", href: styles3 },
-    { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" }];
+    { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" },
+    { rel: "stylesheet", href: stylesMain }];
 }
 
 // loader function to check for existing user based on session cookie

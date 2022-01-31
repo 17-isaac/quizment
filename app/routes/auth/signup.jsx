@@ -68,7 +68,7 @@ export let action = async ({ request }) => {
                 }
             })
         } else {
-            return redirect('../auth', signUpError.code);
+            return error;
         }
 }
 
@@ -170,3 +170,13 @@ export default function Signup() {
   );
 }
 
+
+export function ErrorBoundary({ error }) {
+  return (
+    <div>
+      <p>Error</p>
+      <p>{error.message}</p>
+      <p>Reload to get out of error.</p>
+    </div>
+  )
+}
