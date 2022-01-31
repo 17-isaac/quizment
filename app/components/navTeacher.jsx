@@ -17,8 +17,8 @@ export function NavigationTeacher({ onClick }) {
       <Container fluid>
       <div>
          <input type="checkbox" id="active"></input>
-         <label htmlFor="active" className="menu-btn" onClick={onClick}><FontAwesomeIcon icon={openCloseStatus} onClick={handleClick} className={'fas fa-bars'}/></label>
          <div className="wrapper">
+         <label htmlFor="active" className="menu-btn" onClick={onClick}><FontAwesomeIcon icon={openCloseStatus} onClick={handleClick} className={'fas fa-bars'}/></label>
             <ul>
                <Link className={'linkForDashboards'} to="/teacherDashboard" style={{ textDecoration: 'none' }}><li><a>Teacher Dashboard</a></li></Link>
                <Link className={'linkForDashboards'} to="/teacherStudentProgress" style={{ textDecoration: 'none' }}><li><a >Student Progress Management</a></li></Link>

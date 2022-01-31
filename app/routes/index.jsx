@@ -9,7 +9,7 @@ export async function loader() {
         },
         select: {
           name: true,
-          Uid: true,
+          uid: true,
           streaks: true
         }
       })
