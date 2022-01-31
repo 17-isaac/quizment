@@ -1,2 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 
+.boxContentDashboard {
+    padding-top: 10px !important;
+    color: white !important;
+    padding-right: 10px !important;
+}

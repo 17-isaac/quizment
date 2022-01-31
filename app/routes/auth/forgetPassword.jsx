@@ -38,7 +38,7 @@ export let action = async ({ request }) => {
     if (!error) {
         return redirect('/auth');
     } else {
-        return null;
+        return error;
     }
 }
 
@@ -118,4 +118,14 @@ export default function ForgetPassword() {
             </Grid>
         </ThemeProvider>
     );
+}
+
+export function ErrorBoundary({ error }) {
+    return (
+      <div>
+        <p>Error</p>
+        <p>{error.message}</p>
+        <p>Reload to get out of error.</p>
+      </div>
+    )
 }

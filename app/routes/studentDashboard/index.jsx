@@ -1,4 +1,4 @@
-import { redirect, useLoaderData } from "remix";
+import { redirect, useLoaderData, Link } from "remix";
 import { useState } from "react";
 import { getSession, destroySession } from "~/sessions.server";
 import { db } from "~/utils/db.server";
@@ -7,8 +7,15 @@ import { signOut } from "firebase/auth";
 import { NavigationStudent } from '~/components/navStudent'
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import { SizeMe } from 'react-sizeme';
 import dashboardStyles from '~/styles/studentDashboard.css';
+
 
 export function links() {
   return [{
@@ -30,16 +37,37 @@ export let action = async ({ request }) => {
 
 export async function loader() {
   if (auth.currentUser) {
-  const data = {
-    studentDetailsData: await db.user.findUnique({
-      where: {
-        uid: auth.currentUser.uid,
-      },
-      select: {
-        type: true
-      }
-    })
-  };
+    const currentUserID = auth.currentUser.uid;
+    const data = {
+      studentUserData: await db.user.findUnique({
+        where: {
+          uid: currentUserID,
+        },
+        select: {
+          name: true
+        }
+      }),
+      studentDetails: await db.student.findUnique({
+        where: {
+          uid: currentUserID
+        },
+        select: {
+          streaks: true,
+          totalPts: true,
+          redeemedPts: true
+        }
+      }),
+      leaderboardData: await db.student.findMany({
+        take: 10,
+        orderBy: {
+          totalPts: 'desc'
+        },
+        select: {
+          name: true,
+          totalPts: true
+        }
+      })
+    };
     return data;
   } else {
     return redirect('/auth');
@@ -50,7 +78,6 @@ export async function loader() {
 export default function StudentDashboardContent() {
   const [clickStatus, setClickStatus] = useState(0);
   const [displayDashboard, setDisplayDashboardStatus] = useState(true);
-  const data = useLoaderData();
   function handleClick() {
     if (clickStatus === 0) {
       setClickStatus(1);
@@ -76,6 +103,7 @@ export default function StudentDashboardContent() {
 }
 
 export function StudentDashboardLayout() {
+  const data = useLoaderData();
   const layouts = {
     lg: [
       { i: 'a', x: 0, y: 0, w: 3, h: 2 },
@@ -87,6 +115,21 @@ export function StudentDashboardLayout() {
       { i: "g", x: 8, y: 2, w: 4, h: 5 },
     ],
   };
+  function createData(name, points) {
+    return { name, points };
+  }
+  // const rows = [
+  //   createData(data.leaderboardData[0].name, data.leaderboardData[0].totalPts.toString()),
+  //   createData(data.leaderboardData[1].name, data.leaderboardData[1].totalPts.toString()),
+  //   createData(data.leaderboardData[2].name, data.leaderboardData[2].totalPts.toString()),
+  //   createData(data.leaderboardData[3].name, data.leaderboardData[3].totalPts.toString()),
+  //   createData(data.leaderboardData[4].name, data.leaderboardData[4].totalPts.toString()),
+  //   createData(data.leaderboardData[5].name, data.leaderboardData[5].totalPts.toString()),
+  //   createData(data.leaderboardData[6].name, data.leaderboardData[6].totalPts.toString()),
+  //   createData(data.leaderboardData[7].name, data.leaderboardData[7].totalPts.toString()),
+  //   createData(data.leaderboardData[8].name, data.leaderboardData[8].totalPts.toString()),
+  //   createData(data.leaderboardData[9].name, data.leaderboardData[9].totalPts.toString()),
+  // ];
   return (
     <SizeMe refreshMode="debounce"
       refreshRate={60}
@@ -100,34 +143,87 @@ export function StudentDashboardLayout() {
           width={size.width}
         >
           <div key="a">
-            <Widget id="a" backgroundColor="#867ae9" />
+            <Paper className="boxContentDashboard" id="a" elevation={24} sx={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, rgba(67,61,163,1) 0%, rgba(77,77,173,1) 35%, rgba(3,138,206,1) 81%) !important' }}>
+              <p>Hi {data.studentUserData.name}!</p>
+              <p>Redeemable Points: {data.studentDetails.redeemedPts.toString()}</p>
+              <p>Total Points Earned: {data.studentDetails.totalPts.toString()}</p>
+            </Paper>
           </div>
           <div key="b">
-            <Widget id="b" backgroundColor="#fff5ab" />
+            <Paper className="boxContentDashboard" id="b" elevation={24} sx={{ width: '100%', height: '100%', background: 'radial-gradient(#f588d8, #c0a3e5) !important' }}>
+              <p>Quiz</p>
+              <p>Do your quizzes!</p>
+              <p>Apart from sharpening your skills you will be able to earn the points that you can use to redeem stuff!</p>
+              <Link className={'linkForDashboards'} to="/studentQuiz" style={{ textDecoration: 'none' }}><p>Click here to do quizzes.</p></Link>
+            </Paper>
           </div>
           <div key="c">
-            <Widget id="c" backgroundColor="#ffcead" />
+            <Paper className="boxContentDashboard" id="c" elevation={24} sx={{ width: '100%', height: '100%', background: 'radial-gradient(#fbc1cc, #fa99b2) !important' }}>
+              <p>Q Search</p>
+              <p>Our very own Q search! An easy way to get information that you need for your studies!</p>
+              <Link className={'linkForDashboards'} to="/search" style={{ textDecoration: 'none' }}><p>Click here to go Q searching!</p></Link>
+            </Paper>
           </div>
           <div key="d">
-            <Widget id="d" backgroundColor="#c449c2" />
+            <Paper className="boxContentDashboard" id="d" elevation={24} sx={{ width: '100%', height: '100%', background: 'radial-gradient(#76b2fe, #b69efe) !important' }}>
+              <p>Resource News</p>
+              <p>Get updated with the lastest news on your subjects that you need to learn about!</p>
+              <Link className={'linkForDashboards'} to="/resourceNews" style={{ textDecoration: 'none' }}><p>Click here to go to Resource News!</p></Link>
+            </Paper>
           </div>
           <div key="e">
-            <Widget id="e" backgroundColor="#c449c2" />
+            <Paper className="boxContentDashboard" id="e" elevation={24} sx={{ width: '100%', height: '100%', background: 'linear-gradient(228deg, rgba(34,193,195,1) 0%, rgba(57,149,49,1) 71%, rgba(141,189,44,1) 100%) !important' }}>
+              <p>Leaderboard</p>
+              <p>The top 10 students!</p>
+              {/* <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell align="right">Points</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow
+                        key={row.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.points}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer> */}
+            </Paper>
           </div>
           <div key="f">
-            <Widget id="f" backgroundColor="#c449c2" />
+            <Paper className="boxContentDashboard" id="f" elevation={24} sx={{ width: '100%', height: '100%', background: 'linear-gradient(306deg, rgba(34,193,195,1) 0%, rgba(45,191,253,1) 100%) !important' }}>
+              <p>Rewards</p>
+              <p>Have enough points? Redeem whatever rewards that you like! From pencil cases to toys we have it all.</p>
+              <Link className={'linkForDashboards'} to="/rewards" style={{ textDecoration: 'none' }}><p>Click here to go to redeem rewards!</p></Link>
+            </Paper>
           </div>
           <div key="g">
-            <Widget id="g" backgroundColor="#c449c2" />
+            <Paper className="boxContentDashboard" id="g" elevation={24} sx={{ width: '100%', height: '100%', background: 'linear-gradient(32deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%) !important' }}>
+              <p>Streaks</p>
+              <p>{data.studentDetails.streaks.toString()} day streak</p>
+              <p>Ways to improve your streak?</p>
+              <p>All you need to do is to use quizment daily and your streak will increase! Constant daily practice of your subjects will also help you to get better grades and have an easier time at school. Always remember to have fun!</p>
+            </Paper>
           </div>
         </ResponsiveGridLayout>
       } />
   );
 }
 
-function Widget({ id, backgroundColor }) {
+export function ErrorBoundary({ error }) {
   return (
-    <Paper elevation={24} style={{ width: '100%', height: '100%', backgroundColor }}>{id}</Paper>
-    // <div style={{ width: '100%', height: '100%', backgroundColor }}>{id}</div>
-  );
+    <div>
+      <p>{error.message}</p>
+    </div>
+  )
 }

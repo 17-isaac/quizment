@@ -105,8 +105,7 @@ input[type="checkbox"]{
   font-weight: 700;
 }
 .content p{
-  font-size: 35px;
-  font-weight: 600;
+  padding-left: 15px;
 }
 .logoutColor {
   color: white;

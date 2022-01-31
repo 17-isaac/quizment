@@ -71,7 +71,7 @@ export let action = async ({ request }) => {
       })
     }
   } else {
-    return redirect('/auth', error.code);
+    return error;
   }
 }
 
@@ -164,4 +164,14 @@ export default function AuthContent() {
       </Grid>
     </ThemeProvider>
   );
+}
+
+export function ErrorBoundary({ error }) {
+  return (
+    <div>
+      <p>Error</p>
+      <p>{error.message}</p>
+      <p>Reload to get out of error.</p>
+    </div>
+  )
 }
